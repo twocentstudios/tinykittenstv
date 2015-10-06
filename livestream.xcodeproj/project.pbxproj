@@ -1,0 +1,391 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3443D3321BC44344008AEA28 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3311BC44344008AEA28 /* AppDelegate.swift */; };
+		3443D3341BC44344008AEA28 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3331BC44344008AEA28 /* ViewController.swift */; };
+		3443D3371BC44344008AEA28 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3443D3351BC44344008AEA28 /* Main.storyboard */; };
+		3443D3391BC44344008AEA28 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3443D3381BC44344008AEA28 /* Assets.xcassets */; };
+		3443D3441BC44344008AEA28 /* livestreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3431BC44344008AEA28 /* livestreamTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3443D3401BC44344008AEA28 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3443D3261BC44344008AEA28 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3443D32D1BC44344008AEA28;
+			remoteInfo = livestream;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		3443D32E1BC44344008AEA28 /* livestream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = livestream.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3443D3311BC44344008AEA28 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		3443D3331BC44344008AEA28 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		3443D3361BC44344008AEA28 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		3443D3381BC44344008AEA28 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3443D33A1BC44344008AEA28 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3443D33F1BC44344008AEA28 /* livestreamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = livestreamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3443D3431BC44344008AEA28 /* livestreamTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = livestreamTests.swift; sourceTree = "<group>"; };
+		3443D3451BC44344008AEA28 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3443D32B1BC44344008AEA28 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3443D33C1BC44344008AEA28 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3443D3251BC44344008AEA28 = {
+			isa = PBXGroup;
+			children = (
+				3443D3301BC44344008AEA28 /* livestream */,
+				3443D3421BC44344008AEA28 /* livestreamTests */,
+				3443D32F1BC44344008AEA28 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3443D32F1BC44344008AEA28 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3443D32E1BC44344008AEA28 /* livestream.app */,
+				3443D33F1BC44344008AEA28 /* livestreamTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3443D3301BC44344008AEA28 /* livestream */ = {
+			isa = PBXGroup;
+			children = (
+				3443D3311BC44344008AEA28 /* AppDelegate.swift */,
+				3443D3331BC44344008AEA28 /* ViewController.swift */,
+				3443D3351BC44344008AEA28 /* Main.storyboard */,
+				3443D3381BC44344008AEA28 /* Assets.xcassets */,
+				3443D33A1BC44344008AEA28 /* Info.plist */,
+			);
+			path = livestream;
+			sourceTree = "<group>";
+		};
+		3443D3421BC44344008AEA28 /* livestreamTests */ = {
+			isa = PBXGroup;
+			children = (
+				3443D3431BC44344008AEA28 /* livestreamTests.swift */,
+				3443D3451BC44344008AEA28 /* Info.plist */,
+			);
+			path = livestreamTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3443D32D1BC44344008AEA28 /* livestream */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3443D3481BC44344008AEA28 /* Build configuration list for PBXNativeTarget "livestream" */;
+			buildPhases = (
+				3443D32A1BC44344008AEA28 /* Sources */,
+				3443D32B1BC44344008AEA28 /* Frameworks */,
+				3443D32C1BC44344008AEA28 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = livestream;
+			productName = livestream;
+			productReference = 3443D32E1BC44344008AEA28 /* livestream.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3443D33E1BC44344008AEA28 /* livestreamTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3443D34B1BC44344008AEA28 /* Build configuration list for PBXNativeTarget "livestreamTests" */;
+			buildPhases = (
+				3443D33B1BC44344008AEA28 /* Sources */,
+				3443D33C1BC44344008AEA28 /* Frameworks */,
+				3443D33D1BC44344008AEA28 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3443D3411BC44344008AEA28 /* PBXTargetDependency */,
+			);
+			name = livestreamTests;
+			productName = livestreamTests;
+			productReference = 3443D33F1BC44344008AEA28 /* livestreamTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3443D3261BC44344008AEA28 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0710;
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = twocentstudios;
+				TargetAttributes = {
+					3443D32D1BC44344008AEA28 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					3443D33E1BC44344008AEA28 = {
+						CreatedOnToolsVersion = 7.1;
+						TestTargetID = 3443D32D1BC44344008AEA28;
+					};
+				};
+			};
+			buildConfigurationList = 3443D3291BC44344008AEA28 /* Build configuration list for PBXProject "livestream" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3443D3251BC44344008AEA28;
+			productRefGroup = 3443D32F1BC44344008AEA28 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3443D32D1BC44344008AEA28 /* livestream */,
+				3443D33E1BC44344008AEA28 /* livestreamTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3443D32C1BC44344008AEA28 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3443D3391BC44344008AEA28 /* Assets.xcassets in Resources */,
+				3443D3371BC44344008AEA28 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3443D33D1BC44344008AEA28 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3443D32A1BC44344008AEA28 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3443D3341BC44344008AEA28 /* ViewController.swift in Sources */,
+				3443D3321BC44344008AEA28 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3443D33B1BC44344008AEA28 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3443D3441BC44344008AEA28 /* livestreamTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3443D3411BC44344008AEA28 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3443D32D1BC44344008AEA28 /* livestream */;
+			targetProxy = 3443D3401BC44344008AEA28 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		3443D3351BC44344008AEA28 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3443D3361BC44344008AEA28 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		3443D3461BC44344008AEA28 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = appletvos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		3443D3471BC44344008AEA28 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3443D3491BC44344008AEA28 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = livestream/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = twocentstudios.livestream;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		3443D34A1BC44344008AEA28 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = livestream/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = twocentstudios.livestream;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		3443D34C1BC44344008AEA28 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = livestreamTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = twocentstudios.livestreamTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/livestream.app/livestream";
+			};
+			name = Debug;
+		};
+		3443D34D1BC44344008AEA28 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = livestreamTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = twocentstudios.livestreamTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/livestream.app/livestream";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3443D3291BC44344008AEA28 /* Build configuration list for PBXProject "livestream" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3443D3461BC44344008AEA28 /* Debug */,
+				3443D3471BC44344008AEA28 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3443D3481BC44344008AEA28 /* Build configuration list for PBXNativeTarget "livestream" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3443D3491BC44344008AEA28 /* Debug */,
+				3443D34A1BC44344008AEA28 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		3443D34B1BC44344008AEA28 /* Build configuration list for PBXNativeTarget "livestreamTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3443D34C1BC44344008AEA28 /* Debug */,
+				3443D34D1BC44344008AEA28 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3443D3261BC44344008AEA28 /* Project object */;
+}
