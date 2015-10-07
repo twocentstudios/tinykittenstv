@@ -12,6 +12,8 @@
 		3443D3371BC44344008AEA28 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3443D3351BC44344008AEA28 /* Main.storyboard */; };
 		3443D3391BC44344008AEA28 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3443D3381BC44344008AEA28 /* Assets.xcassets */; };
 		3443D3441BC44344008AEA28 /* livestreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3431BC44344008AEA28 /* livestreamTests.swift */; };
+		3443D34F1BC47827008AEA28 /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D34E1BC47827008AEA28 /* EventsViewController.swift */; };
+		3443D3511BC48075008AEA28 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3501BC48075008AEA28 /* Event.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +36,8 @@
 		3443D33F1BC44344008AEA28 /* livestreamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = livestreamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3443D3431BC44344008AEA28 /* livestreamTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = livestreamTests.swift; sourceTree = "<group>"; };
 		3443D3451BC44344008AEA28 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3443D34E1BC47827008AEA28 /* EventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
+		3443D3501BC48075008AEA28 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +81,8 @@
 			children = (
 				3443D3311BC44344008AEA28 /* AppDelegate.swift */,
 				3443D3331BC44344008AEA28 /* ViewController.swift */,
+				3443D34E1BC47827008AEA28 /* EventsViewController.swift */,
+				3443D3501BC48075008AEA28 /* Event.swift */,
 				3443D3351BC44344008AEA28 /* Main.storyboard */,
 				3443D3381BC44344008AEA28 /* Assets.xcassets */,
 				3443D33A1BC44344008AEA28 /* Info.plist */,
@@ -194,7 +200,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3443D3341BC44344008AEA28 /* ViewController.swift in Sources */,
+				3443D34F1BC47827008AEA28 /* EventsViewController.swift in Sources */,
 				3443D3321BC44344008AEA28 /* AppDelegate.swift in Sources */,
+				3443D3511BC48075008AEA28 /* Event.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,6 +384,7 @@
 				3443D34A1BC44344008AEA28 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3443D34B1BC44344008AEA28 /* Build configuration list for PBXNativeTarget "livestreamTests" */ = {
 			isa = XCConfigurationList;
@@ -384,6 +393,7 @@
 				3443D34D1BC44344008AEA28 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
