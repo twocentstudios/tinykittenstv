@@ -10,11 +10,7 @@ import UIKit
 
 class EventsViewController: UICollectionViewController {
     // MARK: Properties    
-    private var viewModels : [ImageTitleable]? {
-        didSet {
-            self.collectionView?.reloadData()
-        }
-    }
+    private var viewModels : [EventViewModel]?
     
     // MARK: UIViewController
     
@@ -66,17 +62,42 @@ class EventsViewController: UICollectionViewController {
             guard let json = try? NSJSONSerialization.JSONObjectWithData(data, options: []) as! NSDictionary else { return }
             guard let eventDictionaries = json["data"] as? Array<NSDictionary> else { return }
             let events = eventDictionaries.map({ (e : NSDictionary ) -> Event in
-                let event = Event(id: e["id"] as! Int, shortName: e["short_name"] as? String, fullName: e["full_name"] as? String, description: e["description"] as? String, isLive: e["in_progress"] as? Bool, imageUrl: NSURL(string: (e["background_image"]?["url"])! as! String), streamUrl: nil)
+                let event = Event(id: e["id"] as! Int, shortName: e["short_name"] as? String, fullName: e["full_name"] as? String, description: e["description"] as? String, isLive: e["in_progress"] as? Bool, imageUrl: NSURL(string: (e["logo"]?["url"])! as! String), streamUrl: nil)
                 return event
             })
             
-            let eventViewModels = events.map({ (e : Event) -> ImageTitleable in
+            let eventViewModels = events.map({ (e : Event) -> EventViewModel in
                 let eventViewModel = EventViewModel(title: e.fullName ?? "No Title", imageData: nil, model: e)
                 return eventViewModel
             })
             
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.viewModels = eventViewModels
+                
+                self.collectionView?.reloadData()
+            })
+        }
+        task.resume()
+    }
+    
+    private func conditionallyLoadViewModelPropertiesAtIndex(index : Int) {
+        guard let viewModel = self.viewModels?[index] else { return }
+        if viewModel.imageData != nil { return }
+        guard let imageUrl = viewModel.model.imageUrl else { return }
+        let request = NSURLRequest(URL: imageUrl)
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data : NSData?, response : NSURLResponse?, error : NSError?) -> Void in
+            if error != nil { return }
+            
+            guard let data = data else { return }
+            let newViewModel = EventViewModel(title: viewModel.title, imageData: data, model: viewModel.model)
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.viewModels?[index] = newViewModel
+                
+                self.collectionView?.performBatchUpdates({ () -> Void in
+                    self.collectionView?.reloadItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
+                }, completion: nil)
+
             })
         }
         task.resume()
@@ -105,5 +126,7 @@ class EventsViewController: UICollectionViewController {
         
         let viewModel = viewModels[indexPath.row]
         cell.viewModel = viewModel
+        
+        conditionallyLoadViewModelPropertiesAtIndex(indexPath.item)
     }
 }
