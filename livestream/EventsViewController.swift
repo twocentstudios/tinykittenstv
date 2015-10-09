@@ -8,76 +8,102 @@
 
 import UIKit
 
-class StreamsViewController: UICollectionViewController {
-    // MARK: Properties
-    
-    private var items
-    
-    private let cellComposer = DataItemCellComposer()
+class EventsViewController: UICollectionViewController {
+    // MARK: Properties    
+    private var viewModels : [ImageTitleable]? {
+        didSet {
+            self.collectionView?.reloadData()
+        }
+    }
     
     // MARK: UIViewController
+    
+    override convenience init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .Vertical
+        layout.itemSize = CGSize(width: 300, height: 533)
+        layout.minimumInteritemSpacing = 8.0
+        layout.minimumLineSpacing = 32.0
+        layout.sectionInset = UIEdgeInsets(top: 32.0, left: 32.0, bottom: 32.0, right: 32.0)
+        self.init(collectionViewLayout: layout)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let collectionView = collectionView else { return }
-        
-        /*
-        Add a gradient mask to the collection view. This will fade out the
-        contents of the collection view as it scrolls beneath the transparent
-        navigation bar.
-        */
-        collectionView.maskView = GradientMaskView(frame: CGRect(origin: CGPoint.zero, size: collectionView.bounds.size))
+
+        collectionView.registerClass(ImageTitleCell.self, forCellWithReuseIdentifier: NSStringFromClass(ImageTitleCell.self))
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        guard let collectionView = collectionView, maskView = collectionView.maskView as? GradientMaskView else { return }
+        guard let collectionView = collectionView else { return }
         
-        /*
-        Update the mask view to have fully faded out any collection view
-        content above the navigation bar's label.
-        */
-        maskView.maskPosition.end = topLayoutGuide.length * 0.8
+        collectionView.frame = self.view.bounds
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         
-        /*
-        Update the position from where the collection view's content should
-        start to fade out. The size of the fade increases as the collection
-        view scrolls to a maximum of half the navigation bar's height.
-        */
-        let maximumMaskStart = maskView.maskPosition.end + (topLayoutGuide.length * 0.5)
-        let verticalScrollPosition = max(0, collectionView.contentOffset.y + collectionView.contentInset.top)
-        maskView.maskPosition.start = min(maximumMaskStart, maskView.maskPosition.end + verticalScrollPosition)
-        
-        /*
-        Position the mask view so that it is always fills the visible area of
-        the collection view.
-        */
-        maskView.frame = CGRect(origin: CGPoint(x: 0, y: collectionView.contentOffset.y), size: collectionView.bounds.size)
+        loadViewModels()
+    }
+    
+    // MARK: Private
+    private func loadViewModels() {
+        let accountId = 4175709
+        let url = NSURL(string: "https://api.new.livestream.com/accounts/\(accountId)/events")!
+        let request = NSURLRequest(URL: url)
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data : NSData?, response : NSURLResponse?, error : NSError?) -> Void in
+            if let error = error {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                    self.presentViewController(alert, animated: true, completion: nil)
+                })
+                return
+            }
+            
+            guard let data = data else { return }
+            guard let json = try? NSJSONSerialization.JSONObjectWithData(data, options: []) as! NSDictionary else { return }
+            guard let eventDictionaries = json["data"] as? Array<NSDictionary> else { return }
+            let events = eventDictionaries.map({ (e : NSDictionary ) -> Event in
+                let event = Event(id: e["id"] as! Int, shortName: e["short_name"] as? String, fullName: e["full_name"] as? String, description: e["description"] as? String, isLive: e["in_progress"] as? Bool, imageUrl: NSURL(string: (e["background_image"]?["url"])! as! String), streamUrl: nil)
+                return event
+            })
+            
+            let eventViewModels = events.map({ (e : Event) -> ImageTitleable in
+                let eventViewModel = EventViewModel(title: e.fullName ?? "No Title", imageData: nil, model: e)
+                return eventViewModel
+            })
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.viewModels = eventViewModels
+            })
+        }
+        task.resume()
     }
     
     // MARK: UICollectionViewDataSource
     
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        // The collection view shows all items in a single section.
         return 1
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return items.count
+        guard let viewModels = viewModels else { return 0 }
+        return viewModels.count
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        // Dequeue a cell from the collection view.
-        return collectionView.dequeueReusableCellWithReuseIdentifier(DataItemCollectionViewCell.reuseIdentifier, forIndexPath: indexPath)
+        return collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(ImageTitleCell.self), forIndexPath: indexPath)
     }
     
     // MARK: UICollectionViewDelegate
     
     override func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        guard let cell = cell as? DataItemCollectionViewCell else { fatalError("Expected to display a `DataItemCollectionViewCell`.") }
-        let item = items[indexPath.row]
+        guard let cell = cell as? ImageTitleCell else { fatalError("Expected to display a `ImageTitleCell`.") }
+        guard let viewModels = viewModels else { return }
         
-        // Configure the cell.
-        cellComposer.composeCell(cell, withDataItem: item)
+        let viewModel = viewModels[indexPath.row]
+        cell.viewModel = viewModel
     }
 }
