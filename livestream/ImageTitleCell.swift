@@ -27,9 +27,17 @@ class ImageTitleCell: UICollectionViewCell {
     override init(frame: CGRect) {
         imageView = UIImageView()
         imageView.contentMode = .ScaleAspectFill
+        imageView.clipsToBounds = true
 
         titleLabel = UILabel()
+        titleLabel.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
+        titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .Center
+        titleLabel.font = UIFont.boldSystemFontOfSize(32)
+        titleLabel.textColor = UIColor.whiteColor()
+        titleLabel.shadowColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+        titleLabel.shadowOffset = CGSize(width: 0, height: -1)
+        titleLabel.highlightedTextColor = UIColor.redColor()
         
         super.init(frame: frame)
 
