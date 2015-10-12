@@ -18,7 +18,7 @@ class EventsViewController: UICollectionViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .Vertical
         layout.itemSize = CGSize(width: 300, height: 533)
-        layout.minimumInteritemSpacing = 8.0
+        layout.minimumInteritemSpacing = 10.0
         layout.minimumLineSpacing = 32.0
         layout.sectionInset = UIEdgeInsets(top: 32.0, left: 32.0, bottom: 32.0, right: 32.0)
         self.init(collectionViewLayout: layout)
@@ -41,12 +41,38 @@ class EventsViewController: UICollectionViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
+        loadTitle()
         loadViewModels()
     }
     
     // MARK: Private
+    
+    let accountId = 4175709
+    
+    private func loadTitle() {
+        let url = NSURL(string: "https://api.new.livestream.com/accounts/\(accountId)")!
+        let request = NSURLRequest(URL: url)
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data : NSData?, response : NSURLResponse?, error : NSError?) -> Void in
+            if let error = error {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                    self.presentViewController(alert, animated: true, completion: nil)
+                })
+                return
+            }
+            
+            guard let data = data else { return }
+            guard let json = try? NSJSONSerialization.JSONObjectWithData(data, options: []) as! NSDictionary else { return }
+            guard let fullName = json["full_name"] as? String else { return }
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.title = fullName
+            })
+        }
+        task.resume()
+    }
+    
     private func loadViewModels() {
-        let accountId = 4175709
         let url = NSURL(string: "https://api.new.livestream.com/accounts/\(accountId)/events")!
         let request = NSURLRequest(URL: url)
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data : NSData?, response : NSURLResponse?, error : NSError?) -> Void in
