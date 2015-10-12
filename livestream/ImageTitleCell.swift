@@ -55,7 +55,6 @@ class ImageTitleCell: UICollectionViewCell {
         
         if (self.focused) {
             imageView.frame = self.contentView.bounds
-            print("focused \(self.titleLabel.text)")
         } else {
             imageView.frame = CGRectInset(self.contentView.bounds, 0, 24)
         }
