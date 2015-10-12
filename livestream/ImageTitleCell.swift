@@ -28,6 +28,7 @@ class ImageTitleCell: UICollectionViewCell {
         imageView = UIImageView()
         imageView.contentMode = .ScaleAspectFill
         imageView.clipsToBounds = true
+        imageView.adjustsImageWhenAncestorFocused = true
 
         titleLabel = UILabel()
         titleLabel.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
@@ -37,15 +38,12 @@ class ImageTitleCell: UICollectionViewCell {
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.shadowColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
         titleLabel.shadowOffset = CGSize(width: 0, height: -1)
-        titleLabel.highlightedTextColor = UIColor.redColor()
+        titleLabel.highlightedTextColor = UIColor.whiteColor().colorWithAlphaComponent(0.8)
         
         super.init(frame: frame)
 
-        self.addSubview(imageView)
-        self.addSubview(titleLabel)
-        
-        self.backgroundView = UIView()
-        self.backgroundView?.backgroundColor = UIColor.redColor()
+        self.contentView.addSubview(imageView)
+        self.contentView.addSubview(titleLabel)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -53,12 +51,23 @@ class ImageTitleCell: UICollectionViewCell {
     }
     
     override func layoutSubviews() {
-        let hBottomImageMargin : CGFloat = 10
+        let hBottomImageMargin : CGFloat = 16
         
-        imageView.frame = self.contentView.bounds
-        
+        if (self.focused) {
+            imageView.frame = self.contentView.bounds
+            print("focused \(self.titleLabel.text)")
+        } else {
+            imageView.frame = CGRectInset(self.contentView.bounds, 0, 24)
+        }
         titleLabel.frame = self.contentView.bounds
         titleLabel.sizeToFit()
         titleLabel.frame = CGRect(x: 0, y: CGRectGetMaxY(self.bounds) - CGRectGetHeight(titleLabel.frame) - hBottomImageMargin, width: CGRectGetWidth(self.contentView.bounds), height: CGRectGetHeight(titleLabel.frame))
+    }
+    
+    override func didUpdateFocusInContext(context: UIFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
+        coordinator.addCoordinatedAnimations({ () -> Void in
+            self.setNeedsLayout()
+            self.layoutIfNeeded()
+        }) { () -> Void in }
     }
 }
