@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVKit
 
 class EventsViewController: UICollectionViewController {
     // MARK: Properties    
@@ -41,16 +42,19 @@ class EventsViewController: UICollectionViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        loadTitle()
-        loadViewModels()
+        if (viewModels == nil) {
+            loadTitle()
+            loadViewModels()
+        }
     }
     
-    // MARK: Private
+    // MARK: Private aka massive view controller
     
     let accountId = 4175709
+    let baseUrl = "https://api.new.livestream.com"
     
     private func loadTitle() {
-        let url = NSURL(string: "https://api.new.livestream.com/accounts/\(accountId)")!
+        let url = NSURL(string: "\(baseUrl)/accounts/\(accountId)")!
         let request = NSURLRequest(URL: url)
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data : NSData?, response : NSURLResponse?, error : NSError?) -> Void in
             if let error = error {
@@ -73,7 +77,7 @@ class EventsViewController: UICollectionViewController {
     }
     
     private func loadViewModels() {
-        let url = NSURL(string: "https://api.new.livestream.com/accounts/\(accountId)/events")!
+        let url = NSURL(string: "\(baseUrl)/accounts/\(accountId)/events")!
         let request = NSURLRequest(URL: url)
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data : NSData?, response : NSURLResponse?, error : NSError?) -> Void in
             if let error = error {
@@ -88,8 +92,7 @@ class EventsViewController: UICollectionViewController {
             guard let json = try? NSJSONSerialization.JSONObjectWithData(data, options: []) as! NSDictionary else { return }
             guard let eventDictionaries = json["data"] as? Array<NSDictionary> else { return }
             let events = eventDictionaries.map({ (e : NSDictionary ) -> Event in
-                let event = Event(id: e["id"] as! Int, shortName: e["short_name"] as? String, fullName: e["full_name"] as? String, description: e["description"] as? String, isLive: e["in_progress"] as? Bool, imageUrl: NSURL(string: (e["logo"]?["url"])! as! String), streamUrl: nil)
-                return event
+                return self.parseEventDictionary(e)
             })
             
             let eventViewModels = events.map({ (e : Event) -> EventViewModel in
@@ -104,6 +107,32 @@ class EventsViewController: UICollectionViewController {
             })
         }
         task.resume()
+    }
+    
+    private func loadEventDetail(eventId: Int, completeBlock: (event : Event?) -> Void ) {
+        let url = NSURL(string: "\(baseUrl)/accounts/\(accountId)/events/\(eventId)")!
+        let request = NSURLRequest(URL: url)
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data : NSData?, response : NSURLResponse?, error : NSError?) -> Void in
+            if let _ = error {
+                completeBlock(event: nil)
+            }
+            
+            guard let data = data else { return }
+            guard let json = try? NSJSONSerialization.JSONObjectWithData(data, options: []) as! NSDictionary else { return }
+            let event = self.parseEventDictionary(json)
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                completeBlock(event: event)
+            })
+        }
+        task.resume()
+    }
+    
+    private func parseEventDictionary(e : NSDictionary) -> Event {
+        let streamUrlString : String? = e["stream_info"]?["secure_m3u8_url"] as? String
+        let streamUrl : NSURL? = (streamUrlString != nil) ? NSURL(string: streamUrlString!) : nil
+        let event = Event(id: e["id"] as! Int, shortName: e["short_name"] as? String, fullName: e["full_name"] as? String, description: e["description"] as? String, isLive: e["in_progress"] as? Bool, imageUrl: NSURL(string: (e["logo"]?["url"])! as! String), streamUrl: streamUrl)
+        return event
     }
     
     private func conditionallyLoadViewModelPropertiesAtIndex(index : Int) {
@@ -154,5 +183,26 @@ class EventsViewController: UICollectionViewController {
         cell.viewModel = viewModel
         
         conditionallyLoadViewModelPropertiesAtIndex(indexPath.item)
+    }
+    
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        guard let model = self.viewModels?[indexPath.row].model else { return }
+        let streamName = model.fullName ?? "stream"
+        
+        let alertView = UIAlertController(title: nil, message: "Loading \(streamName)...", preferredStyle: .Alert)
+        self.presentViewController(alertView, animated: true) { () -> Void in
+            self.loadEventDetail(model.id) { (event) -> Void in
+                self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                    guard let event = event else { return }
+                    guard let streamUrl = event.streamUrl else { return }
+                    
+                    let player = AVPlayer(URL: streamUrl)
+                    let playerController = AVPlayerViewController()
+                    playerController.player = player
+                    
+                    self.presentViewController(playerController, animated: true, completion: nil)
+                })
+            }
+        }
     }
 }
