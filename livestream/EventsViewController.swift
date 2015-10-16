@@ -199,6 +199,7 @@ class EventsViewController: UICollectionViewController {
                     let player = AVPlayer(URL: streamUrl)
                     let playerController = AVPlayerViewController()
                     playerController.player = player
+                    player.play()
                     
                     self.presentViewController(playerController, animated: true, completion: nil)
                 })
