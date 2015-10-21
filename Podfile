@@ -1,0 +1,10 @@
+platform :ios, '9.0'
+platform :tvos, '9.0'
+
+use_frameworks!
+
+plugin 'cocoapods-expert-difficulty'
+
+target 'livestream' do
+  pod 'Gloss', '~> 0.5.3'
+end
