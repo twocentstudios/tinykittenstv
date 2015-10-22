@@ -6,20 +6,16 @@
 //  Copyright © 2015 twocentstudios. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 protocol ImageTitleable {
     var title : String { get }
     var imageData : NSData? { get }
 }
 
-public struct EventViewModel : ImageTitleable {
-    let title : String
-    let imageData : NSData?
-    
-    let model : Event
-    
+extension ImageTitleable {
     func isLoaded() -> Bool {
         return imageData != nil
     }
 }
+
