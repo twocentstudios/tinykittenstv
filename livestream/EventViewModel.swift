@@ -13,4 +13,11 @@ public struct EventViewModel : ImageTitleable {
     let imageData : NSData?
     
     let model : Event
+    
+    init(model: Event, imageData : NSData?) {
+        self.model = model
+        
+        self.title = model.fullName ?? "[No title]".l10()
+        self.imageData = imageData
+    }
 }

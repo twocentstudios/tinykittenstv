@@ -58,7 +58,7 @@ public func fetchEventViewModelsForAccount(accountId: Int, completeBlock: (resul
         }
         
         let events : [Event] = eventsResponse.events
-        let eventViewModels = eventViewModelsForEvents(events)
+        let eventViewModels = events.map({ (e: Event) -> EventViewModel in return EventViewModel(model: e, imageData: nil) })
         completeBlock(result: Result<[EventViewModel], EventError>(value: eventViewModels))
     }
 }
@@ -101,7 +101,7 @@ public func fetchFullViewModelForViewModel(viewModel: EventViewModel, completeBl
             return
         }
         
-        let newViewModel = EventViewModel(title: viewModel.title, imageData: result.value!, model: viewModel.model)
+        let newViewModel = EventViewModel(model: viewModel.model, imageData: nil)
         completeBlock(result: Result<EventViewModel, EventError>(value: newViewModel))
     }
 }
@@ -124,13 +124,6 @@ private func parseJSONFromData(data: NSData, opt: NSJSONReadingOptions = []) -> 
     } catch let e as NSError {
         return Result<JSON, EventError>(error: EventError.UnderlyingError(error: e))
     }
-}
-
-private func eventViewModelsForEvents(events: [Event]) -> [EventViewModel] {
-    return events.map({ (e : Event) -> EventViewModel in
-        let eventViewModel = EventViewModel(title: e.fullName ?? "No Title".l10(), imageData: nil, model: e)
-        return eventViewModel
-    })
 }
 
 private func fetchDataForRequest(request: NSURLRequest, completeBlock: (result: Result<NSData, EventError>) -> Void) {
