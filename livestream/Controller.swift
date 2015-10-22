@@ -9,29 +9,6 @@
 import Foundation
 import Gloss
 
-public enum EventError : ErrorType {
-    case UnderlyingError(error: NSError)
-    case InvalidResponse
-    case ImageURLMissing
-    case StreamURLMissing
-    case UnknownError
-    
-    func localizedDescription() -> String {
-        switch self {
-        case .InvalidResponse:
-            return "The server returned an invalid response.".l10()
-        case .StreamURLMissing:
-            return "The stream's URL could not be found.".l10()
-        case .ImageURLMissing:
-            return "The stream's image URL could not be found.".l10()
-        case .UnderlyingError(let e):
-            return e.localizedDescription
-        default:
-            return "An unknown error occurred. Please try again.".l10()
-        }
-    }
-}
-
 let BASE_URL = "https://api.new.livestream.com"
 
 public func fetchTitleForAccount(accountId: Int, completeBlock: (result: Result<String, EventError>) -> Void) {
