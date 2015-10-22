@@ -46,6 +46,7 @@ class EventsViewController: UICollectionViewController {
         guard let collectionView = collectionView else { return }
 
         collectionView.registerClass(ImageTitleCell.self, forCellWithReuseIdentifier: NSStringFromClass(ImageTitleCell.self))
+        collectionView.remembersLastFocusedIndexPath = true
     }
     
     override func viewDidLayoutSubviews() {
