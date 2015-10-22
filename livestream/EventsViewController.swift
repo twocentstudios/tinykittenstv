@@ -167,7 +167,7 @@ class EventsViewController: UICollectionViewController {
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         guard let model = self.viewModels?[indexPath.row].model else { return }
         let streamName = model.fullName ?? "stream"
-        let title = String.localizedStringWithFormat("Loading %s...", streamName)
+        let title = String.localizedStringWithFormat("Loading %@...", streamName)
         
         let alertView = UIAlertController(title: title, message: nil, preferredStyle: .Alert)
         self.presentViewController(alertView, animated: true) { () -> Void in
