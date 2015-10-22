@@ -43,6 +43,12 @@ public struct Event : Decodable {
     }
 }
 
+extension Event: Equatable {}
+public func ==(lhs: Event, rhs: Event) -> Bool {
+    // It could be dangerous to define == as the id param...
+    return lhs.id == rhs.id
+}
+
 public struct EventsResponse : Decodable {
     let events : [Event]
     

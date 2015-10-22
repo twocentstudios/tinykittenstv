@@ -58,19 +58,23 @@ class EventsViewController: UICollectionViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        if (viewModels == nil) {
+        if (self.title == nil) {
             loadTitle(accountId, completeBlock: { [unowned self] (result) -> Void in
                 self.handleResultOrPresentError(result, block: { (value) -> Void in
                     self.title = value
                 })
             })
-            loadViewModels(accountId, completeBlock: { [unowned self] (result) -> Void in
-                self.handleResultOrPresentError(result, block: { (value) -> Void in
-                    self.viewModels = result.value!
-                    self.collectionView?.reloadData()
-                })
-            })
         }
+        
+        loadViewModels(accountId, completeBlock: { [unowned self] (result) -> Void in
+            self.handleResultOrPresentError(result, block: { (value) -> Void in
+                let oldModels = self.viewModels?.map({ $0.model }) ?? []
+                let newModels = value.map({ $0.model })
+                if (oldModels == newModels) { return }
+                self.viewModels = result.value!
+                self.collectionView?.reloadData()
+            })
+        })
     }
     
     // MARK: Private
