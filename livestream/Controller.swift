@@ -30,6 +30,21 @@ public enum EventError : ErrorType {
     case ImageURLMissing
     case StreamURLMissing
     case UnknownError
+    
+    func localizedDescription() -> String {
+        switch self {
+        case .InvalidResponse:
+            return "The server returned an invalid response.".l10()
+        case .StreamURLMissing:
+            return "The stream's URL could not be found.".l10()
+        case .ImageURLMissing:
+            return "The stream's image URL could not be found.".l10()
+        case .UnderlyingError(let e):
+            return e.localizedDescription
+        default:
+            return "An unknown error occurred. Please try again.".l10()
+        }
+    }
 }
 
 let BASE_URL = "https://api.new.livestream.com"
@@ -147,7 +162,7 @@ private func parseJSONFromData(data: NSData, opt: NSJSONReadingOptions = []) -> 
 
 private func eventViewModelsForEvents(events: [Event]) -> [EventViewModel] {
     return events.map({ (e : Event) -> EventViewModel in
-        let eventViewModel = EventViewModel(title: e.fullName ?? "No Title", imageData: nil, model: e)
+        let eventViewModel = EventViewModel(title: e.fullName ?? "No Title".l10(), imageData: nil, model: e)
         return eventViewModel
     })
 }

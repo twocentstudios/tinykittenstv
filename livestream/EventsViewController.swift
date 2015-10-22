@@ -12,7 +12,8 @@ import AVKit
 
 
 class EventsViewController: UICollectionViewController {
-    // MARK: Properties    
+    // MARK: Properties
+    
     private var viewModels : [EventViewModel]?
     let accountId : Int
     
@@ -28,6 +29,8 @@ class EventsViewController: UICollectionViewController {
         
         self.accountId = accountId
         super.init(collectionViewLayout: layout)
+        
+        self.clearsSelectionOnViewWillAppear = false
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -74,7 +77,8 @@ class EventsViewController: UICollectionViewController {
         }
     }
     
-    // MARK: Private aka massive view controller
+    // MARK: Private
+    
     private func loadTitle(accountId: Int, completeBlock: (result: Result<String, EventError>) -> Void) {
         fetchTitleForAccount(accountId) { (result) -> Void in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -108,23 +112,13 @@ class EventsViewController: UICollectionViewController {
     }
     
     private func presentError(error: EventError) {
-        let message = errorMessageForEventError(error)
+        print("Error: \(error)")
+        let message = error.localizedDescription()
         let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: { _ -> Void in
+        alert.addAction(UIAlertAction(title: "OK".l10(), style: .Cancel, handler: { _ -> Void in
             self.dismissViewControllerAnimated(true, completion: nil)
         }))
         self.presentViewController(alert, animated: true, completion: nil)
-    }
-
-    private func errorMessageForEventError(error: EventError) -> String {
-        switch error {
-        case .InvalidResponse:
-            return "The server returned an invalid response."
-        case .UnderlyingError(let e):
-            return e.localizedDescription
-        default:
-            return "An unknown error occurred. Please try again."
-        }
     }
     
     // MARK: UICollectionViewDataSource
@@ -153,7 +147,7 @@ class EventsViewController: UICollectionViewController {
         cell.viewModel = viewModel
         
         loadFullViewModelForViewModel(viewModel) { (result) -> Void in
-            // Ignore image load errors
+            if let error = result.error { print(error) }
             guard let newViewModel = result.value else { return }
             self.viewModels?[index] = newViewModel
             self.collectionView?.performBatchUpdates({ () -> Void in
@@ -165,8 +159,9 @@ class EventsViewController: UICollectionViewController {
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         guard let model = self.viewModels?[indexPath.row].model else { return }
         let streamName = model.fullName ?? "stream"
+        let title = String.localizedStringWithFormat("Loading %s...", streamName)
         
-        let alertView = UIAlertController(title: nil, message: "Loading \(streamName)...", preferredStyle: .Alert)
+        let alertView = UIAlertController(title: title, message: nil, preferredStyle: .Alert)
         self.presentViewController(alertView, animated: true) { () -> Void in
             self.loadEventDetail(model.id, accountId: self.accountId, completeBlock: { (result) -> Void in
                 self.dismissViewControllerAnimated(true, completion: { () -> Void in
