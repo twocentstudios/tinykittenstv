@@ -9,21 +9,6 @@
 import Foundation
 import Gloss
 
-public struct Result<T, E> {
-    let value : T?
-    let error : E?
-    
-    init(value: T) {
-        self.value = value
-        self.error = nil
-    }
-    
-    init(error: E) {
-        self.error = error
-        self.value = nil
-    }
-}
-
 public enum EventError : ErrorType {
     case UnderlyingError(error: NSError)
     case InvalidResponse
