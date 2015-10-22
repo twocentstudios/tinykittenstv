@@ -60,19 +60,15 @@ class EventsViewController: UICollectionViewController {
         
         if (viewModels == nil) {
             loadTitle(accountId, completeBlock: { [unowned self] (result) -> Void in
-                if let error = result.error {
-                    self.presentError(error)
-                } else {
-                    self.title = result.value!
-                }
+                self.handleResultOrPresentError(result, block: { (value) -> Void in
+                    self.title = value
+                })
             })
             loadViewModels(accountId, completeBlock: { [unowned self] (result) -> Void in
-                if let error = result.error {
-                    self.presentError(error)
-                } else {
+                self.handleResultOrPresentError(result, block: { (value) -> Void in
                     self.viewModels = result.value!
                     self.collectionView?.reloadData()
-                }
+                })
             })
         }
     }
@@ -108,6 +104,14 @@ class EventsViewController: UICollectionViewController {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 completeBlock(result: result)
             })
+        }
+    }
+    
+    private func handleResultOrPresentError<T>(result: Result<T, EventError>, block: (value : T) -> Void) {
+        if let error = result.error {
+            self.presentError(error)
+        } else {
+            block(value: result.value!)
         }
     }
     
