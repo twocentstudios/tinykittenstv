@@ -9,23 +9,23 @@
 import Foundation
 import Gloss
 
-public struct Result<T> {
+public struct Result<T, E> {
     let value : T?
-    let error : ErrorType?
+    let error : E?
     
     init(value: T) {
         self.value = value
         self.error = nil
     }
     
-    init(error: ErrorType) {
+    init(error: E) {
         self.error = error
         self.value = nil
     }
 }
 
 public enum EventError : ErrorType {
-    case UnderlyingError(error: ErrorType)
+    case UnderlyingError(error: NSError)
     case InvalidResponse
     case ImageURLMissing
     case StreamURLMissing
@@ -34,114 +34,114 @@ public enum EventError : ErrorType {
 
 let BASE_URL = "https://api.new.livestream.com"
 
-public func fetchTitleForAccount(accountId: Int, completeBlock: (result: Result<String>) -> Void) {
+public func fetchTitleForAccount(accountId: Int, completeBlock: (result: Result<String, EventError>) -> Void) {
     let url = NSURL(string: "\(BASE_URL)/accounts/\(accountId)")!
     let request = NSURLRequest(URL: url)
     fetchDataForRequest(request) { (result) -> Void in
         if let error = result.error {
-            completeBlock(result: Result<String>(error: error))
+            completeBlock(result: Result<String, EventError>(error: error))
             return
         }
         
-        let jsonResult : Result<JSON> = parseJSONFromData(result.value!)
+        let jsonResult : Result<JSON, EventError> = parseJSONFromData(result.value!)
         if let error = result.error {
-            completeBlock(result: Result<String>(error: EventError.UnderlyingError(error: error)))
+            completeBlock(result: Result<String, EventError>(error: error))
             return
         }
         
         guard let fullName = jsonResult.value!["full_name"] as? String else {
-            completeBlock(result: Result<String>(error: EventError.InvalidResponse))
+            completeBlock(result: Result<String, EventError>(error: EventError.InvalidResponse))
             return
         }
         
-        completeBlock(result: Result<String>(value: fullName))
+        completeBlock(result: Result<String, EventError>(value: fullName))
     }
 }
 
-public func fetchEventViewModelsForAccount(accountId: Int, completeBlock: (result: Result<[EventViewModel]>) -> Void) {
+public func fetchEventViewModelsForAccount(accountId: Int, completeBlock: (result: Result<[EventViewModel], EventError>) -> Void) {
     let url = NSURL(string: "\(BASE_URL)/accounts/\(accountId)/events")!
     let request = NSURLRequest(URL: url)
     fetchDataForRequest(request) { (result) -> Void in
         if let error = result.error {
-            completeBlock(result: Result<[EventViewModel]>(error: error))
+            completeBlock(result: Result<[EventViewModel], EventError>(error: error))
             return
         }
         
-        let jsonResult : Result<JSON> = parseJSONFromData(result.value!)
+        let jsonResult : Result<JSON, EventError> = parseJSONFromData(result.value!)
         if let error = result.error {
-            completeBlock(result: Result<[EventViewModel]>(error: EventError.UnderlyingError(error: error)))
+            completeBlock(result: Result<[EventViewModel], EventError>(error: error))
             return
         }
         
         guard let eventsResponse = EventsResponse(json: jsonResult.value!) else {
-            completeBlock(result: Result<[EventViewModel]>(error: EventError.InvalidResponse))
+            completeBlock(result: Result<[EventViewModel], EventError>(error: EventError.InvalidResponse))
             return
         }
         
         let events : [Event] = eventsResponse.events
         let eventViewModels = eventViewModelsForEvents(events)
-        completeBlock(result: Result<[EventViewModel]>(value: eventViewModels))
+        completeBlock(result: Result<[EventViewModel], EventError>(value: eventViewModels))
     }
 }
 
-public func fetchEventDetail(eventId: Int, accountId: Int, completeBlock: (result : Result<Event>) -> Void ) {
+public func fetchEventDetail(eventId: Int, accountId: Int, completeBlock: (result : Result<Event, EventError>) -> Void ) {
     let url = NSURL(string: "\(BASE_URL)/accounts/\(accountId)/events/\(eventId)")!
     let request = NSURLRequest(URL: url)
     fetchDataForRequest(request) { (result) -> Void in
         if let error = result.error {
-            completeBlock(result: Result<Event>(error: error))
+            completeBlock(result: Result<Event, EventError>(error: error))
             return
         }
         
-        let jsonResult : Result<JSON> = parseJSONFromData(result.value!)
+        let jsonResult : Result<JSON, EventError> = parseJSONFromData(result.value!)
         if let error = result.error {
-            completeBlock(result: Result<Event>(error: EventError.UnderlyingError(error: error)))
+            completeBlock(result: Result<Event, EventError>(error: error))
             return
         }
         
         guard let event = Event(json: jsonResult.value!) else {
-            completeBlock(result: Result<Event>(error: EventError.InvalidResponse))
+            completeBlock(result: Result<Event, EventError>(error: EventError.InvalidResponse))
             return
         }
         
-        completeBlock(result: Result<Event>(value: event))
+        completeBlock(result: Result<Event, EventError>(value: event))
     }
 }
 
-public func fetchFullViewModelForViewModel(viewModel: EventViewModel, completeBlock: (result: Result<EventViewModel>) -> Void ) {
+public func fetchFullViewModelForViewModel(viewModel: EventViewModel, completeBlock: (result: Result<EventViewModel, EventError>) -> Void ) {
     if viewModel.isLoaded() { return }
     
     guard let imageUrl = viewModel.model.imageUrl else {
-        completeBlock(result: Result<EventViewModel>(error: EventError.ImageURLMissing))
+        completeBlock(result: Result<EventViewModel, EventError>(error: EventError.ImageURLMissing))
         return
     }
     
     fetchImageAtURL(imageUrl) { (result) -> Void in
         if let error = result.error {
-            completeBlock(result: Result(error: error))
+            completeBlock(result: Result<EventViewModel, EventError>(error: error))
             return
         }
         
         let newViewModel = EventViewModel(title: viewModel.title, imageData: result.value!, model: viewModel.model)
-        completeBlock(result: Result<EventViewModel>(value: newViewModel))
+        completeBlock(result: Result<EventViewModel, EventError>(value: newViewModel))
     }
 }
 
-public func fetchImageAtURL(url: NSURL, completeBlock: (result : Result<NSData>) -> Void ) {
+public func fetchImageAtURL(url: NSURL, completeBlock: (result : Result<NSData, EventError>) -> Void ) {
     let request = NSURLRequest(URL: url)
     fetchDataForRequest(request) { (result) -> Void in
         completeBlock(result: result)
     }
 }
 
-private func parseJSONFromData(data: NSData, opt: NSJSONReadingOptions = []) -> Result<JSON> {
+private func parseJSONFromData(data: NSData, opt: NSJSONReadingOptions = []) -> Result<JSON, EventError> {
     do {
         guard let json = try NSJSONSerialization.JSONObjectWithData(data, options: opt) as? JSON else {
-            return Result<JSON>(error: EventError.InvalidResponse)
+            return Result<JSON, EventError>(error: EventError.InvalidResponse)
         }
-        return Result<JSON>(value: json)
+        return Result<JSON, EventError>(value: json)
     } catch let e as NSError {
-        return Result<JSON>(error: e)
+        return Result<JSON, EventError>(error: EventError.UnderlyingError(error: e))
     }
 }
 
@@ -152,19 +152,19 @@ private func eventViewModelsForEvents(events: [Event]) -> [EventViewModel] {
     })
 }
 
-private func fetchDataForRequest(request: NSURLRequest, completeBlock: (result: Result<NSData>) -> Void) {
+private func fetchDataForRequest(request: NSURLRequest, completeBlock: (result: Result<NSData, EventError>) -> Void) {
     let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data : NSData?, response : NSURLResponse?, error : NSError?) -> Void in
         if let error = error {
-            completeBlock(result: Result<NSData>(error: EventError.UnderlyingError(error: error)))
+            completeBlock(result: Result<NSData, EventError>(error: EventError.UnderlyingError(error: error)))
             return
         }
         
         if let data = data {
-            completeBlock(result: Result<NSData>(value: data))
+            completeBlock(result: Result<NSData, EventError>(value: data))
             return
         }
             
-        completeBlock(result: Result<NSData>(error: EventError.UnknownError))
+        completeBlock(result: Result<NSData, EventError>(error: EventError.UnknownError))
     }
     task.resume()
 }

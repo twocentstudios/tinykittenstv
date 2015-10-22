@@ -57,14 +57,14 @@ class EventsViewController: UICollectionViewController {
         
         if (viewModels == nil) {
             loadTitle(accountId, completeBlock: { [unowned self] (result) -> Void in
-                if let error = result.error as? EventError {
+                if let error = result.error {
                     self.presentError(error)
                 } else {
                     self.title = result.value!
                 }
             })
             loadViewModels(accountId, completeBlock: { [unowned self] (result) -> Void in
-                if let error = result.error as? EventError {
+                if let error = result.error {
                     self.presentError(error)
                 } else {
                     self.viewModels = result.value!
@@ -75,7 +75,7 @@ class EventsViewController: UICollectionViewController {
     }
     
     // MARK: Private aka massive view controller
-    private func loadTitle(accountId: Int, completeBlock: (result: Result<String>) -> Void) {
+    private func loadTitle(accountId: Int, completeBlock: (result: Result<String, EventError>) -> Void) {
         fetchTitleForAccount(accountId) { (result) -> Void in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 completeBlock(result: result)
@@ -83,7 +83,7 @@ class EventsViewController: UICollectionViewController {
         }
     }
     
-    private func loadViewModels(accountId: Int, completeBlock: (result: Result<[EventViewModel]>) -> Void) {
+    private func loadViewModels(accountId: Int, completeBlock: (result: Result<[EventViewModel], EventError>) -> Void) {
         fetchEventViewModelsForAccount(accountId) { (result) -> Void in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 completeBlock(result: result)
@@ -91,7 +91,7 @@ class EventsViewController: UICollectionViewController {
         }
     }
     
-    private func loadEventDetail(eventId: Int, accountId: Int, completeBlock: (result : Result<Event>) -> Void ) {
+    private func loadEventDetail(eventId: Int, accountId: Int, completeBlock: (result : Result<Event, EventError>) -> Void ) {
         fetchEventDetail(eventId, accountId: accountId, completeBlock: { (result) -> Void in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 completeBlock(result: result)
@@ -99,7 +99,7 @@ class EventsViewController: UICollectionViewController {
         })
     }
     
-    private func loadFullViewModelForViewModel(viewModel: EventViewModel, completeBlock: (result: Result<EventViewModel>) -> Void ) {
+    private func loadFullViewModelForViewModel(viewModel: EventViewModel, completeBlock: (result: Result<EventViewModel, EventError>) -> Void ) {
         fetchFullViewModelForViewModel(viewModel) { (result) -> Void in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 completeBlock(result: result)
@@ -121,11 +121,7 @@ class EventsViewController: UICollectionViewController {
         case .InvalidResponse:
             return "The server returned an invalid response."
         case .UnderlyingError(let e):
-            if let nserror = e as? NSError {
-                return nserror.localizedDescription
-            } else {
-                return "An error occurred."
-            }
+            return e.localizedDescription
         default:
             return "An unknown error occurred. Please try again."
         }
@@ -174,7 +170,7 @@ class EventsViewController: UICollectionViewController {
         self.presentViewController(alertView, animated: true) { () -> Void in
             self.loadEventDetail(model.id, accountId: self.accountId, completeBlock: { (result) -> Void in
                 self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                    if let e = result.error as? EventError {
+                    if let e = result.error {
                         self.presentError(e)
                         return
                     }
