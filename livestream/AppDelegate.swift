@@ -17,7 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
-        let viewController = EventsViewController()
+        let accountId = 4175709
+        let viewController = EventsViewController(accountId: accountId)
         let navigationController = UINavigationController(rootViewController: viewController)
         self.window?.rootViewController = navigationController
         

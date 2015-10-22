@@ -15,6 +15,7 @@
 		3443D3511BC48075008AEA28 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3501BC48075008AEA28 /* Event.swift */; };
 		3443D3531BC5DF8B008AEA28 /* ImageTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3521BC5DF8B008AEA28 /* ImageTitleCell.swift */; };
 		3443D3551BC5EE41008AEA28 /* ImageTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3541BC5EE41008AEA28 /* ImageTitleViewModel.swift */; };
+		348735281BD8147E00DCCE4B /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348735271BD8147E00DCCE4B /* Controller.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +40,7 @@
 		3443D3501BC48075008AEA28 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		3443D3521BC5DF8B008AEA28 /* ImageTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTitleCell.swift; sourceTree = "<group>"; };
 		3443D3541BC5EE41008AEA28 /* ImageTitleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTitleViewModel.swift; sourceTree = "<group>"; };
+		348735271BD8147E00DCCE4B /* Controller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
 		385F3B2AF33C90F46F8DC9E0 /* Pods_livestream.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_livestream.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EF74F50C79E1B64292AAEB6 /* Pods-livestream.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-livestream.debug.xcconfig"; path = "Pods/Target Support Files/Pods-livestream/Pods-livestream.debug.xcconfig"; sourceTree = "<group>"; };
 		F301E9E6801FE4A9C7B9A489 /* Pods-livestream.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-livestream.release.xcconfig"; path = "Pods/Target Support Files/Pods-livestream/Pods-livestream.release.xcconfig"; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 				3443D3521BC5DF8B008AEA28 /* ImageTitleCell.swift */,
 				3443D3541BC5EE41008AEA28 /* ImageTitleViewModel.swift */,
 				3443D3501BC48075008AEA28 /* Event.swift */,
+				348735271BD8147E00DCCE4B /* Controller.swift */,
 				3443D3381BC44344008AEA28 /* Assets.xcassets */,
 				3443D33A1BC44344008AEA28 /* Info.plist */,
 			);
@@ -276,6 +279,7 @@
 				3443D3531BC5DF8B008AEA28 /* ImageTitleCell.swift in Sources */,
 				3443D34F1BC47827008AEA28 /* EventsViewController.swift in Sources */,
 				3443D3321BC44344008AEA28 /* AppDelegate.swift in Sources */,
+				348735281BD8147E00DCCE4B /* Controller.swift in Sources */,
 				3443D3551BC5EE41008AEA28 /* ImageTitleViewModel.swift in Sources */,
 				3443D3511BC48075008AEA28 /* Event.swift in Sources */,
 			);

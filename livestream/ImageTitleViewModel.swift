@@ -13,9 +13,13 @@ protocol ImageTitleable {
     var imageData : NSData? { get }
 }
 
-struct EventViewModel : ImageTitleable {
+public struct EventViewModel : ImageTitleable {
     let title : String
     let imageData : NSData?
     
     let model : Event
+    
+    func isLoaded() -> Bool {
+        return imageData != nil
+    }
 }

@@ -9,20 +9,33 @@
 import UIKit
 import AVKit
 
+
+
 class EventsViewController: UICollectionViewController {
     // MARK: Properties    
     private var viewModels : [EventViewModel]?
+    let accountId : Int
     
     // MARK: UIViewController
     
-    override convenience init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    init(accountId: Int) {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .Vertical
         layout.itemSize = CGSize(width: 300, height: 533)
         layout.minimumInteritemSpacing = 10.0
         layout.minimumLineSpacing = 32.0
         layout.sectionInset = UIEdgeInsets(top: 32.0, left: 32.0, bottom: 32.0, right: 32.0)
-        self.init(collectionViewLayout: layout)
+        
+        self.accountId = accountId
+        super.init(collectionViewLayout: layout)
+    }
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        fatalError()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
@@ -43,119 +56,79 @@ class EventsViewController: UICollectionViewController {
         super.viewDidAppear(animated)
         
         if (viewModels == nil) {
-            loadTitle()
-            loadViewModels()
+            loadTitle(accountId, completeBlock: { [unowned self] (result) -> Void in
+                if let error = result.error as? EventError {
+                    self.presentError(error)
+                } else {
+                    self.title = result.value!
+                }
+            })
+            loadViewModels(accountId, completeBlock: { [unowned self] (result) -> Void in
+                if let error = result.error as? EventError {
+                    self.presentError(error)
+                } else {
+                    self.viewModels = result.value!
+                    self.collectionView?.reloadData()
+                }
+            })
         }
     }
     
     // MARK: Private aka massive view controller
-    
-    let accountId = 4175709
-    let baseUrl = "https://api.new.livestream.com"
-    
-    private func loadTitle() {
-        let url = NSURL(string: "\(baseUrl)/accounts/\(accountId)")!
-        let request = NSURLRequest(URL: url)
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data : NSData?, response : NSURLResponse?, error : NSError?) -> Void in
-            if let error = error {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
-                    self.presentViewController(alert, animated: true, completion: nil)
-                })
-                return
-            }
-            
-            guard let data = data else { return }
-            guard let json = try? NSJSONSerialization.JSONObjectWithData(data, options: []) as! NSDictionary else { return }
-            guard let fullName = json["full_name"] as? String else { return }
-            
+    private func loadTitle(accountId: Int, completeBlock: (result: Result<String>) -> Void) {
+        fetchTitleForAccount(accountId) { (result) -> Void in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.title = fullName
+                completeBlock(result: result)
             })
         }
-        task.resume()
     }
     
-    private func loadViewModels() {
-        let url = NSURL(string: "\(baseUrl)/accounts/\(accountId)/events")!
-        let request = NSURLRequest(URL: url)
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data : NSData?, response : NSURLResponse?, error : NSError?) -> Void in
-            if let error = error {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
-                    self.presentViewController(alert, animated: true, completion: nil)
-                })
-                return
-            }
-            
-            guard let data = data else { return }
-            guard let json = try? NSJSONSerialization.JSONObjectWithData(data, options: []) as! NSDictionary else { return }
-            guard let eventDictionaries = json["data"] as? Array<NSDictionary> else { return }
-            let events = eventDictionaries.map({ (e : NSDictionary ) -> Event in
-                return self.parseEventDictionary(e)
-            })
-            
-            let eventViewModels = events.map({ (e : Event) -> EventViewModel in
-                let eventViewModel = EventViewModel(title: e.fullName ?? "No Title", imageData: nil, model: e)
-                return eventViewModel
-            })
-            
+    private func loadViewModels(accountId: Int, completeBlock: (result: Result<[EventViewModel]>) -> Void) {
+        fetchEventViewModelsForAccount(accountId) { (result) -> Void in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.viewModels = eventViewModels
-                
-                self.collectionView?.reloadData()
+                completeBlock(result: result)
             })
         }
-        task.resume()
     }
     
-    private func loadEventDetail(eventId: Int, completeBlock: (event : Event?) -> Void ) {
-        let url = NSURL(string: "\(baseUrl)/accounts/\(accountId)/events/\(eventId)")!
-        let request = NSURLRequest(URL: url)
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data : NSData?, response : NSURLResponse?, error : NSError?) -> Void in
-            if let _ = error {
-                completeBlock(event: nil)
-            }
-            
-            guard let data = data else { return }
-            guard let json = try? NSJSONSerialization.JSONObjectWithData(data, options: []) as! NSDictionary else { return }
-            let event = self.parseEventDictionary(json)
-            
+    private func loadEventDetail(eventId: Int, accountId: Int, completeBlock: (result : Result<Event>) -> Void ) {
+        fetchEventDetail(eventId, accountId: accountId, completeBlock: { (result) -> Void in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                completeBlock(event: event)
+                completeBlock(result: result)
+            })
+        })
+    }
+    
+    private func loadFullViewModelForViewModel(viewModel: EventViewModel, completeBlock: (result: Result<EventViewModel>) -> Void ) {
+        fetchFullViewModelForViewModel(viewModel) { (result) -> Void in
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                completeBlock(result: result)
             })
         }
-        task.resume()
     }
     
-    private func parseEventDictionary(e : NSDictionary) -> Event {
-        let streamUrlString : String? = e["stream_info"]?["secure_m3u8_url"] as? String
-        let streamUrl : NSURL? = (streamUrlString != nil) ? NSURL(string: streamUrlString!) : nil
-        let event = Event(id: e["id"] as! Int, shortName: e["short_name"] as? String, fullName: e["full_name"] as? String, description: e["description"] as? String, isLive: e["in_progress"] as? Bool, imageUrl: NSURL(string: (e["logo"]?["url"])! as! String), streamUrl: streamUrl)
-        return event
+    private func presentError(error: EventError) {
+        let message = errorMessageForEventError(error)
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: { _ -> Void in
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
     }
-    
-    private func conditionallyLoadViewModelPropertiesAtIndex(index : Int) {
-        guard let viewModel = self.viewModels?[index] else { return }
-        if viewModel.imageData != nil { return }
-        guard let imageUrl = viewModel.model.imageUrl else { return }
-        let request = NSURLRequest(URL: imageUrl)
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data : NSData?, response : NSURLResponse?, error : NSError?) -> Void in
-            if error != nil { return }
-            
-            guard let data = data else { return }
-            let newViewModel = EventViewModel(title: viewModel.title, imageData: data, model: viewModel.model)
-            
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.viewModels?[index] = newViewModel
-                
-                self.collectionView?.performBatchUpdates({ () -> Void in
-                    self.collectionView?.reloadItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
-                }, completion: nil)
 
-            })
+    private func errorMessageForEventError(error: EventError) -> String {
+        switch error {
+        case .InvalidResponse:
+            return "The server returned an invalid response."
+        case .UnderlyingError(let e):
+            if let nserror = e as? NSError {
+                return nserror.localizedDescription
+            } else {
+                return "An error occurred."
+            }
+        default:
+            return "An unknown error occurred. Please try again."
         }
-        task.resume()
     }
     
     // MARK: UICollectionViewDataSource
@@ -178,11 +151,19 @@ class EventsViewController: UICollectionViewController {
     override func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         guard let cell = cell as? ImageTitleCell else { fatalError("Expected to display a `ImageTitleCell`.") }
         guard let viewModels = viewModels else { return }
+        let index = indexPath.item
         
-        let viewModel = viewModels[indexPath.row]
+        let viewModel = viewModels[index]
         cell.viewModel = viewModel
         
-        conditionallyLoadViewModelPropertiesAtIndex(indexPath.item)
+        loadFullViewModelForViewModel(viewModel) { (result) -> Void in
+            // Ignore image load errors
+            guard let newViewModel = result.value else { return }
+            self.viewModels?[index] = newViewModel
+            self.collectionView?.performBatchUpdates({ () -> Void in
+                self.collectionView?.reloadItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
+            }, completion: nil)
+        }
     }
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
@@ -191,19 +172,27 @@ class EventsViewController: UICollectionViewController {
         
         let alertView = UIAlertController(title: nil, message: "Loading \(streamName)...", preferredStyle: .Alert)
         self.presentViewController(alertView, animated: true) { () -> Void in
-            self.loadEventDetail(model.id) { (event) -> Void in
+            self.loadEventDetail(model.id, accountId: self.accountId, completeBlock: { (result) -> Void in
                 self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                    guard let event = event else { return }
-                    guard let streamUrl = event.streamUrl else { return }
+                    if let e = result.error as? EventError {
+                        self.presentError(e)
+                        return
+                    }
+
+                    guard let streamUrl = result.value!.streamUrl else {
+                        self.presentError(EventError.StreamURLMissing)
+                        return
+                    }
                     
                     let player = AVPlayer(URL: streamUrl)
                     let playerController = AVPlayerViewController()
                     playerController.player = player
-                    player.play()
                     
-                    self.presentViewController(playerController, animated: true, completion: nil)
+                    self.presentViewController(playerController, animated: true, completion: { () -> Void in
+                        player.play()
+                    })
                 })
-            }
+            })
         }
     }
 }
