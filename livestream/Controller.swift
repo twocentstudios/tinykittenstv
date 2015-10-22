@@ -11,6 +11,8 @@ import Gloss
 
 let BASE_URL = "https://api.new.livestream.com"
 
+// MARK: Public
+
 public func fetchTitleForAccount(accountId: Int, completeBlock: (result: Result<String, EventError>) -> Void) {
     let url = NSURL(string: "\(BASE_URL)/accounts/\(accountId)")!
     let request = NSURLRequest(URL: url)
@@ -110,6 +112,8 @@ public func fetchImageAtURL(url: NSURL, completeBlock: (result : Result<NSData, 
         completeBlock(result: result)
     }
 }
+
+// MARK: Helpers
 
 private func parseJSONFromData(data: NSData, opt: NSJSONReadingOptions = []) -> Result<JSON, EventError> {
     do {
