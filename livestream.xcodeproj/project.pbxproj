@@ -13,7 +13,7 @@
 		3443D3391BC44344008AEA28 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3443D3381BC44344008AEA28 /* Assets.xcassets */; };
 		3443D3441BC44344008AEA28 /* livestreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3431BC44344008AEA28 /* livestreamTests.swift */; };
 		3443D34F1BC47827008AEA28 /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D34E1BC47827008AEA28 /* EventsViewController.swift */; };
-		3443D3511BC48075008AEA28 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3501BC48075008AEA28 /* Event.swift */; };
+		3443D3511BC48075008AEA28 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3501BC48075008AEA28 /* Models.swift */; };
 		3443D3531BC5DF8B008AEA28 /* ImageTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3521BC5DF8B008AEA28 /* ImageTitleCell.swift */; };
 		3443D3551BC5EE41008AEA28 /* ImageTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3541BC5EE41008AEA28 /* ImageTitleViewModel.swift */; };
 		348735281BD8147E00DCCE4B /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348735271BD8147E00DCCE4B /* Controller.swift */; };
@@ -39,7 +39,7 @@
 		3443D3431BC44344008AEA28 /* livestreamTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = livestreamTests.swift; sourceTree = "<group>"; };
 		3443D3451BC44344008AEA28 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3443D34E1BC47827008AEA28 /* EventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
-		3443D3501BC48075008AEA28 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		3443D3501BC48075008AEA28 /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		3443D3521BC5DF8B008AEA28 /* ImageTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTitleCell.swift; sourceTree = "<group>"; };
 		3443D3541BC5EE41008AEA28 /* ImageTitleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTitleViewModel.swift; sourceTree = "<group>"; };
 		348735271BD8147E00DCCE4B /* Controller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
@@ -94,7 +94,7 @@
 				3443D34E1BC47827008AEA28 /* EventsViewController.swift */,
 				3443D3521BC5DF8B008AEA28 /* ImageTitleCell.swift */,
 				3443D3541BC5EE41008AEA28 /* ImageTitleViewModel.swift */,
-				3443D3501BC48075008AEA28 /* Event.swift */,
+				3443D3501BC48075008AEA28 /* Models.swift */,
 				348735271BD8147E00DCCE4B /* Controller.swift */,
 				34263D651BD99B7C00F5063A /* Extensions.swift */,
 				3443D3381BC44344008AEA28 /* Assets.xcassets */,
@@ -284,7 +284,7 @@
 				3443D3321BC44344008AEA28 /* AppDelegate.swift in Sources */,
 				348735281BD8147E00DCCE4B /* Controller.swift in Sources */,
 				3443D3551BC5EE41008AEA28 /* ImageTitleViewModel.swift in Sources */,
-				3443D3511BC48075008AEA28 /* Event.swift in Sources */,
+				3443D3511BC48075008AEA28 /* Models.swift in Sources */,
 				34263D661BD99B7C00F5063A /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
