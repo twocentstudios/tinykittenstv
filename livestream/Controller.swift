@@ -102,7 +102,7 @@ public func fetchFullViewModelForViewModel(viewModel: EventViewModel, completeBl
             return
         }
         
-        let newViewModel = EventViewModel(model: viewModel.model, imageData: nil)
+        let newViewModel = EventViewModel(model: viewModel.model, imageData: result.value!)
         completeBlock(result: Result<EventViewModel, EventError>(value: newViewModel))
     }
 }
