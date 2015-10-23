@@ -72,7 +72,7 @@ class EventsViewController: UICollectionViewController {
                 let oldModels = self.viewModels?.map({ $0.model }) ?? []
                 let newModels = value.map({ $0.model })
                 if (oldModels == newModels) { return }
-                self.viewModels = result.value!
+                self.viewModels = value
                 self.collectionView?.reloadData()
             })
         })
