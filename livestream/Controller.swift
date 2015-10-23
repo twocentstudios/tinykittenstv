@@ -10,12 +10,13 @@ import Foundation
 import Gloss
 
 let BASE_URL = "https://api.new.livestream.com"
+let TIMEOUT_INTERVAL = 5.0
 
 // MARK: Public
 
 public func fetchTitleForAccount(accountId: Int, completeBlock: (result: Result<String, EventError>) -> Void) {
     let url = NSURL(string: "\(BASE_URL)/accounts/\(accountId)")!
-    let request = NSURLRequest(URL: url)
+    let request = NSURLRequest(URL: url, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: TIMEOUT_INTERVAL)
     fetchDataForRequest(request) { (result) -> Void in
         if let error = result.error {
             completeBlock(result: Result<String, EventError>(error: error))
@@ -39,7 +40,7 @@ public func fetchTitleForAccount(accountId: Int, completeBlock: (result: Result<
 
 public func fetchEventViewModelsForAccount(accountId: Int, completeBlock: (result: Result<[EventViewModel], EventError>) -> Void) {
     let url = NSURL(string: "\(BASE_URL)/accounts/\(accountId)/events")!
-    let request = NSURLRequest(URL: url)
+    let request = NSURLRequest(URL: url, cachePolicy: .ReloadIgnoringLocalCacheData, timeoutInterval: TIMEOUT_INTERVAL)
     fetchDataForRequest(request) { (result) -> Void in
         if let error = result.error {
             completeBlock(result: Result<[EventViewModel], EventError>(error: error))
@@ -65,7 +66,7 @@ public func fetchEventViewModelsForAccount(accountId: Int, completeBlock: (resul
 
 public func fetchEventDetail(eventId: Int, accountId: Int, completeBlock: (result : Result<Event, EventError>) -> Void ) {
     let url = NSURL(string: "\(BASE_URL)/accounts/\(accountId)/events/\(eventId)")!
-    let request = NSURLRequest(URL: url)
+    let request = NSURLRequest(URL: url, cachePolicy: .ReloadIgnoringLocalCacheData, timeoutInterval: TIMEOUT_INTERVAL)
     fetchDataForRequest(request) { (result) -> Void in
         if let error = result.error {
             completeBlock(result: Result<Event, EventError>(error: error))
@@ -107,7 +108,7 @@ public func fetchFullViewModelForViewModel(viewModel: EventViewModel, completeBl
 }
 
 public func fetchImageAtURL(url: NSURL, completeBlock: (result : Result<NSData, EventError>) -> Void ) {
-    let request = NSURLRequest(URL: url)
+    let request = NSURLRequest(URL: url, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: TIMEOUT_INTERVAL)
     fetchDataForRequest(request) { (result) -> Void in
         completeBlock(result: result)
     }
