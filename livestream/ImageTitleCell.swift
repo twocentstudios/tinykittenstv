@@ -10,6 +10,7 @@ import UIKit
 
 class ImageTitleCell: UICollectionViewCell {
     private let imageView : UIImageView
+    private let shadowView : UIView
     private let titleLabel : UILabel
     
     var viewModel : ImageTitleable? {
@@ -29,19 +30,25 @@ class ImageTitleCell: UICollectionViewCell {
         imageView.contentMode = .ScaleAspectFill
         imageView.clipsToBounds = true
         imageView.adjustsImageWhenAncestorFocused = true
-
+        imageView.layer.cornerRadius = 4.0
+        
+        shadowView = UIView()
+        shadowView.backgroundColor = UIColor.whiteColor()
+        shadowView.clipsToBounds = false
+        shadowView.layer.shadowColor = UIColor.blackColor().CGColor
+        
         titleLabel = UILabel()
-        titleLabel.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
-        titleLabel.numberOfLines = 0
+        titleLabel.numberOfLines = 3
         titleLabel.textAlignment = .Center
         titleLabel.font = UIFont.boldSystemFontOfSize(32)
         titleLabel.textColor = UIColor.whiteColor()
-        titleLabel.shadowColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
-        titleLabel.shadowOffset = CGSize(width: 0, height: -1)
+        titleLabel.shadowColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
+        titleLabel.shadowOffset = CGSize(width: 0, height: 1)
         titleLabel.highlightedTextColor = UIColor.whiteColor().colorWithAlphaComponent(0.8)
         
         super.init(frame: frame)
 
+        self.contentView.addSubview(shadowView)
         self.contentView.addSubview(imageView)
         self.contentView.addSubview(titleLabel)
     }
@@ -51,16 +58,33 @@ class ImageTitleCell: UICollectionViewCell {
     }
     
     override func layoutSubviews() {
-        let hBottomImageMargin : CGFloat = 16
+        let viewWidth = CGRectGetWidth(self.contentView.bounds)
+        let viewHeight = CGRectGetHeight(self.contentView.bounds)
+        let vBottomImageMargin : CGFloat = 100.0
+        let hMargin : CGFloat = 3.0
+        let vMargin : CGFloat = 4.0
+        let hUnfocusedMargin : CGFloat = 14.0
+        let vFocusedTopMargin : CGFloat = 40.0
+        
+        titleLabel.frame = CGRect(x: 0, y: 0, width: viewWidth - hMargin * 2, height: 0)
+        titleLabel.sizeToFit()
+        titleLabel.frame = CGRect(x: hMargin, y: viewHeight - vBottomImageMargin, width: viewWidth - hMargin * 2, height: CGRectGetHeight(titleLabel.frame))
         
         if (self.focused) {
-            imageView.frame = self.contentView.bounds
+            imageView.frame = CGRect(x: hMargin, y: vFocusedTopMargin, width: viewWidth - hMargin * 2.0, height: viewHeight - vBottomImageMargin - vMargin - vFocusedTopMargin)
+            titleLabel.alpha = 1.0;
+            shadowView.layer.shadowOffset = CGSize(width: 0.0, height: 100.0)
+            shadowView.layer.shadowRadius = 50.0
+            shadowView.layer.shadowOpacity = 0.5
         } else {
-            imageView.frame = CGRectInset(self.contentView.bounds, 0, 24)
+            imageView.frame = CGRect(x: hUnfocusedMargin, y: vBottomImageMargin + vMargin, width: viewWidth - hUnfocusedMargin * 2, height: viewHeight - vBottomImageMargin * 2 - vMargin * 2)
+            titleLabel.alpha = 0.0;
+            shadowView.layer.shadowOffset = CGSize(width: 0.0, height: 8.0)
+            shadowView.layer.shadowRadius = 4.0
+            shadowView.layer.shadowOpacity = 0.2
         }
-        titleLabel.frame = self.contentView.bounds
-        titleLabel.sizeToFit()
-        titleLabel.frame = CGRect(x: 0, y: CGRectGetMaxY(self.bounds) - CGRectGetHeight(titleLabel.frame) - hBottomImageMargin, width: CGRectGetWidth(self.contentView.bounds), height: CGRectGetHeight(titleLabel.frame))
+
+        shadowView.frame = imageView.frame
     }
     
     override func didUpdateFocusInContext(context: UIFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {

@@ -22,10 +22,10 @@ class EventsViewController: UICollectionViewController {
     init(accountId: Int) {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .Vertical
-        layout.itemSize = CGSize(width: 300, height: 533)
-        layout.minimumInteritemSpacing = 10.0
+        layout.itemSize = CGSize(width: 460.0, height: 660.0)
+        layout.minimumInteritemSpacing = 0.0
         layout.minimumLineSpacing = 32.0
-        layout.sectionInset = UIEdgeInsets(top: 32.0, left: 32.0, bottom: 32.0, right: 32.0)
+        layout.sectionInset = UIEdgeInsets(top: 42.0, left: 32.0, bottom: 32.0, right: 32.0)
         
         self.accountId = accountId
         super.init(collectionViewLayout: layout)
