@@ -43,7 +43,11 @@ class EventsViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationItem.titleView = UIImageView(image: UIImage(named: "logo-nav-bar"))
+        
         guard let collectionView = collectionView else { return }
+        collectionView.backgroundView = UIImageView(image: UIImage(named: "LaunchImage"))
 
         collectionView.registerClass(ImageTitleCell.self, forCellWithReuseIdentifier: NSStringFromClass(ImageTitleCell.self))
         collectionView.remembersLastFocusedIndexPath = true
@@ -59,14 +63,6 @@ class EventsViewController: UICollectionViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        if (self.title == nil) {
-            loadTitle(accountId, completeBlock: { (result) -> Void in
-                self.handleResultOrPresentError(result, block: { (value) -> Void in
-                    self.title = value
-                })
-            })
-        }
-        
         loadViewModels(accountId, completeBlock: { (result) -> Void in
             self.handleResultOrPresentError(result, block: { (value) -> Void in
                 let oldModels = self.viewModels?.map({ $0.model }) ?? []
@@ -80,6 +76,7 @@ class EventsViewController: UICollectionViewController {
     
     // MARK: Private
     
+    // unused
     private func loadTitle(accountId: Int, completeBlock: (result: Result<String, EventError>) -> Void) {
         fetchTitleForAccount(accountId) { (result) -> Void in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -104,6 +101,7 @@ class EventsViewController: UICollectionViewController {
         })
     }
     
+    // get image data
     private func loadFullViewModelForViewModel(viewModel: EventViewModel, completeBlock: (result: Result<EventViewModel, EventError>) -> Void ) {
         fetchFullViewModelForViewModel(viewModel) { (result) -> Void in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
