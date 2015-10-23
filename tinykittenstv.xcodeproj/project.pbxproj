@@ -7,19 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		25477E560FF17C9443BEF83A /* Pods_livestream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 385F3B2AF33C90F46F8DC9E0 /* Pods_livestream.framework */; };
 		34263D661BD99B7C00F5063A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34263D651BD99B7C00F5063A /* Extensions.swift */; };
 		34263D681BD9A39100F5063A /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34263D671BD9A39100F5063A /* Result.swift */; };
 		34263D6A1BD9A3BD00F5063A /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34263D691BD9A3BD00F5063A /* Errors.swift */; };
 		34263D6C1BD9A4A400F5063A /* EventViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34263D6B1BD9A4A400F5063A /* EventViewModel.swift */; };
-		3443D3321BC44344008AEA28 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3311BC44344008AEA28 /* AppDelegate.swift */; };
 		3443D3391BC44344008AEA28 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3443D3381BC44344008AEA28 /* Assets.xcassets */; };
 		3443D3441BC44344008AEA28 /* livestreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3431BC44344008AEA28 /* livestreamTests.swift */; };
 		3443D34F1BC47827008AEA28 /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D34E1BC47827008AEA28 /* EventsViewController.swift */; };
 		3443D3511BC48075008AEA28 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3501BC48075008AEA28 /* Models.swift */; };
 		3443D3531BC5DF8B008AEA28 /* ImageTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3521BC5DF8B008AEA28 /* ImageTitleCell.swift */; };
 		3443D3551BC5EE41008AEA28 /* ImageTitleable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3541BC5EE41008AEA28 /* ImageTitleable.swift */; };
+		3445294D1BDACB76003066E9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3445294C1BDACB76003066E9 /* AppDelegate.swift */; };
 		348735281BD8147E00DCCE4B /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348735271BD8147E00DCCE4B /* Controller.swift */; };
+		F8BB8FB345EA4DCF34626362 /* Pods_tinykittenstv.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19702404906B2100355A59F4 /* Pods_tinykittenstv.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,24 +33,27 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		083CFAE44BAE9CEEC116523A /* Pods-tinykittenstv.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tinykittenstv.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tinykittenstv/Pods-tinykittenstv.debug.xcconfig"; sourceTree = "<group>"; };
+		19702404906B2100355A59F4 /* Pods_tinykittenstv.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tinykittenstv.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		34263D651BD99B7C00F5063A /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		34263D671BD9A39100F5063A /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		34263D691BD9A3BD00F5063A /* Errors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		34263D6B1BD9A4A400F5063A /* EventViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventViewModel.swift; sourceTree = "<group>"; };
-		3443D32E1BC44344008AEA28 /* tinykittens.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tinykittens.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3443D3311BC44344008AEA28 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		3443D32E1BC44344008AEA28 /* TinyKittens.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinyKittens.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3443D3381BC44344008AEA28 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3443D33A1BC44344008AEA28 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3443D33F1BC44344008AEA28 /* livestreamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = livestreamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3443D33F1BC44344008AEA28 /* tinykittenstvTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = tinykittenstvTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3443D3431BC44344008AEA28 /* livestreamTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = livestreamTests.swift; sourceTree = "<group>"; };
 		3443D3451BC44344008AEA28 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3443D34E1BC47827008AEA28 /* EventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
 		3443D3501BC48075008AEA28 /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		3443D3521BC5DF8B008AEA28 /* ImageTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTitleCell.swift; sourceTree = "<group>"; };
 		3443D3541BC5EE41008AEA28 /* ImageTitleable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTitleable.swift; sourceTree = "<group>"; };
+		3445294C1BDACB76003066E9 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		348735271BD8147E00DCCE4B /* Controller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
 		385F3B2AF33C90F46F8DC9E0 /* Pods_livestream.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_livestream.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EF74F50C79E1B64292AAEB6 /* Pods-livestream.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-livestream.debug.xcconfig"; path = "Pods/Target Support Files/Pods-livestream/Pods-livestream.debug.xcconfig"; sourceTree = "<group>"; };
+		68D1EE7A89784F61C0D7D76A /* Pods-tinykittenstv.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tinykittenstv.release.xcconfig"; path = "Pods/Target Support Files/Pods-tinykittenstv/Pods-tinykittenstv.release.xcconfig"; sourceTree = "<group>"; };
 		F301E9E6801FE4A9C7B9A489 /* Pods-livestream.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-livestream.release.xcconfig"; path = "Pods/Target Support Files/Pods-livestream/Pods-livestream.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -59,7 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25477E560FF17C9443BEF83A /* Pods_livestream.framework in Frameworks */,
+				F8BB8FB345EA4DCF34626362 /* Pods_tinykittenstv.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,8 +79,8 @@
 		3443D3251BC44344008AEA28 = {
 			isa = PBXGroup;
 			children = (
-				3443D3301BC44344008AEA28 /* livestream */,
-				3443D3421BC44344008AEA28 /* livestreamTests */,
+				3443D3301BC44344008AEA28 /* tinykittenstv */,
+				3443D3421BC44344008AEA28 /* tinykittenstvTests */,
 				3443D32F1BC44344008AEA28 /* Products */,
 				6356180BED6B5D39C28DC834 /* Pods */,
 				3C78CE984DD6DD25C6E4C395 /* Frameworks */,
@@ -87,16 +90,16 @@
 		3443D32F1BC44344008AEA28 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3443D32E1BC44344008AEA28 /* tinykittens.app */,
-				3443D33F1BC44344008AEA28 /* livestreamTests.xctest */,
+				3443D32E1BC44344008AEA28 /* TinyKittens.app */,
+				3443D33F1BC44344008AEA28 /* tinykittenstvTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3443D3301BC44344008AEA28 /* livestream */ = {
+		3443D3301BC44344008AEA28 /* tinykittenstv */ = {
 			isa = PBXGroup;
 			children = (
-				3443D3311BC44344008AEA28 /* AppDelegate.swift */,
+				3445294C1BDACB76003066E9 /* AppDelegate.swift */,
 				3443D34E1BC47827008AEA28 /* EventsViewController.swift */,
 				3443D3521BC5DF8B008AEA28 /* ImageTitleCell.swift */,
 				3443D3541BC5EE41008AEA28 /* ImageTitleable.swift */,
@@ -109,22 +112,23 @@
 				3443D3381BC44344008AEA28 /* Assets.xcassets */,
 				3443D33A1BC44344008AEA28 /* Info.plist */,
 			);
-			path = livestream;
+			path = tinykittenstv;
 			sourceTree = "<group>";
 		};
-		3443D3421BC44344008AEA28 /* livestreamTests */ = {
+		3443D3421BC44344008AEA28 /* tinykittenstvTests */ = {
 			isa = PBXGroup;
 			children = (
 				3443D3431BC44344008AEA28 /* livestreamTests.swift */,
 				3443D3451BC44344008AEA28 /* Info.plist */,
 			);
-			path = livestreamTests;
+			path = tinykittenstvTests;
 			sourceTree = "<group>";
 		};
 		3C78CE984DD6DD25C6E4C395 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				385F3B2AF33C90F46F8DC9E0 /* Pods_livestream.framework */,
+				19702404906B2100355A59F4 /* Pods_tinykittenstv.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -134,6 +138,8 @@
 			children = (
 				4EF74F50C79E1B64292AAEB6 /* Pods-livestream.debug.xcconfig */,
 				F301E9E6801FE4A9C7B9A489 /* Pods-livestream.release.xcconfig */,
+				083CFAE44BAE9CEEC116523A /* Pods-tinykittenstv.debug.xcconfig */,
+				68D1EE7A89784F61C0D7D76A /* Pods-tinykittenstv.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -141,9 +147,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3443D32D1BC44344008AEA28 /* livestream */ = {
+		3443D32D1BC44344008AEA28 /* tinykittenstv */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3443D3481BC44344008AEA28 /* Build configuration list for PBXNativeTarget "livestream" */;
+			buildConfigurationList = 3443D3481BC44344008AEA28 /* Build configuration list for PBXNativeTarget "tinykittenstv" */;
 			buildPhases = (
 				4E52AB0ED5F8EB7D0DBC2914 /* Check Pods Manifest.lock */,
 				3443D32A1BC44344008AEA28 /* Sources */,
@@ -156,14 +162,14 @@
 			);
 			dependencies = (
 			);
-			name = livestream;
+			name = tinykittenstv;
 			productName = livestream;
-			productReference = 3443D32E1BC44344008AEA28 /* tinykittens.app */;
+			productReference = 3443D32E1BC44344008AEA28 /* TinyKittens.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3443D33E1BC44344008AEA28 /* livestreamTests */ = {
+		3443D33E1BC44344008AEA28 /* tinykittenstvTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3443D34B1BC44344008AEA28 /* Build configuration list for PBXNativeTarget "livestreamTests" */;
+			buildConfigurationList = 3443D34B1BC44344008AEA28 /* Build configuration list for PBXNativeTarget "tinykittenstvTests" */;
 			buildPhases = (
 				3443D33B1BC44344008AEA28 /* Sources */,
 				3443D33C1BC44344008AEA28 /* Frameworks */,
@@ -174,9 +180,9 @@
 			dependencies = (
 				3443D3411BC44344008AEA28 /* PBXTargetDependency */,
 			);
-			name = livestreamTests;
+			name = tinykittenstvTests;
 			productName = livestreamTests;
-			productReference = 3443D33F1BC44344008AEA28 /* livestreamTests.xctest */;
+			productReference = 3443D33F1BC44344008AEA28 /* tinykittenstvTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -198,7 +204,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 3443D3291BC44344008AEA28 /* Build configuration list for PBXProject "livestream" */;
+			buildConfigurationList = 3443D3291BC44344008AEA28 /* Build configuration list for PBXProject "tinykittenstv" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -211,8 +217,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3443D32D1BC44344008AEA28 /* livestream */,
-				3443D33E1BC44344008AEA28 /* livestreamTests */,
+				3443D32D1BC44344008AEA28 /* tinykittenstv */,
+				3443D33E1BC44344008AEA28 /* tinykittenstvTests */,
 			);
 		};
 /* End PBXProject section */
@@ -263,7 +269,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-livestream/Pods-livestream-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-tinykittenstv/Pods-tinykittenstv-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C8A89800D5C5AB56D8BB7694 /* Copy Pods Resources */ = {
@@ -278,7 +284,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-livestream/Pods-livestream-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-tinykittenstv/Pods-tinykittenstv-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -290,13 +296,13 @@
 			files = (
 				3443D3531BC5DF8B008AEA28 /* ImageTitleCell.swift in Sources */,
 				3443D34F1BC47827008AEA28 /* EventsViewController.swift in Sources */,
-				3443D3321BC44344008AEA28 /* AppDelegate.swift in Sources */,
 				34263D6C1BD9A4A400F5063A /* EventViewModel.swift in Sources */,
 				348735281BD8147E00DCCE4B /* Controller.swift in Sources */,
 				3443D3551BC5EE41008AEA28 /* ImageTitleable.swift in Sources */,
 				3443D3511BC48075008AEA28 /* Models.swift in Sources */,
 				34263D681BD9A39100F5063A /* Result.swift in Sources */,
 				34263D6A1BD9A3BD00F5063A /* Errors.swift in Sources */,
+				3445294D1BDACB76003066E9 /* AppDelegate.swift in Sources */,
 				34263D661BD99B7C00F5063A /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -314,7 +320,7 @@
 /* Begin PBXTargetDependency section */
 		3443D3411BC44344008AEA28 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3443D32D1BC44344008AEA28 /* livestream */;
+			target = 3443D32D1BC44344008AEA28 /* tinykittenstv */;
 			targetProxy = 3443D3401BC44344008AEA28 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -403,27 +409,27 @@
 		};
 		3443D3491BC44344008AEA28 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4EF74F50C79E1B64292AAEB6 /* Pods-livestream.debug.xcconfig */;
+			baseConfigurationReference = 083CFAE44BAE9CEEC116523A /* Pods-tinykittenstv.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				INFOPLIST_FILE = livestream/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/tinykittenstv/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = twocentstudios.livestream;
-				PRODUCT_NAME = tinykittens;
+				PRODUCT_BUNDLE_IDENTIFIER = twocentstudios.tinykittenstv;
+				PRODUCT_NAME = TinyKittens;
 			};
 			name = Debug;
 		};
 		3443D34A1BC44344008AEA28 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F301E9E6801FE4A9C7B9A489 /* Pods-livestream.release.xcconfig */;
+			baseConfigurationReference = 68D1EE7A89784F61C0D7D76A /* Pods-tinykittenstv.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				INFOPLIST_FILE = livestream/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/tinykittenstv/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = twocentstudios.livestream;
-				PRODUCT_NAME = tinykittens;
+				PRODUCT_BUNDLE_IDENTIFIER = twocentstudios.tinykittenstv;
+				PRODUCT_NAME = TinyKittens;
 			};
 			name = Release;
 		};
@@ -434,8 +440,8 @@
 				INFOPLIST_FILE = livestreamTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = twocentstudios.livestreamTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/livestream.app/livestream";
+				PRODUCT_NAME = tinykittenstvTests;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/tinykittenstv.app/tinykittenstv";
 			};
 			name = Debug;
 		};
@@ -446,15 +452,15 @@
 				INFOPLIST_FILE = livestreamTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = twocentstudios.livestreamTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/livestream.app/livestream";
+				PRODUCT_NAME = tinykittenstvTests;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/tinykittenstv.app/tinykittenstv";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3443D3291BC44344008AEA28 /* Build configuration list for PBXProject "livestream" */ = {
+		3443D3291BC44344008AEA28 /* Build configuration list for PBXProject "tinykittenstv" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3443D3461BC44344008AEA28 /* Debug */,
@@ -463,7 +469,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3443D3481BC44344008AEA28 /* Build configuration list for PBXNativeTarget "livestream" */ = {
+		3443D3481BC44344008AEA28 /* Build configuration list for PBXNativeTarget "tinykittenstv" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3443D3491BC44344008AEA28 /* Debug */,
@@ -472,7 +478,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3443D34B1BC44344008AEA28 /* Build configuration list for PBXNativeTarget "livestreamTests" */ = {
+		3443D34B1BC44344008AEA28 /* Build configuration list for PBXNativeTarget "tinykittenstvTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3443D34C1BC44344008AEA28 /* Debug */,

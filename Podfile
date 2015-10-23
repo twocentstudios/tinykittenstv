@@ -5,6 +5,6 @@ use_frameworks!
 
 plugin 'cocoapods-expert-difficulty'
 
-target 'livestream' do
+target 'tinykittenstv' do
   pod 'Gloss', '~> 0.5.3'
 end
