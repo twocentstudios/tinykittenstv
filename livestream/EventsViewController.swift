@@ -60,14 +60,14 @@ class EventsViewController: UICollectionViewController {
         super.viewDidAppear(animated)
         
         if (self.title == nil) {
-            loadTitle(accountId, completeBlock: { [unowned self] (result) -> Void in
+            loadTitle(accountId, completeBlock: { (result) -> Void in
                 self.handleResultOrPresentError(result, block: { (value) -> Void in
                     self.title = value
                 })
             })
         }
         
-        loadViewModels(accountId, completeBlock: { [unowned self] (result) -> Void in
+        loadViewModels(accountId, completeBlock: { (result) -> Void in
             self.handleResultOrPresentError(result, block: { (value) -> Void in
                 let oldModels = self.viewModels?.map({ $0.model }) ?? []
                 let newModels = value.map({ $0.model })
