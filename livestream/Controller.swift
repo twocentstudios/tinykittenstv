@@ -23,7 +23,7 @@ public func fetchTitleForAccount(accountId: Int, completeBlock: (result: Result<
         }
         
         let jsonResult : Result<JSON, EventError> = parseJSONFromData(result.value!)
-        if let error = result.error {
+        if let error = jsonResult.error {
             completeBlock(result: Result<String, EventError>(error: error))
             return
         }
@@ -47,7 +47,7 @@ public func fetchEventViewModelsForAccount(accountId: Int, completeBlock: (resul
         }
         
         let jsonResult : Result<JSON, EventError> = parseJSONFromData(result.value!)
-        if let error = result.error {
+        if let error = jsonResult.error {
             completeBlock(result: Result<[EventViewModel], EventError>(error: error))
             return
         }
@@ -73,7 +73,7 @@ public func fetchEventDetail(eventId: Int, accountId: Int, completeBlock: (resul
         }
         
         let jsonResult : Result<JSON, EventError> = parseJSONFromData(result.value!)
-        if let error = result.error {
+        if let error = jsonResult.error {
             completeBlock(result: Result<Event, EventError>(error: error))
             return
         }
