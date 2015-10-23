@@ -417,7 +417,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "$(SRCROOT)/tinykittenstv/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = twocentstudios.tinykittenstv;
+				PRODUCT_BUNDLE_IDENTIFIER = com.twocentstudios.tinykittens;
 				PRODUCT_NAME = TinyKittens;
 			};
 			name = Debug;
@@ -428,11 +428,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Christopher Trott (YK25EF78NT)";
 				INFOPLIST_FILE = "$(SRCROOT)/tinykittenstv/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = twocentstudios.tinykittenstv;
+				PRODUCT_BUNDLE_IDENTIFIER = com.twocentstudios.tinykittens;
 				PRODUCT_NAME = TinyKittens;
+				PROVISIONING_PROFILE = "a524232e-d06b-40ca-ad2a-792a062e50dd";
 			};
 			name = Release;
 		};
