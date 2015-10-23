@@ -10,7 +10,7 @@ import UIKit
 
 class ImageTitleCell: UICollectionViewCell {
     private let imageView : UIImageView
-    private let shadowView : UIView
+    private let shadowView : UIImageView
     private let titleLabel : UILabel
     
     var viewModel : ImageTitleable? {
@@ -32,7 +32,9 @@ class ImageTitleCell: UICollectionViewCell {
         imageView.adjustsImageWhenAncestorFocused = true
         imageView.layer.cornerRadius = 4.0
         
-        shadowView = UIView()
+        shadowView = UIImageView(image: UIImage(named: "placeholder-image")?.imageWithRenderingMode(.AlwaysTemplate))
+        shadowView.contentMode = .ScaleAspectFit
+        shadowView.tintColor = UIColor.grayColor().colorWithAlphaComponent(0.8)
         shadowView.backgroundColor = UIColor.whiteColor()
         shadowView.clipsToBounds = false
         shadowView.layer.shadowColor = UIColor.blackColor().CGColor

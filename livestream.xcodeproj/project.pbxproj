@@ -37,7 +37,7 @@
 		34263D671BD9A39100F5063A /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		34263D691BD9A3BD00F5063A /* Errors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		34263D6B1BD9A4A400F5063A /* EventViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventViewModel.swift; sourceTree = "<group>"; };
-		3443D32E1BC44344008AEA28 /* livestream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = livestream.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3443D32E1BC44344008AEA28 /* tinykittens.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tinykittens.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3443D3311BC44344008AEA28 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3443D3381BC44344008AEA28 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3443D33A1BC44344008AEA28 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -87,7 +87,7 @@
 		3443D32F1BC44344008AEA28 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3443D32E1BC44344008AEA28 /* livestream.app */,
+				3443D32E1BC44344008AEA28 /* tinykittens.app */,
 				3443D33F1BC44344008AEA28 /* livestreamTests.xctest */,
 			);
 			name = Products;
@@ -158,7 +158,7 @@
 			);
 			name = livestream;
 			productName = livestream;
-			productReference = 3443D32E1BC44344008AEA28 /* livestream.app */;
+			productReference = 3443D32E1BC44344008AEA28 /* tinykittens.app */;
 			productType = "com.apple.product-type.application";
 		};
 		3443D33E1BC44344008AEA28 /* livestreamTests */ = {
@@ -410,7 +410,7 @@
 				INFOPLIST_FILE = livestream/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = twocentstudios.livestream;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = tinykittens;
 			};
 			name = Debug;
 		};
@@ -423,7 +423,7 @@
 				INFOPLIST_FILE = livestream/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = twocentstudios.livestream;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = tinykittens;
 			};
 			name = Release;
 		};
