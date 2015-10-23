@@ -40,10 +40,10 @@ class ImageTitleCell: UICollectionViewCell {
         titleLabel = UILabel()
         titleLabel.numberOfLines = 3
         titleLabel.textAlignment = .Center
-        titleLabel.font = UIFont.boldSystemFontOfSize(32)
+        titleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
         titleLabel.textColor = UIColor.whiteColor()
         titleLabel.shadowColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
-        titleLabel.shadowOffset = CGSize(width: 0, height: 1)
+        titleLabel.shadowOffset = CGSize(width: 0.0, height: 1.0)
         titleLabel.highlightedTextColor = UIColor.whiteColor().colorWithAlphaComponent(0.8)
         
         super.init(frame: frame)
@@ -66,9 +66,9 @@ class ImageTitleCell: UICollectionViewCell {
         let hUnfocusedMargin : CGFloat = 14.0
         let vFocusedTopMargin : CGFloat = 40.0
         
-        titleLabel.frame = CGRect(x: 0, y: 0, width: viewWidth - hMargin * 2, height: 0)
+        titleLabel.frame = CGRect(x: 0.0, y: 0.0, width: viewWidth - hMargin * 2.0, height: 0.0)
         titleLabel.sizeToFit()
-        titleLabel.frame = CGRect(x: hMargin, y: viewHeight - vBottomImageMargin, width: viewWidth - hMargin * 2, height: CGRectGetHeight(titleLabel.frame))
+        titleLabel.frame = CGRect(x: hMargin, y: viewHeight - vBottomImageMargin, width: viewWidth - hMargin * 2.0, height: CGRectGetHeight(titleLabel.frame))
         
         if (self.focused) {
             imageView.frame = CGRect(x: hMargin, y: vFocusedTopMargin, width: viewWidth - hMargin * 2.0, height: viewHeight - vBottomImageMargin - vMargin - vFocusedTopMargin)
