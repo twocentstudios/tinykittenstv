@@ -14,8 +14,9 @@ See [tinykittens.com](http://tinykittens.com) for more info about the TinyKitten
 
 ## Getting started
 
-1. Clone the repo. `$ git clone git://github.com/twocentstudios/tinykittenstv.git`
-1. Install the pods. `$ pod install`
+1. Clone the repo. `$ git clone git://github.com/twocentstudios/tinykittenstv.git`.
+1. Install the gems. `$ bundle install` (n.b. `cocoapods-expert-difficulty` may not be necessary after the tvOS beta period).
+1. Install the pods. `$ pod install`.
 1. Open `tinykittenstv.xcworkspace`.
 1. Build!
 1. Optional: Change `accountId` in `AppDelegate.swift` to the account id of your favorite Livestream account.
@@ -23,6 +24,8 @@ See [tinykittens.com](http://tinykittens.com) for more info about the TinyKitten
 ## Technologies
 
 TinyKittens TV was written during the tvOS beta period. It is written in Swift, uses CocoaPods, and has the Gloss JSON library as a dependency.
+
+On a personal note, it was my first Swift app of consequence (I did a few experiments with protocols, view models, and using my own simple Result type). I intentionally used very few dependencies to get a feel for Swift on its own. I wanted to learn about the focus system and the general modifications made to UIKit for tvOS.
 
 ## License
 
