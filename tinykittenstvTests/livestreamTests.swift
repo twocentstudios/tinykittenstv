@@ -1,15 +1,12 @@
 //
-//  livestreamTests.swift
-//  livestreamTests
-//
 //  Created by Christopher Trott on 10/6/15.
 //  Copyright © 2015 twocentstudios. All rights reserved.
 //
 
 import XCTest
-@testable import livestream
+@testable import TinyKittens
 
-class livestreamTests: XCTestCase {
+class tinykittensTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
