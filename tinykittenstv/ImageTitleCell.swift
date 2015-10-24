@@ -1,7 +1,4 @@
 //
-//  ImageTitleCell.swift
-//  livestream
-//
 //  Created by Christopher Trott on 10/7/15.
 //  Copyright © 2015 twocentstudios. All rights reserved.
 //
