@@ -17,7 +17,7 @@ public enum EventError : ErrorType {
         case .InvalidResponse:
             return "The server returned an invalid response.".l10()
         case .StreamURLMissing:
-            return "The stream's URL could not be found.".l10()
+            return "This stream is currently offline. Please try again later.".l10()
         case .ImageURLMissing:
             return "The stream's image URL could not be found.".l10()
         case .UnderlyingError(let e):
