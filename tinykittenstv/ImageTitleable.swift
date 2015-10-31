@@ -4,15 +4,36 @@
 //
 
 import Foundation
+import AVFoundation
 
-protocol ImageTitleable {
-    var title : String { get }
-    var imageData : NSData? { get }
+protocol Titleable {
+    var title: String { get }
 }
 
-extension ImageTitleable {
+protocol Descriptable {
+    var description: String { get }
+}
+
+protocol Imageable {
+    var imageData: NSData? { get }
+}
+
+protocol Playable {
+    var streamUrl: NSURL? { get }
+}
+
+extension Imageable {
     func isLoaded() -> Bool {
         return imageData != nil
     }
 }
 
+// TODO: how will this func name alias with Imageable
+extension Playable {
+    func isLoaded() -> Bool {
+        return streamUrl != nil
+    }
+}
+
+// Legacy
+protocol ImageTitleable : Imageable, Titleable { }
