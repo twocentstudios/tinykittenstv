@@ -10,8 +10,10 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
     // MARK: Properties
     
     private var viewModels: [EventViewModel]?
+    private var focusedIndexPath: NSIndexPath?
     let accountId: Int
     
+    private var backgroundView: UIImageView!
     private var tableView: UITableView!
     private var previewImageView: UIImageView!
     private var descriptionLabel: UILabel!
@@ -31,10 +33,6 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func loadView() {
-        self.view = UIImageView(image: UIImage(named: "LaunchImage"))
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -42,7 +40,12 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
         
         guard let view = self.view else { return }
         
+//        self.backgroundView = UIImageView(image: UIImage(named: "LaunchImage"))
+//        view.addSubview(self.backgroundView)
+        
         self.tableView = UITableView(frame: CGRectZero, style: .Plain)
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell.self))
         self.tableView.remembersLastFocusedIndexPath = true
         view.addSubview(self.tableView)
@@ -56,10 +59,12 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
         view.addSubview(self.descriptionLabel)
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
         // TODO: align tableview right, align image above description on the left
+        self.backgroundView?.frame = self.view.bounds
+        self.tableView?.frame = self.view.bounds
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -94,9 +99,17 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
         })
     }
     
+    private func loadStreamUrlForViewModel(viewModel: EventViewModel, completeBlock: (result: Result<EventViewModel, EventError>) -> Void ) {
+        fetchStreamUrlForViewModel(viewModel, completeBlock: { (result) -> Void in
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                completeBlock(result: result)
+            })
+        })
+    }
+    
     // get image data
-    private func loadFullViewModelForViewModel(viewModel: EventViewModel, completeBlock: (result: Result<EventViewModel, EventError>) -> Void ) {
-        fetchFullViewModelForViewModel(viewModel) { (result) -> Void in
+    private func loadImageDataForViewModel(viewModel: EventViewModel, completeBlock: (result: Result<EventViewModel, EventError>) -> Void ) {
+        fetchImageDataForViewModel(viewModel) { (result) -> Void in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 completeBlock(result: result)
             })
@@ -121,6 +134,52 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
+    private func presentFullScreenPlayerWithPlayer(player: AVPlayer) {
+        let playerController = AVPlayerViewController()
+        playerController.player = player
+        
+        self.presentViewController(playerController, animated: true, completion: { () -> Void in
+            player.play()
+        })
+    }
+    
+    private func presentFullScreenPlayerWithUrl(url: NSURL) {
+        let player = AVPlayer(URL: url)
+        let playerController = AVPlayerViewController()
+        playerController.player = player
+        
+        self.presentViewController(playerController, animated: true, completion: { () -> Void in
+            player.play()
+        })
+    }
+    
+    private func loadImageAndStreamForFocusedIndexPath(focusedIndexPath: NSIndexPath) {
+        guard let focusedViewModel: EventViewModel = self.viewModels?[focusedIndexPath.row] else { return }
+        loadImageDataForViewModel(focusedViewModel) { [unowned self] (result) -> Void in
+            if let imageableViewModel = result.value {
+                if focusedViewModel != imageableViewModel {
+                    self.viewModels?[focusedIndexPath.row] = imageableViewModel
+                    self.updateDetailViewsForFocusedIndexPath()
+                }
+            }
+            
+            let maybeViewModel = result.value ?? focusedViewModel
+            
+            self.loadStreamUrlForViewModel(maybeViewModel, completeBlock: { [unowned self] (result) -> Void in
+                if let playableViewModel = result.value {
+                    if playableViewModel != maybeViewModel {
+                        self.viewModels?[focusedIndexPath.row] = playableViewModel
+                        self.updateDetailViewsForFocusedIndexPath()
+                    }
+                }
+            })
+        }
+    }
+    
+    private func updateDetailViewsForFocusedIndexPath() {
+        print("updated \(self.focusedIndexPath)")
+    }
+    
     // MARK: UITableViewDataSource
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -140,16 +199,6 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
         
         let viewModel = viewModels[index]
         cell.textLabel?.text = viewModel.title
-        
-        // TODO: move this to the update focus callback
-        loadFullViewModelForViewModel(viewModel) { (result) -> Void in
-            if let error = result.error { print(error) }
-            guard let newViewModel = result.value else { return }
-            self.viewModels?[index] = newViewModel
-            self.tableView?.beginUpdates()
-            self.tableView?.reloadRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: .Automatic)
-            self.tableView?.endUpdates()
-        }
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -172,16 +221,14 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
                         return
                     }
                     
-                    let player = AVPlayer(URL: streamUrl)
-                    let playerController = AVPlayerViewController()
-                    playerController.player = player
-                    
-                    self.presentViewController(playerController, animated: true, completion: { () -> Void in
-                        player.play()
-                    })
+                    self.presentFullScreenPlayerWithUrl(streamUrl)
                 })
             })
         }
+    }
+    
+    func tableView(tableView: UITableView, canFocusRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
     }
 
     func tableView(tableView: UITableView, shouldUpdateFocusInContext context: UITableViewFocusUpdateContext) -> Bool {
@@ -189,10 +236,24 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(tableView: UITableView, didUpdateFocusInContext context: UITableViewFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
-        // TODO:
-        // * fetch event cover image
-        // * fetch additional event data
-        // * fetch live event image data
+        self.focusedIndexPath = context.nextFocusedIndexPath
+        guard let indexPath = context.nextFocusedIndexPath else { return }
+        self.loadImageAndStreamForFocusedIndexPath(indexPath)
+        self.updateDetailViewsForFocusedIndexPath()
+    }
+
+    override var preferredFocusedView: UIView? {
+        get {
+            return self.tableView
+        }
+    }
+    
+    override func shouldUpdateFocusInContext(context: UIFocusUpdateContext) -> Bool {
+        return true
+    }
+    
+    override func didUpdateFocusInContext(context: UIFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
+        
     }
 
 }

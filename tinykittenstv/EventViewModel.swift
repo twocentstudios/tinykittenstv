@@ -23,3 +23,12 @@ public struct EventViewModel: Imageable, Titleable, Descriptable, Playable {
         self.streamUrl = model.streamUrl
     }
 }
+
+extension EventViewModel: Equatable {}
+public func ==(lhs: EventViewModel, rhs: EventViewModel) -> Bool {
+    
+    return
+        lhs.imageData == rhs.imageData &&
+        lhs.streamUrl == rhs.streamUrl &&
+        lhs.model == rhs.model;
+}
