@@ -64,6 +64,11 @@ public func ==(lhs: Event, rhs: Event) -> Bool {
     return lhs.id == rhs.id && lhs.isDetailLoaded == rhs.isDetailLoaded
 }
 
+extension Event: Identifiable {}
+public func =~=(lhs: Event, rhs: Event) -> Bool {
+    return lhs.id == rhs.id
+}
+
 public struct EventsResponse: Decodable {
     let events : [Event]
     

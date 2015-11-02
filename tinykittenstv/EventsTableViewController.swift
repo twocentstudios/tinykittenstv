@@ -68,7 +68,6 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
         let vPreviewHeight: CGFloat = vTableHeight
         let hPreviewWidth: CGFloat = hTableWidth
         
-        // TODO: align tableview right, align image above description on the left
         self.backgroundView?.frame = self.view.bounds
         self.eventPreviewView?.frame = CGRect(x: hMargin, y: vMargin + vTopLayoutGuide, width: hPreviewWidth, height: vPreviewHeight)
         self.tableView?.frame = CGRect(x: hMargin + hPreviewWidth + hInterMargin, y: vMargin + vTopLayoutGuide, width: hTableWidth, height:vTableHeight)
@@ -81,9 +80,15 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
             self.handleResultOrPresentError(result, block: { (value) -> Void in
                 let oldModels = self.viewModels?.map({ $0.model }) ?? []
                 let newModels = value.map({ $0.model })
-                if (oldModels == newModels) { return }
+                if (oldModels =~= newModels) { return }
                 self.viewModels = value
                 self.tableView?.reloadData()
+                
+                for viewModel in value {
+                    guard let index = value.indexOf(viewModel) else { return }
+                    let indexPath = NSIndexPath(forRow: index, inSection: 0)
+                    self.loadImageAndStreamForIndexPath(indexPath)
+                }
             })
         })
     }
@@ -160,14 +165,12 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
         })
     }
     
-    private func loadImageAndStreamForFocusedIndexPath(focusedIndexPath: NSIndexPath) {
+    private func loadImageAndStreamForIndexPath(focusedIndexPath: NSIndexPath) {
         guard let focusedViewModel: EventViewModel = self.viewModels?[focusedIndexPath.row] else { return }
         loadImageDataForViewModel(focusedViewModel) { [unowned self] (result) -> Void in
             if let imageableViewModel = result.value {
                 if focusedViewModel != imageableViewModel {
                     self.viewModels?[focusedIndexPath.row] = imageableViewModel
-                    self.updateDetailViewsForFocusedIndexPath()
-                    self.tableView.reloadRowsAtIndexPaths([focusedIndexPath], withRowAnimation: .Fade)
                 }
             }
             
@@ -178,17 +181,16 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
                     if playableViewModel != maybeViewModel {
                         self.viewModels?[focusedIndexPath.row] = playableViewModel
                         self.updateDetailViewsForFocusedIndexPath()
-                        self.tableView.reloadRowsAtIndexPaths([focusedIndexPath], withRowAnimation: .Fade)
                     }
                 }
+                self.tableView.reloadRowsAtIndexPaths([focusedIndexPath], withRowAnimation: .Fade)
             })
         }
     }
     
     private func updateDetailViewsForFocusedIndexPath() {
-        guard let index = self.focusedIndexPath?.row else { return }
-        let viewModel = self.viewModels?[index]
-        // if self.eventPreviewView.viewModel == viewModel { return }
+        let index = self.focusedIndexPath?.row
+        let viewModel = (index != nil) ? self.viewModels?[index!] : nil
         self.eventPreviewView.viewModel = viewModel
     }
     
@@ -220,14 +222,18 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        // TODO: Make two code paths - one for stream already loaded, one to fetch stream
-        guard let model = self.viewModels?[indexPath.row].model else { return }
-        let streamName = model.fullName ?? "stream"
-        let title = String.localizedStringWithFormat("Loading %@...", streamName)
+        guard let viewModel: EventViewModel = self.viewModels?[indexPath.row] else { return }
+        
+        if let streamUrl = viewModel.streamUrl {
+            self.presentFullScreenPlayerWithUrl(streamUrl)
+            return
+        }
+        
+        let title = String.localizedStringWithFormat("Loading %@...", viewModel.title)
         
         let alertView = UIAlertController(title: title, message: nil, preferredStyle: .Alert)
         self.presentViewController(alertView, animated: true) { () -> Void in
-            self.loadEventDetail(model.id, accountId: self.accountId, completeBlock: { (result) -> Void in
+            self.loadDetailForViewModel(viewModel, completeBlock: { (result) -> Void in
                 self.dismissViewControllerAnimated(true, completion: { () -> Void in
                     if let e = result.error {
                         self.presentError(e)
@@ -256,8 +262,6 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(tableView: UITableView, didUpdateFocusInContext context: UITableViewFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
         if self.focusedIndexPath == context.nextFocusedIndexPath { return }
         self.focusedIndexPath = context.nextFocusedIndexPath
-        guard let indexPath = context.nextFocusedIndexPath else { return }
-        self.loadImageAndStreamForFocusedIndexPath(indexPath)
         self.updateDetailViewsForFocusedIndexPath()
     }
 
