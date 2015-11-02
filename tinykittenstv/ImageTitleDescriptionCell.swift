@@ -7,6 +7,19 @@ import UIKit
 
 class ImageTitleDescriptionCell: UITableViewCell {
 
+    var viewModel: protocol<Imageable, Titleable, Subtitleable>? {
+        didSet {
+            textLabel?.text = viewModel?.title
+            if let imageData = viewModel?.imageData {
+                imageView?.image = UIImage(data: imageData)
+            } else {
+                imageView?.image = nil
+            }
+            detailTextLabel?.text = viewModel?.subtitle
+            self.setNeedsLayout()
+        }
+    }
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .Subtitle, reuseIdentifier: NSStringFromClass(ImageTitleDescriptionCell.self))
     }

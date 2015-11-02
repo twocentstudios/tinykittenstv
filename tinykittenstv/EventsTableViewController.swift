@@ -208,17 +208,9 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
     // MARK: UITableViewDelegate
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        guard let viewModels = viewModels else { return }
-        let index = indexPath.item
-        
-        let viewModel = viewModels[index]
-        cell.textLabel?.text = viewModel.title
-        if let imageData = viewModel.imageData {
-            cell.imageView?.image = UIImage(data: imageData)
-        } else {
-            cell.imageView?.image = UIImage(named: "placeholder-image")
-        }
-        cell.detailTextLabel?.text = viewModel.subtitle
+        guard let cell = cell as? ImageTitleDescriptionCell else { fatalError("Expected to display a `ImageTitleDescriptionCell`.") }
+        let viewModel = self.viewModels?[indexPath.row]
+        cell.viewModel = viewModel
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
