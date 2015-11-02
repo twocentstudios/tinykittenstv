@@ -8,20 +8,14 @@ import AVFoundation
 
 class EventPreviewView: UIView {
     let playerLayer: AVPlayerLayer
-    let imageView: UIImageView
+    let statusLabel: UILabel
     let descriptionLabel: UILabel
     
-    var viewModel: protocol<Imageable, Descriptable, Playable>? {
+    var viewModel: protocol<Descriptable, Playable, Subtitleable>? {
         didSet {
-            if let imageData = viewModel?.imageData {
-                imageView.image = UIImage(data: imageData)
-            } else {
-                imageView.image = UIImage(named: "placeholder-image")
-            }
             descriptionLabel.text = viewModel?.description
+            statusLabel.text = viewModel?.subtitle
             if let streamUrl = viewModel?.streamUrl {
-                playerLayer.hidden = false
-                imageView.hidden = true
                 if streamUrl != oldValue?.streamUrl {
                     let player = AVPlayer(URL: streamUrl)
                     playerLayer.player = player
@@ -30,25 +24,24 @@ class EventPreviewView: UIView {
             } else {
                 playerLayer.player?.pause()
                 playerLayer.player = nil
-                playerLayer.hidden = true
-                imageView.hidden = false
             }
             self.setNeedsLayout()
         }
     }
     
     internal override init(frame: CGRect) {
-        self.imageView = UIImageView()
-        self.imageView.contentMode = .ScaleAspectFit
-        self.imageView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.3)
-        self.imageView.layer.cornerRadius = 10.0
-        self.imageView.clipsToBounds = true
-        
         self.playerLayer = AVPlayerLayer()
         self.playerLayer.cornerRadius = 10.0
         self.playerLayer.masksToBounds = true
         self.playerLayer.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3).CGColor
-        self.playerLayer.hidden = true
+
+        self.statusLabel = UILabel()
+        self.statusLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleTitle3)
+        self.statusLabel.numberOfLines = 1
+        self.statusLabel.textAlignment = .Center
+        self.statusLabel.textColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+        self.statusLabel.shadowColor = UIColor.whiteColor().colorWithAlphaComponent(1)
+        self.statusLabel.shadowOffset = CGSize(width: 0, height: -1)
         
         self.descriptionLabel = UILabel()
         self.descriptionLabel.numberOfLines = 0
@@ -56,7 +49,7 @@ class EventPreviewView: UIView {
         
         super.init(frame: frame)
 
-        self.addSubview(self.imageView)
+        self.addSubview(self.statusLabel)
         self.layer.addSublayer(self.playerLayer)
         self.addSubview(self.descriptionLabel)
     }
@@ -75,9 +68,10 @@ class EventPreviewView: UIView {
         let vInterImageDescriptionMargin: CGFloat = 6.0
         let vDescriptionHeight: CGFloat = viewHeight - vImageHeight - vInterImageDescriptionMargin
         
-        self.imageView.frame = CGRect(x: 0, y: 0, width: viewWidth, height: vImageHeight)
         self.playerLayer.frame = CGRect(x: 0, y: 0, width: viewWidth, height: vImageHeight)
         self.descriptionLabel.frame = CGRect(x: 0, y: vImageHeight + vInterImageDescriptionMargin, width: viewWidth, height: vDescriptionHeight)
+        self.statusLabel.sizeToFit()
+        self.statusLabel.center = CGPoint(x: CGRectGetMidX(self.playerLayer.frame), y: CGRectGetMidY(self.playerLayer.frame))
         
     }
     

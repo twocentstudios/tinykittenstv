@@ -14,7 +14,7 @@ public struct EventViewModel: Imageable, Titleable, Subtitleable, Descriptable, 
     let streamUrl: NSURL?
     let isDetailLoaded: Bool
     
-    let model : Event
+    let model: Event
     
     init(model: Event, imageData: NSData?) {
         self.model = model
