@@ -10,6 +10,10 @@ protocol Titleable {
     var title: String { get }
 }
 
+protocol Subtitleable {
+    var subtitle: String { get }
+}
+
 protocol Descriptable {
     var description: String { get }
 }
@@ -28,7 +32,6 @@ extension Imageable {
     }
 }
 
-// TODO: how will this func name alias with Imageable
 extension Playable {
     func isLoaded() -> Bool {
         return streamUrl != nil

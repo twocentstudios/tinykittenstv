@@ -85,9 +85,8 @@ public func fetchEventDetail(eventId: Int, accountId: Int, completeBlock: (resul
     }
 }
 
-public func fetchStreamUrlForViewModel(viewModel: EventViewModel,  completeBlock: (result : Result<EventViewModel, EventError>) -> Void ) {
-    let playable = viewModel as Playable
-    if playable.isLoaded() {
+public func fetchDetailForViewModel(viewModel: EventViewModel, completeBlock: (result : Result<EventViewModel, EventError>) -> Void ) {
+    if viewModel.isDetailLoaded {
         completeBlock(result: Result<EventViewModel, EventError>(value: viewModel))
         return
     }

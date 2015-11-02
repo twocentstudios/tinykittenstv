@@ -45,8 +45,9 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
         self.tableView = UITableView(frame: CGRectZero, style: .Plain)
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell.self))
+        self.tableView.registerClass(ImageTitleDescriptionCell.self, forCellReuseIdentifier: NSStringFromClass(ImageTitleDescriptionCell.self))
         self.tableView.remembersLastFocusedIndexPath = true
+        self.tableView.rowHeight = 140
         view.addSubview(self.tableView)
         
         self.eventPreviewView = EventPreviewView()
@@ -105,8 +106,8 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
         })
     }
     
-    private func loadStreamUrlForViewModel(viewModel: EventViewModel, completeBlock: (result: Result<EventViewModel, EventError>) -> Void ) {
-        fetchStreamUrlForViewModel(viewModel, completeBlock: { (result) -> Void in
+    private func loadDetailForViewModel(viewModel: EventViewModel, completeBlock: (result: Result<EventViewModel, EventError>) -> Void ) {
+        fetchDetailForViewModel(viewModel, completeBlock: { (result) -> Void in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 completeBlock(result: result)
             })
@@ -166,16 +167,18 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
                 if focusedViewModel != imageableViewModel {
                     self.viewModels?[focusedIndexPath.row] = imageableViewModel
                     self.updateDetailViewsForFocusedIndexPath()
+                    self.tableView.reloadRowsAtIndexPaths([focusedIndexPath], withRowAnimation: .Fade)
                 }
             }
             
             let maybeViewModel = result.value ?? focusedViewModel
             
-            self.loadStreamUrlForViewModel(maybeViewModel, completeBlock: { [unowned self] (result) -> Void in
+            self.loadDetailForViewModel(maybeViewModel, completeBlock: { [unowned self] (result) -> Void in
                 if let playableViewModel = result.value {
                     if playableViewModel != maybeViewModel {
                         self.viewModels?[focusedIndexPath.row] = playableViewModel
                         self.updateDetailViewsForFocusedIndexPath()
+                        self.tableView.reloadRowsAtIndexPaths([focusedIndexPath], withRowAnimation: .Fade)
                     }
                 }
             })
@@ -196,7 +199,7 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(UITableViewCell.self), forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ImageTitleDescriptionCell.self), forIndexPath: indexPath)
         return cell
     }
     
@@ -208,6 +211,12 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
         
         let viewModel = viewModels[index]
         cell.textLabel?.text = viewModel.title
+        if let imageData = viewModel.imageData {
+            cell.imageView?.image = UIImage(data: imageData)
+        } else {
+            cell.imageView?.image = UIImage(named: "placeholder-image")
+        }
+        cell.detailTextLabel?.text = viewModel.subtitle
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -245,6 +254,7 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(tableView: UITableView, didUpdateFocusInContext context: UITableViewFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
+        if self.focusedIndexPath == context.nextFocusedIndexPath { return }
         self.focusedIndexPath = context.nextFocusedIndexPath
         guard let indexPath = context.nextFocusedIndexPath else { return }
         self.loadImageAndStreamForFocusedIndexPath(indexPath)

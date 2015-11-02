@@ -14,22 +14,22 @@ public struct Event: Decodable {
     let shortName: String?
     let fullName: String?
     let description: String?
-    let isLive: Bool?
+    let isLive: Bool? // determined by streamUrl presence
+    let viewerCount: Int?
     let imageUrl: NSURL?
     let streamUrl: NSURL?
+    let isDetailLoaded: Bool
     
     public init?(json: JSON) {
         guard let id: Int = "id" <~~ json else { return nil }
-    
-        guard let owner: JSON = "owner" <~~ json else { return nil }
-        guard let accountId: Int = "id" <~~ owner else { return nil }
-        self.accountId = accountId
+        guard let accountId: Int = "owner_account_id" <~~ json else { return nil }
         
         self.id = id
+        self.accountId = accountId
         self.shortName = "short_name" <~~ json
         self.fullName = "full_name" <~~ json
         self.description = "description" <~~ json
-        self.isLive = "in_progress" <~~ json
+        self.viewerCount = "viewer_count" <~~ json
         
         if let logo: JSON = "logo" <~~ json {
             self.imageUrl = "url" <~~ logo
@@ -42,13 +42,26 @@ public struct Event: Decodable {
         } else {
             self.streamUrl = nil
         }
+        
+        // use the "real_time" key as an indicator for whether we're getting the detail results
+        if let _: JSON = "real_time" <~~ json {
+            self.isDetailLoaded = true
+        } else {
+            self.isDetailLoaded = false
+        }
+        
+        if self.isDetailLoaded {
+            self.isLive = (self.streamUrl != nil)
+        } else {
+            self.isLive = nil
+        }
     }
 }
 
 extension Event: Equatable {}
 public func ==(lhs: Event, rhs: Event) -> Bool {
     // It could be dangerous to define == as the id param...
-    return lhs.id == rhs.id
+    return lhs.id == rhs.id && lhs.isDetailLoaded == rhs.isDetailLoaded
 }
 
 public struct EventsResponse: Decodable {
