@@ -20,6 +20,7 @@
 		3445294D1BDACB76003066E9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3445294C1BDACB76003066E9 /* AppDelegate.swift */; };
 		348735281BD8147E00DCCE4B /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348735271BD8147E00DCCE4B /* Controller.swift */; };
 		34FA52DA1BE435EB003334B3 /* EventsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FA52D91BE435EB003334B3 /* EventsTableViewController.swift */; };
+		34FA52DC1BE737C9003334B3 /* EventPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FA52DB1BE737C9003334B3 /* EventPreviewView.swift */; };
 		F8BB8FB345EA4DCF34626362 /* Pods_tinykittenstv.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19702404906B2100355A59F4 /* Pods_tinykittenstv.framework */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +54,7 @@
 		3445294C1BDACB76003066E9 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		348735271BD8147E00DCCE4B /* Controller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
 		34FA52D91BE435EB003334B3 /* EventsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsTableViewController.swift; sourceTree = "<group>"; };
+		34FA52DB1BE737C9003334B3 /* EventPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventPreviewView.swift; sourceTree = "<group>"; };
 		68D1EE7A89784F61C0D7D76A /* Pods-tinykittenstv.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tinykittenstv.release.xcconfig"; path = "Pods/Target Support Files/Pods-tinykittenstv/Pods-tinykittenstv.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -104,6 +106,7 @@
 				3443D3521BC5DF8B008AEA28 /* ImageTitleCell.swift */,
 				3443D3541BC5EE41008AEA28 /* ImageTitleable.swift */,
 				34263D6B1BD9A4A400F5063A /* EventViewModel.swift */,
+				34FA52DB1BE737C9003334B3 /* EventPreviewView.swift */,
 				3443D3501BC48075008AEA28 /* Models.swift */,
 				348735271BD8147E00DCCE4B /* Controller.swift */,
 				34263D691BD9A3BD00F5063A /* Errors.swift */,
@@ -296,6 +299,7 @@
 				3443D34F1BC47827008AEA28 /* EventsViewController.swift in Sources */,
 				34263D6C1BD9A4A400F5063A /* EventViewModel.swift in Sources */,
 				348735281BD8147E00DCCE4B /* Controller.swift in Sources */,
+				34FA52DC1BE737C9003334B3 /* EventPreviewView.swift in Sources */,
 				3443D3551BC5EE41008AEA28 /* ImageTitleable.swift in Sources */,
 				3443D3511BC48075008AEA28 /* Models.swift in Sources */,
 				34263D681BD9A39100F5063A /* Result.swift in Sources */,

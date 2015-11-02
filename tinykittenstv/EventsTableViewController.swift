@@ -15,8 +15,7 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
     
     private var backgroundView: UIImageView!
     private var tableView: UITableView!
-    private var previewImageView: UIImageView!
-    private var descriptionLabel: UILabel!
+    private var eventPreviewView: EventPreviewView!
     
     // MARK: UIViewController
     
@@ -40,8 +39,8 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
         
         guard let view = self.view else { return }
         
-//        self.backgroundView = UIImageView(image: UIImage(named: "LaunchImage"))
-//        view.addSubview(self.backgroundView)
+        self.backgroundView = UIImageView(image: UIImage(named: "LaunchImage"))
+        view.addSubview(self.backgroundView)
         
         self.tableView = UITableView(frame: CGRectZero, style: .Plain)
         self.tableView.delegate = self
@@ -50,21 +49,28 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
         self.tableView.remembersLastFocusedIndexPath = true
         view.addSubview(self.tableView)
         
-        self.previewImageView = UIImageView()
-        self.previewImageView.contentMode = .ScaleAspectFit
-        view.addSubview(self.previewImageView)
-        
-        self.descriptionLabel = UILabel()
-        // TODO: styling
-        view.addSubview(self.descriptionLabel)
+        self.eventPreviewView = EventPreviewView()
+        view.addSubview(self.eventPreviewView)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
+        let viewWidth: CGFloat = CGRectGetWidth(self.view.bounds)
+        let viewHeight: CGFloat = CGRectGetHeight(self.view.bounds)
+        let vTopLayoutGuide: CGFloat = self.topLayoutGuide.length
+        let vMargin: CGFloat = 80
+        let hMargin: CGFloat = 100.0
+        let hInterMargin: CGFloat = 40.0
+        let vTableHeight: CGFloat = viewHeight - vMargin * 2 - vTopLayoutGuide
+        let hTableWidth: CGFloat = viewWidth / 2.0 - hMargin - hInterMargin / 2.0
+        let vPreviewHeight: CGFloat = vTableHeight
+        let hPreviewWidth: CGFloat = hTableWidth
+        
         // TODO: align tableview right, align image above description on the left
         self.backgroundView?.frame = self.view.bounds
-        self.tableView?.frame = self.view.bounds
+        self.eventPreviewView?.frame = CGRect(x: hMargin, y: vMargin + vTopLayoutGuide, width: hPreviewWidth, height: vPreviewHeight)
+        self.tableView?.frame = CGRect(x: hMargin + hPreviewWidth + hInterMargin, y: vMargin + vTopLayoutGuide, width: hTableWidth, height:vTableHeight)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -177,7 +183,10 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     private func updateDetailViewsForFocusedIndexPath() {
-        print("updated \(self.focusedIndexPath)")
+        guard let index = self.focusedIndexPath?.row else { return }
+        let viewModel = self.viewModels?[index]
+        // if self.eventPreviewView.viewModel == viewModel { return }
+        self.eventPreviewView.viewModel = viewModel
     }
     
     // MARK: UITableViewDataSource
