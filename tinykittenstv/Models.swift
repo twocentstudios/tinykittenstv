@@ -32,7 +32,7 @@ public struct Event: Decodable {
         self.viewerCount = "viewer_count" <~~ json
         
         if let logo: JSON = "logo" <~~ json {
-            self.imageUrl = "url" <~~ logo
+            self.imageUrl = "small_url" <~~ logo
         } else {
             self.imageUrl = nil
         }
