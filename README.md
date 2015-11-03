@@ -4,13 +4,13 @@ TinyKittens TV is a tvOS app for watching the TinyKittens Livestream events on y
 
 See [tinykittens.com](http://tinykittens.com) for more info about the TinyKittens non-profit society.
 
-## Links TODO
+## Links
 
-* [ ] [App Store]() (it's free).
-* [ ] [Landing page]() with screenshots.
-* [ ] [Blog post]() about the project.
+* [App Store](https://itunes.apple.com/us/app/tinykittens-rescue-kitten-tv/id1052349833?ls=1&mt=8) (it's free).
+* [Blog post](http://twocentstudios.com/2015/10/29/fall-2015-project-wrap-up/#tinykittens-tv) about the project.
 
 ![Screenshot 1](https://github.com/twocentstudios/tinykittenstv/blob/master/marketing/tinykittens-tv-home.png)
+![Screenshot 2](https://github.com/twocentstudios/tinykittenstv/blob/master/marketing/tinykittens-tv-event.png)
 
 ## Getting started
 
