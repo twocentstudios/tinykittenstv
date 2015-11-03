@@ -15,13 +15,10 @@ class EventPreviewView: UIView {
         didSet {
             descriptionLabel.text = viewModel?.description
             statusLabel.text = viewModel?.subtitle
-            if let streamUrl = viewModel?.streamUrl {
-                if streamUrl != oldValue?.streamUrl {
-                    let player = AVPlayer(URL: streamUrl)
-                    player.muted = true
-                    playerLayer.player = player
-                    player.play()
-                }
+            if let player = viewModel?.player {
+                playerLayer.player = player
+                player.muted = true
+                player.play()
             } else {
                 playerLayer.player?.pause()
                 playerLayer.player = nil

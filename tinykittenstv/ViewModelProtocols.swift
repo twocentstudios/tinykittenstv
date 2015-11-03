@@ -23,7 +23,7 @@ protocol Imageable {
 }
 
 protocol Playable {
-    var streamUrl: NSURL? { get }
+    var player: AVPlayer? { get }
 }
 
 extension Imageable {
@@ -34,7 +34,7 @@ extension Imageable {
 
 extension Playable {
     func isLoaded() -> Bool {
-        return streamUrl != nil
+        return player != nil
     }
 }
 

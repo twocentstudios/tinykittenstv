@@ -6,13 +6,20 @@
 import Foundation
 import AVFoundation
 
-public struct EventViewModel: Imageable, Titleable, Subtitleable, Descriptable, Playable {
+public class EventViewModel: Imageable, Titleable, Subtitleable, Descriptable, Playable {
     let title: String
     let subtitle: String
     let description: String
     let imageData: NSData?
     let streamUrl: NSURL?
     let isDetailLoaded: Bool
+    lazy var player: AVPlayer? = {
+        if let streamUrl = self.streamUrl {
+            return AVPlayer(URL: streamUrl)
+        } else {
+            return nil
+        }
+    }()
     
     let model: Event
     
