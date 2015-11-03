@@ -18,6 +18,7 @@ class EventPreviewView: UIView {
             if let streamUrl = viewModel?.streamUrl {
                 if streamUrl != oldValue?.streamUrl {
                     let player = AVPlayer(URL: streamUrl)
+                    player.muted = true
                     playerLayer.player = player
                     player.play()
                 }
