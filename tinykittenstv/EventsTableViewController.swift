@@ -138,15 +138,6 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
-    private func presentFullScreenPlayerWithPlayer(player: AVPlayer) {
-        let playerController = AVPlayerViewController()
-        playerController.player = player
-        
-        self.presentViewController(playerController, animated: true, completion: { () -> Void in
-            player.play()
-        })
-    }
-    
     private func presentFullScreenPlayerWithUrl(url: NSURL) {
         let player = AVPlayer(URL: url)
         let playerController = AVPlayerViewController()
