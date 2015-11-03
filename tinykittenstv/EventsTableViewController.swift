@@ -103,14 +103,6 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    private func loadEventDetail(eventId: Int, accountId: Int, completeBlock: (result : Result<Event, EventError>) -> Void ) {
-        fetchEventDetail(eventId, accountId: accountId, completeBlock: { (result) -> Void in
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                completeBlock(result: result)
-            })
-        })
-    }
-    
     private func loadDetailForViewModel(viewModel: EventViewModel, completeBlock: (result: Result<EventViewModel, EventError>) -> Void ) {
         fetchDetailForViewModel(viewModel, completeBlock: { (result) -> Void in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in

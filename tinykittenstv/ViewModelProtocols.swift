@@ -38,5 +38,3 @@ extension Playable {
     }
 }
 
-// Legacy
-protocol ImageTitleable: Imageable, Titleable { }
