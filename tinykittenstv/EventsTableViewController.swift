@@ -139,7 +139,7 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
     private func presentError(error: EventError) {
         print("Error: \(error)")
         let message = error.localizedDescription()
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
         alert.addAction(UIAlertAction(title: "OK".l10(), style: .Cancel, handler: { _ -> Void in
             self.dismissViewControllerAnimated(true, completion: nil)
         }))
@@ -202,6 +202,7 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ImageTitleDescriptionCell.self), forIndexPath: indexPath)
+        
         return cell
     }
     
@@ -211,6 +212,13 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
         guard let cell = cell as? ImageTitleDescriptionCell else { fatalError("Expected to display a `ImageTitleDescriptionCell`.") }
         let viewModel = self.viewModels?[indexPath.row]
         cell.viewModel = viewModel
+        if (viewModel != nil) {
+            cell.playButtonTapGestureBlock = ( { [unowned self] () -> Void in
+                self.tableView(self.tableView, didSelectRowAtIndexPath: indexPath)
+            })
+        } else {
+            cell.playButtonTapGestureBlock = nil
+        }
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -253,8 +261,10 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(tableView: UITableView, didUpdateFocusInContext context: UITableViewFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
         if self.focusedIndexPath == context.nextFocusedIndexPath { return }
-        self.focusedIndexPath = context.nextFocusedIndexPath
-        self.updateDetailViewsForFocusedIndexPath()
+        if (context.nextFocusedIndexPath != nil || !self.eventPreviewView.focused) {
+            self.focusedIndexPath = context.nextFocusedIndexPath
+            self.updateDetailViewsForFocusedIndexPath()
+        }
     }
 
     override var preferredFocusedView: UIView? {
