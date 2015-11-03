@@ -61,32 +61,44 @@ public func fetchEventViewModelsForAccount(accountId: Int, completeBlock: (resul
     }
 }
 
-public func fetchEventDetail(eventId: Int, accountId: Int, completeBlock: (result : Result<Event, EventError>) -> Void ) {
-    let url = NSURL(string: "\(BASE_URL)/accounts/\(accountId)/events/\(eventId)")!
+public func fetchDetailForViewModel(viewModel: EventViewModel, completeBlock: (result : Result<EventViewModel, EventError>) -> Void ) {
+    if viewModel.isDetailLoaded {
+        completeBlock(result: Result<EventViewModel, EventError>(value: viewModel))
+        return
+    }
+    
+    let url = NSURL(string: "\(BASE_URL)/accounts/\(viewModel.model.accountId)/events/\(viewModel.model.id)")!
     let request = NSURLRequest(URL: url, cachePolicy: .ReloadIgnoringLocalCacheData, timeoutInterval: TIMEOUT_INTERVAL)
     fetchDataForRequest(request) { (result) -> Void in
         if let error = result.error {
-            completeBlock(result: Result<Event, EventError>(error: error))
+            completeBlock(result: Result<EventViewModel, EventError>(error: error))
             return
         }
         
         let jsonResult : Result<JSON, EventError> = parseJSONFromData(result.value!)
         if let error = jsonResult.error {
-            completeBlock(result: Result<Event, EventError>(error: error))
+            completeBlock(result: Result<EventViewModel, EventError>(error: error))
             return
         }
         
         guard let event = Event(json: jsonResult.value!) else {
-            completeBlock(result: Result<Event, EventError>(error: EventError.InvalidResponse))
+            completeBlock(result: Result<EventViewModel, EventError>(error: EventError.InvalidResponse))
             return
         }
         
-        completeBlock(result: Result<Event, EventError>(value: event))
+        let newEventViewModel = EventViewModel(model: event, imageData: viewModel.imageData)
+        
+        completeBlock(result: Result<EventViewModel, EventError>(value: newEventViewModel))
     }
 }
 
-public func fetchFullViewModelForViewModel(viewModel: EventViewModel, completeBlock: (result: Result<EventViewModel, EventError>) -> Void ) {
-    if viewModel.isLoaded() { return }
+
+public func fetchImageDataForViewModel(viewModel: EventViewModel, completeBlock: (result: Result<EventViewModel, EventError>) -> Void ) {
+    let imageable = viewModel as Imageable
+    if imageable.isLoaded() {
+        completeBlock(result: Result<EventViewModel, EventError>(value: viewModel))
+        return
+    }
     
     guard let imageUrl = viewModel.model.imageUrl else {
         completeBlock(result: Result<EventViewModel, EventError>(error: EventError.ImageURLMissing))

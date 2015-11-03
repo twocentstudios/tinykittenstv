@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
         let accountId = 4175709
-        let viewController = EventsViewController(accountId: accountId)
+        let viewController = EventsTableViewController(accountId: accountId)
         let navigationController = UINavigationController(rootViewController: viewController)
         self.window?.rootViewController = navigationController
         
