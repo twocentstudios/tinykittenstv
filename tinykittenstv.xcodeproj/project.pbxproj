@@ -100,10 +100,10 @@
 			children = (
 				3445294C1BDACB76003066E9 /* AppDelegate.swift */,
 				34FA52D91BE435EB003334B3 /* EventsTableViewController.swift */,
-				3443D3541BC5EE41008AEA28 /* ViewModelProtocols.swift */,
 				34FA52DD1BE7FDFA003334B3 /* ImageTitleDescriptionCell.swift */,
 				34FA52DB1BE737C9003334B3 /* EventPreviewView.swift */,
 				34263D6B1BD9A4A400F5063A /* EventViewModel.swift */,
+				3443D3541BC5EE41008AEA28 /* ViewModelProtocols.swift */,
 				348735271BD8147E00DCCE4B /* Controller.swift */,
 				3443D3501BC48075008AEA28 /* Models.swift */,
 				34263D691BD9A3BD00F5063A /* Errors.swift */,
