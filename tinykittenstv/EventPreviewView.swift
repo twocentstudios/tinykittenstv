@@ -52,6 +52,9 @@ class EventPreviewView: UIView {
         self.addSubview(self.statusLabel)
         self.layer.addSublayer(self.playerLayer)
         self.addSubview(self.descriptionLabel)
+        
+        self.layer.cornerRadius = 10.0
+        self.clipsToBounds = true
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -64,18 +67,46 @@ class EventPreviewView: UIView {
         let viewWidth: CGFloat = CGRectGetWidth(self.bounds)
         let viewHeight: CGFloat = CGRectGetHeight(self.bounds)
         
+        let vMargin: CGFloat = 10.0
+        let hMargin: CGFloat = 20.0
+        
         let vImageHeight: CGFloat = viewWidth * (9.0/16.0)
-        let vInterImageDescriptionMargin: CGFloat = 6.0
+        let vInterImageDescriptionMargin: CGFloat = 14.0
         let vDescriptionHeight: CGFloat = viewHeight - vImageHeight - vInterImageDescriptionMargin
+        let hDescriptionWidth: CGFloat = viewWidth - hMargin * 2
         
         self.playerLayer.frame = CGRect(x: 0, y: 0, width: viewWidth, height: vImageHeight)
-        self.descriptionLabel.frame = CGRect(x: 0, y: vImageHeight + vInterImageDescriptionMargin, width: viewWidth, height: vDescriptionHeight)
+        if self.focused {
+            self.playerLayer.opacity = 0.0
+            self.backgroundColor = UIColor.whiteColor()
+            self.descriptionLabel.frame = CGRect(x: hMargin, y: vMargin, width: hDescriptionWidth, height: viewHeight - vMargin * 2)
+            self.descriptionLabel.sizeToFit()
+            self.statusLabel.hidden = true
+        } else {
+            self.playerLayer.opacity = 1.0
+            self.backgroundColor = UIColor.clearColor()
+            let descriptionFitHeight = self.descriptionLabel.sizeThatFits(CGSize(width: hDescriptionWidth, height: 0)).height
+            self.descriptionLabel.frame = CGRect(x: hMargin, y: vImageHeight + vInterImageDescriptionMargin, width: hDescriptionWidth, height: min(vDescriptionHeight, descriptionFitHeight))
+            self.statusLabel.hidden = false
+        }
         self.statusLabel.sizeToFit()
         self.statusLabel.center = CGPoint(x: CGRectGetMidX(self.playerLayer.frame), y: CGRectGetMidY(self.playerLayer.frame))
         
     }
     
     override func canBecomeFocused() -> Bool {
-        return false
+        return true
     }
+    
+    override func shouldUpdateFocusInContext(context: UIFocusUpdateContext) -> Bool {
+        return true
+    }
+    
+    override func didUpdateFocusInContext(context: UIFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
+        coordinator.addCoordinatedAnimations({ () -> Void in
+            self.setNeedsLayout()
+            self.layoutIfNeeded()
+        }) { }
+    }
+
 }
