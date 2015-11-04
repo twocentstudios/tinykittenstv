@@ -62,11 +62,6 @@ public func fetchEventViewModelsForAccount(accountId: Int, completeBlock: (resul
 }
 
 public func fetchDetailForViewModel(viewModel: EventViewModel, completeBlock: (result : Result<EventViewModel, EventError>) -> Void ) {
-    if viewModel.isDetailLoaded {
-        completeBlock(result: Result<EventViewModel, EventError>(value: viewModel))
-        return
-    }
-    
     let url = NSURL(string: "\(BASE_URL)/accounts/\(viewModel.model.accountId)/events/\(viewModel.model.id)")!
     let request = NSURLRequest(URL: url, cachePolicy: .ReloadIgnoringLocalCacheData, timeoutInterval: TIMEOUT_INTERVAL)
     fetchDataForRequest(request) { (result) -> Void in
