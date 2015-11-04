@@ -80,9 +80,10 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
             self.handleResultOrPresentError(result, block: { (value) -> Void in
                 let oldModels = self.viewModels?.map({ $0.model }) ?? []
                 let newModels = value.map({ $0.model })
-                if (oldModels =~= newModels) { return }
-                self.viewModels = value
-                self.tableView?.reloadData()
+                if !(oldModels =~= newModels) {
+                    self.viewModels = value
+                    self.tableView?.reloadData()
+                }
                 
                 for viewModel in value {
                     guard let index = value.indexOf(viewModel) else { return }
