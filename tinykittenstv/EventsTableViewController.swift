@@ -208,10 +208,11 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         guard let viewModel: EventViewModel = self.viewModels?[indexPath.row] else { return }
         
-        if let streamUrl = viewModel.streamUrl {
-            self.presentFullScreenPlayerWithUrl(streamUrl)
-            return
-        }
+        // `streamUrl` may have expired, so always fetch the latest `streamUrl` each full screen request.
+        // if let streamUrl = viewModel.streamUrl {
+        //    self.presentFullScreenPlayerWithUrl(streamUrl)
+        //    return
+        // }
         
         let title = String.localizedStringWithFormat("Loading %@...", viewModel.title)
         
