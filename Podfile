@@ -6,5 +6,5 @@ use_frameworks!
 plugin 'cocoapods-expert-difficulty'
 
 target 'tinykittenstv' do
-  pod 'Gloss', '~> 0.5.3'
+  pod 'Gloss', '~> 0.6.0'
 end
