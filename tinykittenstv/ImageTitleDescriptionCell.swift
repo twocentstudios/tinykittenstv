@@ -28,7 +28,7 @@ class ImageTitleDescriptionCell: UITableViewCell {
 
         super.init(style: .Subtitle, reuseIdentifier: NSStringFromClass(ImageTitleDescriptionCell.self))
         
-        self.playButtonTapGesture.addTarget(self, action: "didTapPlayButton:")
+        self.playButtonTapGesture.addTarget(self, action: #selector(ImageTitleDescriptionCell.didTapPlayButton(_:)))
         self.playButtonTapGesture.allowedPressTypes = [NSNumber(integer: UIPressType.PlayPause.rawValue)];
         self.addGestureRecognizer(playButtonTapGesture)
     }

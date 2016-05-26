@@ -52,6 +52,10 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
         
         self.eventPreviewView = EventPreviewView()
         view.addSubview(self.eventPreviewView)
+        
+        NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationDidBecomeActiveNotification, object: nil, queue: nil) { [weak self] _ in
+            self?.conditionallyLoadViewModelsIntoTableView()
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -76,6 +80,12 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
+        self.conditionallyLoadViewModelsIntoTableView()
+    }
+    
+    // MARK: Private
+    
+    private func conditionallyLoadViewModelsIntoTableView() {
         self.loadViewModels(accountId, completeBlock: { (result) -> Void in
             self.handleResultOrPresentError(result, block: { (value) -> Void in
                 let oldModels = self.viewModels?.map({ $0.model }) ?? []
@@ -93,8 +103,6 @@ class EventsTableViewController: UIViewController, UITableViewDelegate, UITableV
             })
         })
     }
-    
-    // MARK: Private
     
     private func loadViewModels(accountId: Int, completeBlock: (result: Result<[EventViewModel], EventError>) -> Void) {
         fetchEventViewModelsForAccount(accountId) { (result) -> Void in
