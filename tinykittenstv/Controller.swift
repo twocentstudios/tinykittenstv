@@ -56,7 +56,10 @@ public func fetchEventViewModelsForAccount(accountId: Int, completeBlock: (resul
         }
         
         let events : [Event] = eventsResponse.events
-        let eventViewModels = events.map({ (e: Event) -> EventViewModel in return EventViewModel(model: e, imageData: nil) })
+        let eventViewModels =
+            events
+                .sort({ (e1: Event, e2: Event) -> Bool in e1.id > e2.id })
+                .map({ (e: Event) -> EventViewModel in return EventViewModel(model: e, imageData: nil) })
         completeBlock(result: Result<[EventViewModel], EventError>(value: eventViewModels))
     }
 }
