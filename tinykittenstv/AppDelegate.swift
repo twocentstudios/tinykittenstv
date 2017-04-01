@@ -7,6 +7,8 @@ import UIKit
 
 import ReactiveSwift
 import Result
+import XCDYouTubeKit
+import AVKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -26,8 +28,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let sessionConfig = SessionConfig(configuration: URLSessionConfiguration.default, apiKey: "AIzaSyCc5OhZCaWp0L95UrbmwpB1DJ9F6anA_aE")
         Controller.fetchLiveVideos(channelId: "UCeL2LSl91k2VccR7XEh5IKg", config: sessionConfig)
-            .startWithResult { (result: Result<LiveVideosSearchResult, NSError>) in
-                dump(result)
+            .flatMap(.latest, transform: { (searchResult: LiveVideosSearchResult) -> SignalProducer<XCDYouTubeVideo, NSError> in
+                return XCDYouTubeClient.default().rac_getVideoWithIdentifier(searchResult.liveVideos.first!.id)
+            })
+            .filterMap({ (video: XCDYouTubeVideo) -> URL? in
+                return video.streamURLs[XCDYouTubeVideoQualityHTTPLiveStreaming]
+            })
+            .startWithResult { (result: Result<URL, NSError>) in
+                let player = AVPlayer(url: result.value!)
+                let playerController = AVPlayerViewController()
+                playerController.player = player
+                
+                navigationController.present(playerController, animated: true, completion: { () -> Void in
+                    player.play()
+                })
             }
         
         return true
