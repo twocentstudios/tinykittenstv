@@ -11,142 +11,142 @@ let TIMEOUT_INTERVAL = 5.0
 
 // MARK: Public
 
-public func fetchTitleForAccount(accountId: Int, completeBlock: (result: Result<String, EventError>) -> Void) {
-    let url = NSURL(string: "\(BASE_URL)/accounts/\(accountId)")!
-    let request = NSURLRequest(URL: url, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: TIMEOUT_INTERVAL)
+public func fetchTitleForAccount(_ accountId: Int, completeBlock: @escaping (_ result: Result<String, EventError>) -> Void) {
+    let url = URL(string: "\(BASE_URL)/accounts/\(accountId)")!
+    let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: TIMEOUT_INTERVAL)
     fetchDataForRequest(request) { (result) -> Void in
         if let error = result.error {
-            completeBlock(result: Result<String, EventError>(error: error))
+            completeBlock(Result<String, EventError>(error: error))
             return
         }
         
-        let jsonResult : Result<JSON, EventError> = parseJSONFromData(result.value!)
+        let jsonResult : Result<JSON, EventError> = parseJSONFromData(result.value! as NSData)
         if let error = jsonResult.error {
-            completeBlock(result: Result<String, EventError>(error: error))
+            completeBlock(Result<String, EventError>(error: error))
             return
         }
         
         guard let fullName = jsonResult.value!["full_name"] as? String else {
-            completeBlock(result: Result<String, EventError>(error: EventError.InvalidResponse))
+            completeBlock(Result<String, EventError>(error: EventError.invalidResponse))
             return
         }
         
-        completeBlock(result: Result<String, EventError>(value: fullName))
+        completeBlock(Result<String, EventError>(value: fullName))
     }
 }
 
-public func fetchEventViewModelsForAccount(accountId: Int, completeBlock: (result: Result<[EventViewModel], EventError>) -> Void) {
-    let url = NSURL(string: "\(BASE_URL)/accounts/\(accountId)/events")!
-    let request = NSURLRequest(URL: url, cachePolicy: .ReloadIgnoringLocalCacheData, timeoutInterval: TIMEOUT_INTERVAL)
+public func fetchEventViewModelsForAccount(_ accountId: Int, completeBlock: @escaping (_ result: Result<[EventViewModel], EventError>) -> Void) {
+    let url = URL(string: "\(BASE_URL)/accounts/\(accountId)/events")!
+    let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: TIMEOUT_INTERVAL)
     fetchDataForRequest(request) { (result) -> Void in
         if let error = result.error {
-            completeBlock(result: Result<[EventViewModel], EventError>(error: error))
+            completeBlock(Result<[EventViewModel], EventError>(error: error))
             return
         }
         
-        let jsonResult : Result<JSON, EventError> = parseJSONFromData(result.value!)
+        let jsonResult : Result<JSON, EventError> = parseJSONFromData(result.value! as NSData)
         if let error = jsonResult.error {
-            completeBlock(result: Result<[EventViewModel], EventError>(error: error))
+            completeBlock(Result<[EventViewModel], EventError>(error: error))
             return
         }
         
         guard let eventsResponse = EventsResponse(json: jsonResult.value!) else {
-            completeBlock(result: Result<[EventViewModel], EventError>(error: EventError.InvalidResponse))
+            completeBlock(Result<[EventViewModel], EventError>(error: EventError.invalidResponse))
             return
         }
         
         let events : [Event] = eventsResponse.events
         let eventViewModels =
             events
-                .sort({ (e1: Event, e2: Event) -> Bool in e1.id > e2.id })
+                .sorted(by: { (e1: Event, e2: Event) -> Bool in e1.id > e2.id })
                 .map({ (e: Event) -> EventViewModel in return EventViewModel(model: e, imageData: nil) })
-        completeBlock(result: Result<[EventViewModel], EventError>(value: eventViewModels))
+        completeBlock(Result<[EventViewModel], EventError>(value: eventViewModels))
     }
 }
 
-public func fetchDetailForViewModel(viewModel: EventViewModel, completeBlock: (result : Result<EventViewModel, EventError>) -> Void ) {
-    let url = NSURL(string: "\(BASE_URL)/accounts/\(viewModel.model.accountId)/events/\(viewModel.model.id)")!
-    let request = NSURLRequest(URL: url, cachePolicy: .ReloadIgnoringLocalCacheData, timeoutInterval: TIMEOUT_INTERVAL)
+public func fetchDetailForViewModel(_ viewModel: EventViewModel, completeBlock: @escaping (_ result : Result<EventViewModel, EventError>) -> Void ) {
+    let url = URL(string: "\(BASE_URL)/accounts/\(viewModel.model.accountId)/events/\(viewModel.model.id)")!
+    let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: TIMEOUT_INTERVAL)
     fetchDataForRequest(request) { (result) -> Void in
         if let error = result.error {
-            completeBlock(result: Result<EventViewModel, EventError>(error: error))
+            completeBlock(Result<EventViewModel, EventError>(error: error))
             return
         }
         
-        let jsonResult : Result<JSON, EventError> = parseJSONFromData(result.value!)
+        let jsonResult : Result<JSON, EventError> = parseJSONFromData(result.value! as NSData)
         if let error = jsonResult.error {
-            completeBlock(result: Result<EventViewModel, EventError>(error: error))
+            completeBlock(Result<EventViewModel, EventError>(error: error))
             return
         }
         
         guard let event = Event(json: jsonResult.value!) else {
-            completeBlock(result: Result<EventViewModel, EventError>(error: EventError.InvalidResponse))
+            completeBlock(Result<EventViewModel, EventError>(error: EventError.invalidResponse))
             return
         }
         
         let newEventViewModel = EventViewModel(model: event, imageData: viewModel.imageData)
         
-        completeBlock(result: Result<EventViewModel, EventError>(value: newEventViewModel))
+        completeBlock(Result<EventViewModel, EventError>(value: newEventViewModel))
     }
 }
 
 
-public func fetchImageDataForViewModel(viewModel: EventViewModel, completeBlock: (result: Result<EventViewModel, EventError>) -> Void ) {
+public func fetchImageDataForViewModel(_ viewModel: EventViewModel, completeBlock: @escaping (_ result: Result<EventViewModel, EventError>) -> Void ) {
     let imageable = viewModel as Imageable
     if imageable.isLoaded() {
-        completeBlock(result: Result<EventViewModel, EventError>(value: viewModel))
+        completeBlock(Result<EventViewModel, EventError>(value: viewModel))
         return
     }
     
     guard let imageUrl = viewModel.model.imageUrl else {
-        completeBlock(result: Result<EventViewModel, EventError>(error: EventError.ImageURLMissing))
+        completeBlock(Result<EventViewModel, EventError>(error: EventError.imageURLMissing))
         return
     }
     
-    fetchImageAtURL(imageUrl) { (result) -> Void in
+    fetchImageAtURL(imageUrl as URL) { (result) -> Void in
         if let error = result.error {
-            completeBlock(result: Result<EventViewModel, EventError>(error: error))
+            completeBlock(Result<EventViewModel, EventError>(error: error))
             return
         }
         
         let newViewModel = EventViewModel(model: viewModel.model, imageData: result.value!)
-        completeBlock(result: Result<EventViewModel, EventError>(value: newViewModel))
+        completeBlock(Result<EventViewModel, EventError>(value: newViewModel))
     }
 }
 
-public func fetchImageAtURL(url: NSURL, completeBlock: (result : Result<NSData, EventError>) -> Void ) {
-    let request = NSURLRequest(URL: url, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: TIMEOUT_INTERVAL)
+public func fetchImageAtURL(_ url: URL, completeBlock: @escaping (_ result : Result<Data, EventError>) -> Void ) {
+    let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: TIMEOUT_INTERVAL)
     fetchDataForRequest(request) { (result) -> Void in
-        completeBlock(result: result)
+        completeBlock(result)
     }
 }
 
 // MARK: Helpers
 
-private func parseJSONFromData(data: NSData, opt: NSJSONReadingOptions = []) -> Result<JSON, EventError> {
+private func parseJSONFromData(_ data: NSData, opt: JSONSerialization.ReadingOptions = []) -> Result<JSON, EventError> {
     do {
-        guard let json = try NSJSONSerialization.JSONObjectWithData(data, options: opt) as? JSON else {
-            return Result<JSON, EventError>(error: EventError.InvalidResponse)
+        guard let json = try JSONSerialization.jsonObject(with: data as Data, options: opt) as? JSON else {
+            return Result<JSON, EventError>(error: EventError.invalidResponse)
         }
         return Result<JSON, EventError>(value: json)
     } catch let e as NSError {
-        return Result<JSON, EventError>(error: EventError.UnderlyingError(error: e))
+        return Result<JSON, EventError>(error: EventError.underlyingError(error: e))
     }
 }
 
-private func fetchDataForRequest(request: NSURLRequest, completeBlock: (result: Result<NSData, EventError>) -> Void) {
-    let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data : NSData?, response : NSURLResponse?, error : NSError?) -> Void in
+private func fetchDataForRequest(_ request: URLRequest, completeBlock: @escaping (_ result: Result<Data, EventError>) -> Void) {
+    let task = URLSession.shared.dataTask(with: request, completionHandler: { (data : Data?, response : URLResponse?, error : NSError?) -> Void in
         if let error = error {
-            completeBlock(result: Result<NSData, EventError>(error: EventError.UnderlyingError(error: error)))
+            completeBlock(Result<Data, EventError>(error: EventError.underlyingError(error: error)))
             return
         }
         
         if let data = data {
-            completeBlock(result: Result<NSData, EventError>(value: data))
+            completeBlock(Result<Data, EventError>(value: data))
             return
         }
             
-        completeBlock(result: Result<NSData, EventError>(error: EventError.UnknownError))
-    }
+        completeBlock(Result<Data, EventError>(error: EventError.unknownError))
+    } as! (Data?, URLResponse?, Error?) -> Void) 
     task.resume()
 }

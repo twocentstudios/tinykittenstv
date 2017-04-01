@@ -19,7 +19,7 @@ protocol Descriptable {
 }
 
 protocol Imageable {
-    var imageData: NSData? { get }
+    var imageData: Data? { get }
 }
 
 protocol Playable {

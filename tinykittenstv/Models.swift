@@ -16,8 +16,8 @@ public struct Event: Decodable {
     let description: String?
     let isLive: Bool? // determined by streamUrl presence
     let viewerCount: Int?
-    let imageUrl: NSURL?
-    let streamUrl: NSURL?
+    let imageUrl: URL?
+    let streamUrl: URL?
     let isDetailLoaded: Bool
     
     public init?(json: JSON) {

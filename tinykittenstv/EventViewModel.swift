@@ -6,16 +6,16 @@
 import Foundation
 import AVFoundation
 
-public class EventViewModel: Imageable, Titleable, Subtitleable, Descriptable, Playable {
+open class EventViewModel: Imageable, Titleable, Subtitleable, Descriptable, Playable {
     let title: String
     let subtitle: String
     let description: String
-    let imageData: NSData?
-    let streamUrl: NSURL?
+    let imageData: Data?
+    let streamUrl: URL?
     let isDetailLoaded: Bool
     lazy var player: AVPlayer? = {
         if let streamUrl = self.streamUrl {
-            return AVPlayer(URL: streamUrl)
+            return AVPlayer(url: streamUrl)
         } else {
             return nil
         }
@@ -23,13 +23,13 @@ public class EventViewModel: Imageable, Titleable, Subtitleable, Descriptable, P
     
     let model: Event
     
-    init(model: Event, imageData: NSData?) {
+    init(model: Event, imageData: Data?) {
         self.model = model
         
         self.title = model.fullName ?? "[No title]".l10()
         self.description = model.description ?? "[No description]".l10()
         self.imageData = imageData
-        self.streamUrl = model.streamUrl
+        self.streamUrl = model.streamUrl as URL?
         self.isDetailLoaded = model.isDetailLoaded
         
         var subtitle = ""

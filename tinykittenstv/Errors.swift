@@ -5,22 +5,22 @@
 
 import Foundation
 
-public enum EventError : ErrorType {
-    case UnderlyingError(error: NSError)
-    case InvalidResponse
-    case ImageURLMissing
-    case StreamURLMissing
-    case UnknownError
+public enum EventError : Error {
+    case underlyingError(error: NSError)
+    case invalidResponse
+    case imageURLMissing
+    case streamURLMissing
+    case unknownError
     
     func localizedDescription() -> String {
         switch self {
-        case .InvalidResponse:
+        case .invalidResponse:
             return "The server returned an invalid response.".l10()
-        case .StreamURLMissing:
+        case .streamURLMissing:
             return "This stream is currently offline. Please try again later.".l10()
-        case .ImageURLMissing:
+        case .imageURLMissing:
             return "The stream's image URL could not be found.".l10()
-        case .UnderlyingError(let e):
+        case .underlyingError(let e):
             return e.localizedDescription
         default:
             return "An unknown error occurred. Please try again.".l10()

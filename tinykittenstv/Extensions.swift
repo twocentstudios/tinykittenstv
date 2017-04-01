@@ -21,7 +21,7 @@ infix operator =~= { associativity none precedence 130 }
 func =~=<T : Identifiable>(lhs: [T], rhs: [T]) -> Bool {
     if lhs.count != rhs.count { return false }
     
-    let zipped = Zip2Sequence(lhs, rhs)
+    let zipped = zip(lhs, rhs)
     let mapped = zipped.map { (lElement, rElement) -> Bool in
         return lElement =~= rElement
     }

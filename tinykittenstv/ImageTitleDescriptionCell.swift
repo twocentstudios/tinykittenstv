@@ -7,14 +7,14 @@ import UIKit
 
 class ImageTitleDescriptionCell: UITableViewCell {
 
-    private let playButtonTapGesture: UITapGestureRecognizer
+    fileprivate let playButtonTapGesture: UITapGestureRecognizer
     internal var playButtonTapGestureBlock: ( () -> Void )?
 
-    var viewModel: protocol<Imageable, Titleable, Subtitleable>? {
+    var viewModel: (Imageable & Titleable & Subtitleable)? {
         didSet {
             textLabel?.text = viewModel?.title
             if let imageData = viewModel?.imageData {
-                imageView?.image = UIImage(data: imageData)
+                imageView?.image = UIImage(data: imageData as Data)
             } else {
                 imageView?.image = nil
             }
@@ -26,10 +26,10 @@ class ImageTitleDescriptionCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         self.playButtonTapGesture = UITapGestureRecognizer()
 
-        super.init(style: .Subtitle, reuseIdentifier: NSStringFromClass(ImageTitleDescriptionCell.self))
+        super.init(style: .subtitle, reuseIdentifier: NSStringFromClass(ImageTitleDescriptionCell.self))
         
         self.playButtonTapGesture.addTarget(self, action: #selector(ImageTitleDescriptionCell.didTapPlayButton(_:)))
-        self.playButtonTapGesture.allowedPressTypes = [NSNumber(integer: UIPressType.PlayPause.rawValue)];
+        self.playButtonTapGesture.allowedPressTypes = [NSNumber(value: UIPressType.playPause.rawValue as Int)];
         self.addGestureRecognizer(playButtonTapGesture)
     }
 
@@ -37,9 +37,9 @@ class ImageTitleDescriptionCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func didTapPlayButton(sender: AnyObject) {
+    func didTapPlayButton(_ sender: AnyObject) {
         guard let gesture = sender as? UIGestureRecognizer else { return }
-        if gesture.state != UIGestureRecognizerState.Recognized { return }
+        if gesture.state != UIGestureRecognizerState.recognized { return }
         if let playButtonTapGestureBlock = playButtonTapGestureBlock {
             playButtonTapGestureBlock()
         }
