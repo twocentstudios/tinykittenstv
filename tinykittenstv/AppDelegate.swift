@@ -5,6 +5,9 @@
 
 import UIKit
 
+import ReactiveSwift
+import Result
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -15,11 +18,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         
         let accountId = 4175709
-        let viewController = EventsTableViewController(accountId: accountId)
+        let viewController = UIViewController() // EventsTableViewController(accountId: accountId)
         let navigationController = UINavigationController(rootViewController: viewController)
         self.window?.rootViewController = navigationController
         
         self.window?.makeKeyAndVisible()
+        
+        let sessionConfig = SessionConfig(configuration: URLSessionConfiguration.default, apiKey: "AIzaSyCc5OhZCaWp0L95UrbmwpB1DJ9F6anA_aE")
+        Controller.fetchLiveVideos(channelId: "UCeL2LSl91k2VccR7XEh5IKg", config: sessionConfig)
+            .startWithResult { (result: Result<LiveVideosSearchResult, NSError>) in
+                dump(result)
+            }
         
         return true
     }

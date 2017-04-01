@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		34263D661BD99B7C00F5063A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34263D651BD99B7C00F5063A /* Extensions.swift */; };
-		34263D681BD9A39100F5063A /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34263D671BD9A39100F5063A /* Result.swift */; };
 		34263D6A1BD9A3BD00F5063A /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34263D691BD9A3BD00F5063A /* Errors.swift */; };
 		34263D6C1BD9A4A400F5063A /* EventViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34263D6B1BD9A4A400F5063A /* EventViewModel.swift */; };
 		3443D3391BC44344008AEA28 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3443D3381BC44344008AEA28 /* Assets.xcassets */; };
@@ -35,7 +34,6 @@
 
 /* Begin PBXFileReference section */
 		34263D651BD99B7C00F5063A /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		34263D671BD9A39100F5063A /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		34263D691BD9A3BD00F5063A /* Errors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		34263D6B1BD9A4A400F5063A /* EventViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventViewModel.swift; sourceTree = "<group>"; };
 		3443D32E1BC44344008AEA28 /* TinyKittens.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinyKittens.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -107,7 +105,6 @@
 				348735271BD8147E00DCCE4B /* Controller.swift */,
 				3443D3501BC48075008AEA28 /* Models.swift */,
 				34263D691BD9A3BD00F5063A /* Errors.swift */,
-				34263D671BD9A39100F5063A /* Result.swift */,
 				34263D651BD99B7C00F5063A /* Extensions.swift */,
 				3443D3381BC44344008AEA28 /* Assets.xcassets */,
 				3443D33A1BC44344008AEA28 /* Info.plist */,
@@ -298,7 +295,6 @@
 				34FA52DC1BE737C9003334B3 /* EventPreviewView.swift in Sources */,
 				3443D3551BC5EE41008AEA28 /* ViewModelProtocols.swift in Sources */,
 				3443D3511BC48075008AEA28 /* Models.swift in Sources */,
-				34263D681BD9A39100F5063A /* Result.swift in Sources */,
 				34FA52DE1BE7FDFA003334B3 /* ImageTitleDescriptionCell.swift in Sources */,
 				34263D6A1BD9A3BD00F5063A /* Errors.swift in Sources */,
 				34FA52DA1BE435EB003334B3 /* EventsTableViewController.swift in Sources */,

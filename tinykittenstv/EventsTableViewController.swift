@@ -5,6 +5,7 @@
 
 import UIKit
 import AVKit
+import Result
 
 class EventsTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // MARK: Properties

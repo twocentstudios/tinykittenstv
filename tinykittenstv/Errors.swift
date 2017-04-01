@@ -4,6 +4,7 @@
 //
 
 import Foundation
+import Result
 
 public enum EventError : Error {
     case underlyingError(error: NSError)
@@ -27,3 +28,5 @@ public enum EventError : Error {
         }
     }
 }
+
+func toNSError(_ error: AnyError) -> NSError { return error as NSError }
