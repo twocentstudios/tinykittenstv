@@ -33,16 +33,32 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
         
         self.viewData = PageViewData.unloaded
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        
+        self.delegate = self
+        self.dataSource = self
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.red
+        let backgroundView = UIImageView(image: UIImage(named: "LaunchImage"))
+        self.view.addSubview(backgroundView)
+        self.view.sendSubview(toBack: backgroundView)
+        
+        let playButtonTapGesture = UITapGestureRecognizer()
+        playButtonTapGesture.addTarget(self, action: #selector(didTapPlayPause))
+        playButtonTapGesture.allowedPressTypes = [NSNumber(value: UIPressType.playPause.rawValue as Int)];
+        self.view.addGestureRecognizer(playButtonTapGesture)
+    }
+    
+    func didTapPlayPause() {
+        guard let videoViewController = self.viewControllers?.first as? VideoViewController else { return }
+        videoViewController.togglePlayPause()
+        // show/hide UI
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,7 +71,7 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
                 guard let this = self else { return }
                 switch result {
                 case .success(let searchResult):
-                    let liveVideos = searchResult.liveVideos
+                    let liveVideos = searchResult.liveVideos + searchResult.liveVideos + searchResult.liveVideos
                     this.viewData = .loaded(liveVideos)
                     guard let firstVideoInfo = liveVideos.first else { return }
                     let videoViewController = VideoViewController(videoInfo: firstVideoInfo, client: this.client)
@@ -73,7 +89,7 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
     private func videoInfoAfter(_ videoInfo: LiveVideoInfo) -> LiveVideoInfo? {
         switch viewData {
         case .loaded(let infos):
-            guard let index = infos.index(where: { $0.id == videoInfo.id }) else { return nil }
+            guard let index = videoInfoIndex(videoInfo) else { return nil }
             let nextIndex = index + 1
             if infos.indices.contains(nextIndex) {
                 return infos[nextIndex]
@@ -88,7 +104,7 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
     private func videoInfoBefore(_ videoInfo: LiveVideoInfo) -> LiveVideoInfo? {
         switch viewData {
         case .loaded(let infos):
-            guard let index = infos.index(where: { $0.id == videoInfo.id }) else { return nil }
+            guard let index = videoInfoIndex(videoInfo) else { return nil }
             let nextIndex = index - 1
             if infos.indices.contains(nextIndex) {
                 return infos[nextIndex]
@@ -97,6 +113,23 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
             }
         default:
             return nil
+        }
+    }
+    
+    private func videoInfoIndex(_ videoInfo: LiveVideoInfo) -> Int? {
+        switch viewData {
+        case .loaded(let infos):
+            guard let index = infos.index(where: { $0.id == videoInfo.id }) else { return nil }
+            return index
+        default:
+            return nil
+        }
+    }
+    
+    private func videoInfoCount() -> Int {
+        switch viewData {
+        case .loaded(let infos): return infos.count
+        default: return 0
         }
     }
     
@@ -130,13 +163,26 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
             currentVideoViewController.playVideo()
         }
     }
+    
+    func presentationCount(for pageViewController: UIPageViewController) -> Int {
+        return videoInfoCount()
+    }
+    
+    func presentationIndex(for pageViewController: UIPageViewController) -> Int {
+        guard let videoViewController = viewControllers?.first as? VideoViewController else { return 0 }
+        guard let index = videoInfoIndex(videoViewController.videoInfo) else { return 0 }
+        return index
+    }
+
 }
 
-final class VideoViewController: AVPlayerViewController {
+final class VideoViewController: UIViewController {
     
     let client: XCDYouTubeClient
     let videoInfo: LiveVideoInfo
     private var playWhenReady: Bool = false
+    
+    lazy var playerView: PlayerView = PlayerView()
     
     init(videoInfo: LiveVideoInfo, client: XCDYouTubeClient) {
         self.videoInfo = videoInfo
@@ -149,13 +195,25 @@ final class VideoViewController: AVPlayerViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.addSubview(playerView)
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        playerView.frame = view.bounds
+    }
+    
     func loadVideo() {
         client.rac_getVideoWithIdentifier(videoInfo.id)
             .startWithResult { [weak self] (result: Result<XCDYouTubeVideo, NSError>) in
                 guard let this = self else { return }
                 guard let streamUrl = result.value?.streamURLs[XCDYouTubeVideoQualityHTTPLiveStreaming] else { return }
                 let player = AVPlayer(url: streamUrl)
-                this.player = player
+                this.playerView.player = player
                 if this.playWhenReady == true {
                     player.play()
                 }
@@ -163,7 +221,7 @@ final class VideoViewController: AVPlayerViewController {
     }
     
     func playVideo() {
-        guard let player = self.player else {
+        guard let player = self.playerView.player else {
             self.playWhenReady = true
             return
         }
@@ -171,7 +229,13 @@ final class VideoViewController: AVPlayerViewController {
     }
     
     func stopVideo() {
-        self.player?.pause()
+        self.playerView.player?.pause()
+    }
+    
+    func togglePlayPause() {
+        guard let player = self.playerView.player else { return }
+        let playState = player.rate == 1
+        playState ? player.pause() : player.play()
     }
 }
 
