@@ -1,6 +1,7 @@
 PODS:
   - Gloss (1.2.4)
   - Marshal (1.2.4)
+  - Mortar (1.1.0)
   - ReactiveCocoa (5.0.1):
     - ReactiveSwift (~> 1.1)
   - ReactiveSwift (1.1.0):
@@ -11,6 +12,7 @@ PODS:
 DEPENDENCIES:
   - Gloss (= 1.2.4)
   - Marshal (= 1.2.4)
+  - Mortar (= 1.1.0)
   - ReactiveCocoa (= 5.0.1)
   - ReactiveSwift (= 1.1.0)
   - XCDYouTubeKit (= 2.5.5)
@@ -18,11 +20,12 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   Gloss: 4e036074610fdb993abcb958ebcd7332588e2333
   Marshal: 8e04e6624e506921db7143b0bfd83caee03f32d6
+  Mortar: a46edf47dab67a9bb9cdb65b3cda6187de0b5ef9
   ReactiveCocoa: f577006aa6c7b0b08020109ebaae3b77ada00adc
   ReactiveSwift: 2f4e4a02e5a5c87ea63f5fe667163ce2a67cbb57
   Result: 2453a22e5c5b11c0c3a478736e82cd02f763b781
   XCDYouTubeKit: 86f4e7a9c2baa7b7adf6abfc28ac3ab34927be2d
 
-PODFILE CHECKSUM: 45b6add3e20b0faa694899d7e437c2c35af8b1a9
+PODFILE CHECKSUM: e83c426d7d31a5fb1cfbc1ce2af8edf8f788a8a1
 
 COCOAPODS: 1.2.0

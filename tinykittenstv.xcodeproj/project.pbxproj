@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3425318D1E94AD4400764177 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3425318C1E94AD4400764177 /* MainViewController.swift */; };
 		34263D661BD99B7C00F5063A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34263D651BD99B7C00F5063A /* Extensions.swift */; };
 		34263D6A1BD9A3BD00F5063A /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34263D691BD9A3BD00F5063A /* Errors.swift */; };
 		34263D6C1BD9A4A400F5063A /* EventViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34263D6B1BD9A4A400F5063A /* EventViewModel.swift */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3425318C1E94AD4400764177 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		34263D651BD99B7C00F5063A /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		34263D691BD9A3BD00F5063A /* Errors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		34263D6B1BD9A4A400F5063A /* EventViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventViewModel.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				3445294C1BDACB76003066E9 /* AppDelegate.swift */,
+				3425318C1E94AD4400764177 /* MainViewController.swift */,
 				34FA52D91BE435EB003334B3 /* EventsTableViewController.swift */,
 				34FA52DD1BE7FDFA003334B3 /* ImageTitleDescriptionCell.swift */,
 				34FA52DB1BE737C9003334B3 /* EventPreviewView.swift */,
@@ -304,6 +307,7 @@
 				34FA52DA1BE435EB003334B3 /* EventsTableViewController.swift in Sources */,
 				3445294D1BDACB76003066E9 /* AppDelegate.swift in Sources */,
 				34263D661BD99B7C00F5063A /* Extensions.swift in Sources */,
+				3425318D1E94AD4400764177 /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,6 +457,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = twocentstudios.livestreamTests;
 				PRODUCT_NAME = tinykittenstvTests;
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TinyKittens.app/TinyKittens";
 			};
 			name = Debug;
@@ -465,6 +470,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = twocentstudios.livestreamTests;
 				PRODUCT_NAME = tinykittenstvTests;
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TinyKittens.app/TinyKittens";
 			};
 			name = Release;
