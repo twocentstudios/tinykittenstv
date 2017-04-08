@@ -13,14 +13,6 @@ import ReactiveSwift
 import ReactiveCocoa
 import Result
 
-enum PageViewData {
-    case unloaded
-    case loading
-    case loaded([LiveVideoInfo])
-    case empty
-    case failed(NSError)
-}
-
 enum UserPlayState {
     case pause
     case play
@@ -35,11 +27,19 @@ enum UserPlayState {
 
 final class PageViewController: UIPageViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
     
+    enum ViewData {
+        case unloaded
+        case loading
+        case loaded([LiveVideoInfo])
+        case empty
+        case failed(NSError)
+    }
+    
     let channelId: String
     let sessionConfig: SessionConfig
     let client: XCDYouTubeClient
     
-    let viewData: Property<PageViewData>
+    let viewData: Property<ViewData>
     let userPlayState = MutableProperty(UserPlayState.play)
     
     let fetchAction: Action<(), LiveVideosSearchResult, NSError>
@@ -54,9 +54,9 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
                 .start(on: QueueScheduler())
         }
     
-        let loadings = fetchAction.isExecuting.signal.filter({ $0 }).map({ _ in PageViewData.loading })
-        let errors = fetchAction.errors.map { PageViewData.failed($0) }
-        let values = fetchAction.values.map { $0.liveVideos.count == 0 ? PageViewData.empty : PageViewData.loaded($0.liveVideos) }
+        let loadings = fetchAction.isExecuting.signal.filter({ $0 }).map({ _ in ViewData.loading })
+        let errors = fetchAction.errors.map { ViewData.failed($0) }
+        let values = fetchAction.values.map { $0.liveVideos.count == 0 ? ViewData.empty : ViewData.loaded($0.liveVideos) }
         let merged = SignalProducer([loadings, errors, values]).flatten(.merge)
         self.viewData = ReactiveSwift.Property(initial: .unloaded, then: merged)
         
@@ -91,7 +91,7 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
         viewData.producer
             // TODO: isEqual
             .observe(on: UIScheduler())
-            .startWithValues { [weak self] (viewData: PageViewData) in
+            .startWithValues { [weak self] (viewData: ViewData) in
                 switch viewData {
                 case .unloaded:
                     break
