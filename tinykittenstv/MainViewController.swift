@@ -60,6 +60,13 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
         let merged = SignalProducer([loadings, errors, values]).flatten(.merge)
         self.viewData = ReactiveSwift.Property(initial: .unloaded, then: merged)
         
+        // TODO: move signal outside this class
+        NotificationCenter.default.reactive.notifications(forName: NSNotification.Name.UIApplicationDidBecomeActive)
+            .skip(first: 1)
+            .observeValues { [weak fetchAction] _ in
+                fetchAction?.apply(()).start()
+            }
+        
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         
         self.delegate = self
