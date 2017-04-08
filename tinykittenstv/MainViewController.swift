@@ -52,7 +52,6 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
         fetchAction = Action { _ -> SignalProducer<LiveVideosSearchResult, NSError> in
             return Controller.fetchLiveVideos(channelId: channelId, config: sessionConfig)
                 .start(on: QueueScheduler())
-                .delay(5, on: QueueScheduler())
         }
     
         let loadings = fetchAction.isExecuting.signal.filter({ $0 }).map({ _ in PageViewData.loading })
@@ -99,7 +98,6 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
                     let vc = InfoViewController(.error(error.localizedDescription))
                     self?.setViewControllers([vc], direction: .forward, animated: false, completion: nil)
                 case .loaded(let liveVideoInfos):
-                    return
                     guard let firstVideoInfo = liveVideoInfos.first else { return }
                     guard let this = self else { return }
                     let vc = VideoViewController(videoInfo: firstVideoInfo, client: this.client)
@@ -331,7 +329,7 @@ final class InfoViewController: UIViewController {
     
     let infoLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1) // UIFont.systemFont(ofSize: 24, weight: UIFontWeightSemibold)
+        label.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title2)
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
@@ -352,13 +350,8 @@ final class InfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
-                
-        view |+| [ blurView]
-        blurView.contentView |+| [ infoLabel ]
-        
-        blurView |=| view
-        infoLabel |=| blurView.m_edges ~ (80, 80, 80, 80)
+        view |+| [ infoLabel ]
+        infoLabel |=| view.m_edges ~ (80, 80, 80, 80)
         
         switch viewData {
         case .normal(let text):
