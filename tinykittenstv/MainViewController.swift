@@ -10,13 +10,27 @@ import UIKit
 import AVKit
 import XCDYouTubeKit
 import ReactiveSwift
+import ReactiveCocoa
 import Result
 
 enum PageViewData {
     case unloaded
     case loading
     case loaded([LiveVideoInfo])
-    case errored(NSError)
+    case empty
+    case failed(NSError)
+}
+
+enum UserPlayState {
+    case pause
+    case play
+    
+    func toggle() -> UserPlayState {
+        switch self {
+        case .play: return .pause
+        case .pause: return .play
+        }
+    }
 }
 
 final class PageViewController: UIPageViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
@@ -24,14 +38,29 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
     let channelId: String
     let sessionConfig: SessionConfig
     let client: XCDYouTubeClient
-    var viewData: PageViewData
+    
+    let viewData: Property<PageViewData>
+    let userPlayState = MutableProperty(UserPlayState.play)
+    
+    let fetchAction: Action<(), LiveVideosSearchResult, NSError>
     
     init(channelId: String, sessionConfig: SessionConfig, client: XCDYouTubeClient) {
         self.channelId = channelId
         self.sessionConfig = sessionConfig
         self.client = client
         
-        self.viewData = PageViewData.unloaded
+        fetchAction = Action { _ -> SignalProducer<LiveVideosSearchResult, NSError> in
+            return Controller.fetchLiveVideos(channelId: channelId, config: sessionConfig)
+                .start(on: QueueScheduler())
+                .delay(5, on: QueueScheduler())
+        }
+    
+        let loadings = fetchAction.isExecuting.signal.filter({ $0 }).map({ _ in PageViewData.loading })
+        let errors = fetchAction.errors.map { PageViewData.failed($0) }
+        let values = fetchAction.values.map { $0.liveVideos.count == 0 ? PageViewData.empty : PageViewData.loaded($0.liveVideos) }
+        let merged = SignalProducer([loadings, errors, values]).flatten(.merge)
+        self.viewData = ReactiveSwift.Property(initial: .unloaded, then: merged)
+        
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         
         self.delegate = self
@@ -50,44 +79,62 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
         self.view.sendSubview(toBack: backgroundView)
         
         let playButtonTapGesture = UITapGestureRecognizer()
-        playButtonTapGesture.addTarget(self, action: #selector(didTapPlayPause))
-        playButtonTapGesture.allowedPressTypes = [NSNumber(value: UIPressType.playPause.rawValue as Int)];
+        playButtonTapGesture.allowedPressTypes = [NSNumber(value: UIPressType.playPause.rawValue as Int), NSNumber(value: UIPressType.select.rawValue as Int)];
         self.view.addGestureRecognizer(playButtonTapGesture)
-    }
-    
-    func didTapPlayPause() {
-        guard let videoViewController = self.viewControllers?.first as? VideoViewController else { return }
-        videoViewController.togglePlayPause()
-        // show/hide UI
+        
+        viewData.producer
+            // TODO: isEqual
+            .observe(on: UIScheduler())
+            .startWithValues { [weak self] (viewData: PageViewData) in
+                switch viewData {
+                case .unloaded:
+                    break
+                case .empty:
+                    let vc = InfoViewController(.normal("No streams are currently active."))
+                    self?.setViewControllers([vc], direction: .forward, animated: false, completion: nil)
+                case .loading:
+                    let vc = InfoViewController(.normal("Loading..."))
+                    self?.setViewControllers([vc], direction: .forward, animated: false, completion: nil)
+                case .failed(let error):
+                    let vc = InfoViewController(.error(error.localizedDescription))
+                    self?.setViewControllers([vc], direction: .forward, animated: false, completion: nil)
+                case .loaded(let liveVideoInfos):
+                    return
+                    guard let firstVideoInfo = liveVideoInfos.first else { return }
+                    guard let this = self else { return }
+                    let vc = VideoViewController(videoInfo: firstVideoInfo, client: this.client)
+                    this.setViewControllers([vc], direction: .forward, animated: false, completion: nil)
+                    vc.viewState.swap(.active)
+                }
+            }
+        
+        playButtonTapGesture.reactive.stateChanged
+            .filterMap({ (gesture: UITapGestureRecognizer) -> ()? in
+                return gesture.state == .recognized ? () : nil
+            })
+            .observeValues { [weak userPlayState] _ in
+                guard let userPlayState = userPlayState else { return }
+                userPlayState.value = userPlayState.value.toggle()
+            }
+        
+        userPlayState.producer
+            .observe(on: UIScheduler())
+            .startWithValues { [weak self] (userPlayState: UserPlayState) in
+                if let currentVideoViewController = self?.viewControllers?.first as? VideoViewController  {
+                    currentVideoViewController.userPlayState.swap(userPlayState)
+                }
+            }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        Controller.fetchLiveVideos(channelId: channelId, config: sessionConfig)
-            .start(on: QueueScheduler())
-            .observe(on: UIScheduler())
-            .startWithResult { [weak self] (result: Result<LiveVideosSearchResult, NSError>) in
-                guard let this = self else { return }
-                switch result {
-                case .success(let searchResult):
-                    let liveVideos = searchResult.liveVideos + searchResult.liveVideos + searchResult.liveVideos
-                    this.viewData = .loaded(liveVideos)
-                    guard let firstVideoInfo = liveVideos.first else { return }
-                    let videoViewController = VideoViewController(videoInfo: firstVideoInfo, client: this.client)
-                    this.setViewControllers([videoViewController], direction: .forward, animated: true, completion: nil)
-                    videoViewController.loadVideo()
-                    videoViewController.playVideo()
-                case .failure(let error):
-                    this.viewData = .errored(error)
-                }
-            }
-        
-        
+        fetchAction.apply(()).start()
     }
     
     private func videoInfoAfter(_ videoInfo: LiveVideoInfo) -> LiveVideoInfo? {
-        switch viewData {
+        switch viewData.value {
         case .loaded(let infos):
             guard let index = videoInfoIndex(videoInfo) else { return nil }
             let nextIndex = index + 1
@@ -102,7 +149,7 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
     }
     
     private func videoInfoBefore(_ videoInfo: LiveVideoInfo) -> LiveVideoInfo? {
-        switch viewData {
+        switch viewData.value {
         case .loaded(let infos):
             guard let index = videoInfoIndex(videoInfo) else { return nil }
             let nextIndex = index - 1
@@ -117,7 +164,7 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
     }
     
     private func videoInfoIndex(_ videoInfo: LiveVideoInfo) -> Int? {
-        switch viewData {
+        switch viewData.value {
         case .loaded(let infos):
             guard let index = infos.index(where: { $0.id == videoInfo.id }) else { return nil }
             return index
@@ -127,7 +174,7 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
     }
     
     private func videoInfoCount() -> Int {
-        switch viewData {
+        switch viewData.value {
         case .loaded(let infos): return infos.count
         default: return 0
         }
@@ -138,6 +185,8 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
         let videoInfo = videoViewController.videoInfo
         guard let nextVideoInfo = videoInfoAfter(videoInfo) else { return nil }
         let newViewController = VideoViewController(videoInfo: nextVideoInfo, client: client)
+        newViewController.viewState.swap(.inactive)
+        newViewController.userPlayState.swap(userPlayState.value)
         return newViewController
     }
     
@@ -146,21 +195,26 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
         let videoInfo = videoViewController.videoInfo
         guard let previousVideoInfo = videoInfoBefore(videoInfo) else { return nil }
         let newViewController = VideoViewController(videoInfo: previousVideoInfo, client: client)
+        newViewController.viewState.swap(.inactive)
+        newViewController.userPlayState.swap(userPlayState.value)
         return newViewController
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
         guard let videoViewController = pendingViewControllers.first as? VideoViewController else { return }
-        videoViewController.loadVideo()
+        videoViewController.viewState.swap(.mayBecomeActive)
+        videoViewController.userPlayState.swap(userPlayState.value)
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if let previousVideoViewController = previousViewControllers.first as? VideoViewController {
-            previousVideoViewController.stopVideo()
+            previousVideoViewController.viewState.swap(.inactive)
+            previousVideoViewController.userPlayState.swap(userPlayState.value)
         }
         
         if let currentVideoViewController = self.viewControllers?.first as? VideoViewController  {
-            currentVideoViewController.playVideo()
+            currentVideoViewController.viewState.swap(.active)
+            currentVideoViewController.userPlayState.swap(userPlayState.value)
         }
     }
     
@@ -177,18 +231,79 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
 }
 
 final class VideoViewController: UIViewController {
+ 
+    enum ViewState {
+        case inactive
+        case mayBecomeActive
+        case active
+    }
     
     let client: XCDYouTubeClient
     let videoInfo: LiveVideoInfo
-    private var playWhenReady: Bool = false
     
     lazy var playerView: PlayerView = PlayerView()
+    
+    let userPlayState = MutableProperty(UserPlayState.play)
+    let viewState = MutableProperty(ViewState.inactive)
+    private let player: Property<AVPlayer?>
+    
+    private let fetchAction: Action<(), XCDYouTubeVideo, NSError>
     
     init(videoInfo: LiveVideoInfo, client: XCDYouTubeClient) {
         self.videoInfo = videoInfo
         self.client = client
         
+        fetchAction = Action { _ -> SignalProducer<XCDYouTubeVideo, NSError> in
+            return client.rac_getVideoWithIdentifier(videoInfo.id)
+                .start(on: QueueScheduler())
+        }
+        
+        // TODO: loading/error?
+        // let loadings = fetchAction.isExecuting.signal.filter({ $0 }).map({ _ in ??? })
+        // let errors = fetchAction.errors.map { $0 }
+        let values = fetchAction.values
+            .map { (video: XCDYouTubeVideo) -> URL? in
+                return video.streamURLs[XCDYouTubeVideoQualityHTTPLiveStreaming]
+            }
+            .skipRepeats({ $0 == $1 })
+            .map { (url: URL?) -> AVPlayer? in
+                guard let url = url else { return nil }
+                let player = AVPlayer(url: url)
+                return player
+            }
+        self.player = ReactiveSwift.Property(initial: nil, then: values)
+        
         super.init(nibName: nil, bundle: nil)
+        
+        self.player.producer
+            .observe(on: UIScheduler())
+            .startWithValues { [weak playerView] (player: AVPlayer?) in
+                playerView?.player = player
+            }
+        
+        // TODO: may have to account for player error state to detect stale URL
+        SignalProducer.combineLatest(player.producer, userPlayState.producer, viewState.producer)
+            .startWithValues { [weak self] (player: AVPlayer?, userPlayState: UserPlayState, viewState: ViewState) in
+                if let player = player {
+                    switch (userPlayState, viewState) {
+                    case (_, .inactive):
+                        player.pause()
+                    case (_, .mayBecomeActive):
+                        player.pause()
+                    case (.play, .active):
+                        player.play()
+                    case (.pause, .active):
+                        player.pause()
+                    }
+                } else {
+                    switch viewState {
+                    case .mayBecomeActive, .active:
+                        self?.fetchAction.apply(()).start()
+                    case .inactive:
+                        break
+                    }
+                }
+            }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -206,36 +321,53 @@ final class VideoViewController: UIViewController {
         
         playerView.frame = view.bounds
     }
-    
-    func loadVideo() {
-        client.rac_getVideoWithIdentifier(videoInfo.id)
-            .startWithResult { [weak self] (result: Result<XCDYouTubeVideo, NSError>) in
-                guard let this = self else { return }
-                guard let streamUrl = result.value?.streamURLs[XCDYouTubeVideoQualityHTTPLiveStreaming] else { return }
-                let player = AVPlayer(url: streamUrl)
-                this.playerView.player = player
-                if this.playWhenReady == true {
-                    player.play()
-                }
-            }
+}
+
+final class InfoViewController: UIViewController {
+    enum ViewData {
+        case normal(String)
+        case error(String)
     }
     
-    func playVideo() {
-        guard let player = self.playerView.player else {
-            self.playWhenReady = true
-            return
+    let infoLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1) // UIFont.systemFont(ofSize: 24, weight: UIFontWeightSemibold)
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        return label
+    }()
+    
+    let viewData: ViewData
+    
+    init(_ viewData: ViewData) {
+        self.viewData = viewData
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+                
+        view |+| [ blurView]
+        blurView.contentView |+| [ infoLabel ]
+        
+        blurView |=| view
+        infoLabel |=| blurView.m_edges ~ (80, 80, 80, 80)
+        
+        switch viewData {
+        case .normal(let text):
+            infoLabel.text = text
+            infoLabel.textColor = UIColor.black
+        case .error(let text):
+            infoLabel.text = text
+            infoLabel.textColor = UIColor.red
         }
-        player.play()
-    }
-    
-    func stopVideo() {
-        self.playerView.player?.pause()
-    }
-    
-    func togglePlayPause() {
-        guard let player = self.playerView.player else { return }
-        let playState = player.rate == 1
-        playState ? player.pause() : player.play()
     }
 }
 
