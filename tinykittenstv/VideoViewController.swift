@@ -108,10 +108,15 @@ final class VideoViewController: UIViewController {
         
         userPlayState.producer
             .startWithValues { [unowned descriptionView] (playState: UserPlayState) in
-                switch playState {
-                case .play: descriptionView.isHidden = true
-                case .pause: descriptionView.isHidden = false
-                }
+                let toAlpha: CGFloat = {
+                    switch playState {
+                    case .play: return 0
+                    case .pause: return 1
+                    }
+                }()
+                UIView.animate(withDuration: 0.2, animations: { 
+                    descriptionView.alpha = toAlpha
+                })
             }
     }
 }
