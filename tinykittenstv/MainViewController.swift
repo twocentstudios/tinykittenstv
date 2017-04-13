@@ -446,9 +446,7 @@ final class VideoDescriptionView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        self.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        
+                    
         titleLabel.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1)
         descriptionLabel.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title3)
         
@@ -462,8 +460,13 @@ final class VideoDescriptionView: UIView {
         descriptionLabel.textColor = UIColor.white
         
         let view = self
+        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
         
         view |+| [
+            blurView
+        ]
+        
+        blurView.contentView |+| [
             titleLabel,
             descriptionLabel
         ]
@@ -471,6 +474,7 @@ final class VideoDescriptionView: UIView {
         let vMargin = 60
         let hMargin = 40
         
+        blurView |=| view
         titleLabel.m_top |=| view.m_top + vMargin
         descriptionLabel.m_top |=| titleLabel.m_bottom + vMargin
         descriptionLabel.m_bottom |=| view.m_bottom - vMargin ! .low
