@@ -25,6 +25,18 @@ enum UserPlayState {
     }
 }
 
+extension PageViewController.ViewData: Equatable {}
+func ==(lhs: PageViewController.ViewData, rhs: PageViewController.ViewData) -> Bool {
+    switch (lhs, rhs) {
+    case (.loaded(let lhsVideos), .loaded(let rhsVideos)) where lhsVideos == rhsVideos: return true
+    case (.failed(let lhsError), .failed(let rhsError)) where lhsError == rhsError: return true
+    case (.unloaded, .unloaded): return true
+    case (.empty, .empty): return true
+    case (.loading, .loading): return true
+    default: return false
+    }
+}
+
 final class PageViewController: UIPageViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
     
     enum ViewData {
@@ -89,7 +101,7 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
         self.view.addGestureRecognizer(playButtonTapGesture)
         
         viewData.producer
-            // TODO: isEqual
+            .skipRepeats()
             .observe(on: UIScheduler())
             .startWithValues { [weak self] (viewData: ViewData) in
                 switch viewData {

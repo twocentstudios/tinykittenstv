@@ -50,6 +50,17 @@ struct LiveVideoInfo: Unmarshaling {
     }
 }
 
+extension LiveVideoInfo: Equatable {}
+func ==(lhs: LiveVideoInfo, rhs: LiveVideoInfo) -> Bool {
+    return lhs.id == rhs.id &&
+        lhs.kind == rhs.kind &&
+        lhs.channelId == rhs.channelId &&
+        lhs.channelTitle == rhs.channelTitle &&
+        lhs.title == rhs.title &&
+        lhs.description == rhs.description &&
+        lhs.status == rhs.status
+}
+
 struct Image {
     let url: URL
     let width: Double
