@@ -141,24 +141,7 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
                     currentVideoViewController.userPlayState.swap(userPlayState)
                 }
             }
-        
-        userPlayState.producer
-            .observe(on: UIScheduler())
-            .startWithValues { [weak self] (playState: UserPlayState) in
-                switch playState {
-                case .play:
-                    if self?.presentedViewController != nil {
-                        self?.dismiss(animated: true, completion: nil)
-                    }
-                case .pause:
-                    if let videoViewController = self?.viewControllers?.first as? VideoViewController {
-                        let video = videoViewController.videoInfo
-                        let videoDescriptionController = VideoDescriptionViewController(video: video)
-                        self?.present(videoDescriptionController, animated: true, completion: nil)
-                    }
-                }
-            }
-        
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -276,6 +259,7 @@ final class VideoViewController: UIViewController {
     let videoInfo: LiveVideoInfo
     
     lazy var playerView: PlayerView = PlayerView()
+    lazy var descriptionView: VideoDescriptionView = VideoDescriptionView()
     
     let userPlayState = MutableProperty(UserPlayState.play)
     let viewState = MutableProperty(ViewState.inactive)
@@ -347,13 +331,22 @@ final class VideoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(playerView)
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+        view |+| [
+            playerView,
+            descriptionView
+        ]
         
-        playerView.frame = view.bounds
+        [playerView, descriptionView] |=| view
+        
+        descriptionView.viewData = VideoDescriptionViewData(title: videoInfo.title, description: videoInfo.description)
+        
+        userPlayState.producer
+            .startWithValues { [unowned descriptionView] (playState: UserPlayState) in
+                switch playState {
+                case .play: descriptionView.isHidden = true
+                case .pause: descriptionView.isHidden = false
+                }
+            }
     }
 }
 
@@ -454,6 +447,8 @@ final class VideoDescriptionView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        self.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        
         titleLabel.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1)
         descriptionLabel.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title3)
         
@@ -475,7 +470,7 @@ final class VideoDescriptionView: UIView {
         
         let vMargin = 60
         let hMargin = 40
-                
+        
         titleLabel.m_top |=| view.m_top + vMargin
         descriptionLabel.m_top |=| titleLabel.m_bottom + vMargin
         descriptionLabel.m_bottom |=| view.m_bottom - vMargin ! .low
