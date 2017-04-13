@@ -1,28 +1,30 @@
 PODS:
   - Marshal (1.2.4)
-  - Mortar (1.1.0)
-  - ReactiveCocoa (5.0.1):
+  - Mortar (1.2.1):
+    - Mortar/Core (= 1.2.1)
+  - Mortar/Core (1.2.1)
+  - ReactiveCocoa (5.0.3):
     - ReactiveSwift (~> 1.1)
-  - ReactiveSwift (1.1.0):
-    - Result (~> 3.1)
+  - ReactiveSwift (1.1.1):
+    - Result (~> 3.2)
   - Result (3.2.1)
   - XCDYouTubeKit (2.5.5)
 
 DEPENDENCIES:
   - Marshal (= 1.2.4)
-  - Mortar (= 1.1.0)
-  - ReactiveCocoa (= 5.0.1)
-  - ReactiveSwift (= 1.1.0)
+  - Mortar (= 1.2.1)
+  - ReactiveCocoa (= 5.0.3)
+  - ReactiveSwift (= 1.1.1)
   - XCDYouTubeKit (= 2.5.5)
 
 SPEC CHECKSUMS:
   Marshal: 8e04e6624e506921db7143b0bfd83caee03f32d6
-  Mortar: a46edf47dab67a9bb9cdb65b3cda6187de0b5ef9
-  ReactiveCocoa: f577006aa6c7b0b08020109ebaae3b77ada00adc
-  ReactiveSwift: 2f4e4a02e5a5c87ea63f5fe667163ce2a67cbb57
+  Mortar: 04cfd53b4c6560f34fb9fb54393bdbb7686b5fa2
+  ReactiveCocoa: 066a855f613fb72f68258771095805fdb10312d2
+  ReactiveSwift: 2489549e3231a6ff68ec99f3d320bb264f10ba0a
   Result: 2453a22e5c5b11c0c3a478736e82cd02f763b781
   XCDYouTubeKit: 86f4e7a9c2baa7b7adf6abfc28ac3ab34927be2d
 
-PODFILE CHECKSUM: cea83c242fd9ebf8ddd4297d7f6c60dfa4c849b7
+PODFILE CHECKSUM: 368cc9af1faecb5c32c55fa30da6a794367ae7d6
 
 COCOAPODS: 1.2.0
