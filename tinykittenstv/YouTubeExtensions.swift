@@ -17,7 +17,7 @@ extension XCDYouTubeClient {
     func rac_getVideoWithIdentifier(_ videoIdentifier: String) -> SignalProducer<XCDYouTubeVideo, NSError> {
         return SignalProducer({ (observer: Observer<XCDYouTubeVideo, NSError>, disposable: CompositeDisposable) in
             let operation = self.getVideoWithIdentifier(videoIdentifier, completionHandler: { (maybeVideo: XCDYouTubeVideo?, error: Error?) in
-                if let error = error as? NSError {
+                if let error = error as NSError? {
                     observer.send(error: error)
                 } else if let video = maybeVideo {
                     observer.send(value: video)
