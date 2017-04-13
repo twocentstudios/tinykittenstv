@@ -142,6 +142,23 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
                 }
             }
         
+        userPlayState.producer
+            .observe(on: UIScheduler())
+            .startWithValues { [weak self] (playState: UserPlayState) in
+                switch playState {
+                case .play:
+                    if self?.presentedViewController != nil {
+                        self?.dismiss(animated: true, completion: nil)
+                    }
+                case .pause:
+                    if let videoViewController = self?.viewControllers?.first as? VideoViewController {
+                        let video = videoViewController.videoInfo
+                        let videoDescriptionController = VideoDescriptionViewController(video: video)
+                        self?.present(videoDescriptionController, animated: true, completion: nil)
+                    }
+                }
+            }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -383,11 +400,19 @@ final class InfoViewController: UIViewController {
     }
 }
 
-final class MainViewController: UIViewController {
+struct VideoDescriptionViewData {
+    let title: String
+    let description: String
+}
+
+import Mortar
+
+final class VideoDescriptionViewController: UIViewController {
+    let video: LiveVideoInfo
     
-    lazy var playerView: PlayerView = PlayerView()
-    
-    init() {
+    init(video: LiveVideoInfo) {
+        self.video = video
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -397,73 +422,23 @@ final class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    
-    func pause() {
         
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        
+        let viewData = VideoDescriptionViewData(title: video.title, description: video.description)
+        
+        let videoView = VideoDescriptionView()
+        videoView.viewData = viewData
+        
+        view |+| [
+            videoView
+        ]
+        
+        videoView |=| view
     }
 }
 
-final class CollectionViewController: UICollectionViewController {
-    
-    private let videos: [LiveVideoInfo]
-    private weak var delegate: NSObject?
-    
-    init(videos: [LiveVideoInfo], initialSelectedIndex: Int) {
-        // TODO: check bounds of initialSelectedIndex
-        
-        self.videos = videos
-        
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 700, height: 700)
-        layout.minimumInteritemSpacing = 40
-        super.init(collectionViewLayout: layout)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        let collectionView = self.collectionView!
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.register(VideoDescriptionCell.self, forCellWithReuseIdentifier: VideoDescriptionCell.reuseIdentifier)
-        
-        collectionView.backgroundColor = UIColor.clear
-    }
-    
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return videos.count
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        fatalError()
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let video = videos[indexPath.item]
-        // delegate
-    }
-}
-
-struct VideoDescriptionViewData {
-    let title: String
-    let description: String
-}
-
-import Mortar
-
-final class VideoDescriptionCell: UICollectionViewCell {
-    
-    static let reuseIdentifier = String(describing: VideoDescriptionCell.self)
+final class VideoDescriptionView: UIView {
     
     let titleLabel = UILabel()
     let descriptionLabel = UILabel()
@@ -479,32 +454,37 @@ final class VideoDescriptionCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        titleLabel.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1)
+        descriptionLabel.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title3)
+        
         titleLabel.textAlignment = .center
         descriptionLabel.textAlignment = .center
         
         titleLabel.numberOfLines = 0
         descriptionLabel.numberOfLines = 0
+
+        titleLabel.textColor = UIColor.white
+        descriptionLabel.textColor = UIColor.white
         
-        contentView |+| [
+        let view = self
+        
+        view |+| [
             titleLabel,
             descriptionLabel
         ]
         
-        titleLabel.m_top |=| contentView.m_top
-        descriptionLabel.m_top |=| titleLabel.m_bottom + 20
-        descriptionLabel.m_bottom |=| contentView.m_bottom
-        [titleLabel.m_leading, titleLabel.m_trailing] |=| [contentView.m_leading + 10, contentView.m_trailing + 10]
-        [descriptionLabel.m_leading, descriptionLabel.m_trailing] |=| [contentView.m_leading + 10, contentView.m_trailing + 10]
+        let vMargin = 60
+        let hMargin = 40
+                
+        titleLabel.m_top |=| view.m_top + vMargin
+        descriptionLabel.m_top |=| titleLabel.m_bottom + vMargin
+        descriptionLabel.m_bottom |=| view.m_bottom - vMargin ! .low
+        [titleLabel.m_leading, titleLabel.m_trailing] |=| [view.m_leading + hMargin, view.m_trailing - hMargin]
+        [descriptionLabel.m_leading, descriptionLabel.m_trailing] |=| [view.m_leading + hMargin, view.m_trailing - hMargin]
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        viewData = nil
     }
 }
 
