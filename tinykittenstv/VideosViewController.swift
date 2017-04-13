@@ -1,5 +1,5 @@
 //
-//  MainViewController.swift
+//  VideosViewController.swift
 //  tinykittenstv
 //
 //  Created by Christopher Trott on 4/4/17.
@@ -7,26 +7,13 @@
 //
 
 import UIKit
-import AVKit
 import XCDYouTubeKit
 import ReactiveSwift
 import ReactiveCocoa
 import Result
 
-enum UserPlayState {
-    case pause
-    case play
-    
-    func toggle() -> UserPlayState {
-        switch self {
-        case .play: return .pause
-        case .pause: return .play
-        }
-    }
-}
-
-extension PageViewController.ViewData: Equatable {}
-func ==(lhs: PageViewController.ViewData, rhs: PageViewController.ViewData) -> Bool {
+extension VideosViewController.ViewData: Equatable {}
+func ==(lhs: VideosViewController.ViewData, rhs: VideosViewController.ViewData) -> Bool {
     switch (lhs, rhs) {
     case (.loaded(let lhsVideos), .loaded(let rhsVideos)) where lhsVideos == rhsVideos: return true
     case (.failed(let lhsError), .failed(let rhsError)) where lhsError == rhsError: return true
@@ -37,7 +24,7 @@ func ==(lhs: PageViewController.ViewData, rhs: PageViewController.ViewData) -> B
     }
 }
 
-final class PageViewController: UIPageViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
+final class VideosViewController: UIPageViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
     
     enum ViewData {
         case unloaded
@@ -244,267 +231,5 @@ final class PageViewController: UIPageViewController, UIPageViewControllerDelega
         guard let index = videoInfoIndex(videoViewController.videoInfo) else { return 0 }
         return index
     }
-
 }
 
-final class VideoViewController: UIViewController {
- 
-    enum ViewState {
-        case inactive
-        case mayBecomeActive
-        case active
-    }
-    
-    let client: XCDYouTubeClient
-    let videoInfo: LiveVideoInfo
-    
-    lazy var playerView: PlayerView = PlayerView()
-    lazy var descriptionView: VideoDescriptionView = VideoDescriptionView()
-    
-    let userPlayState = MutableProperty(UserPlayState.play)
-    let viewState = MutableProperty(ViewState.inactive)
-    private let player: Property<AVPlayer?>
-    
-    private let fetchAction: Action<(), XCDYouTubeVideo, NSError>
-    
-    init(videoInfo: LiveVideoInfo, client: XCDYouTubeClient) {
-        self.videoInfo = videoInfo
-        self.client = client
-        
-        fetchAction = Action { _ -> SignalProducer<XCDYouTubeVideo, NSError> in
-            return client.rac_getVideoWithIdentifier(videoInfo.id)
-                .start(on: QueueScheduler())
-        }
-        
-        // TODO: loading/error?
-        // let loadings = fetchAction.isExecuting.signal.filter({ $0 }).map({ _ in ??? })
-        // let errors = fetchAction.errors.map { $0 }
-        let values = fetchAction.values
-            .map { (video: XCDYouTubeVideo) -> URL? in
-                return video.streamURLs[XCDYouTubeVideoQualityHTTPLiveStreaming]
-            }
-            .skipRepeats({ $0 == $1 })
-            .map { (url: URL?) -> AVPlayer? in
-                guard let url = url else { return nil }
-                let player = AVPlayer(url: url)
-                return player
-            }
-        self.player = ReactiveSwift.Property(initial: nil, then: values)
-        
-        super.init(nibName: nil, bundle: nil)
-        
-        self.player.producer
-            .observe(on: UIScheduler())
-            .startWithValues { [weak playerView] (player: AVPlayer?) in
-                playerView?.player = player
-            }
-        
-        // TODO: may have to account for player error state to detect stale URL
-        SignalProducer.combineLatest(player.producer, userPlayState.producer, viewState.producer)
-            .startWithValues { [weak self] (player: AVPlayer?, userPlayState: UserPlayState, viewState: ViewState) in
-                if let player = player {
-                    switch (userPlayState, viewState) {
-                    case (_, .inactive):
-                        player.pause()
-                    case (_, .mayBecomeActive):
-                        player.pause()
-                    case (.play, .active):
-                        player.play()
-                    case (.pause, .active):
-                        player.pause()
-                    }
-                } else {
-                    switch viewState {
-                    case .mayBecomeActive, .active:
-                        self?.fetchAction.apply(()).start()
-                    case .inactive:
-                        break
-                    }
-                }
-            }
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view |+| [
-            playerView,
-            descriptionView
-        ]
-        
-        [playerView, descriptionView] |=| view
-        
-        descriptionView.viewData = VideoDescriptionViewData(title: videoInfo.title, description: videoInfo.description)
-        
-        userPlayState.producer
-            .startWithValues { [unowned descriptionView] (playState: UserPlayState) in
-                switch playState {
-                case .play: descriptionView.isHidden = true
-                case .pause: descriptionView.isHidden = false
-                }
-            }
-    }
-}
-
-final class InfoViewController: UIViewController {
-    enum ViewData {
-        case normal(String)
-        case error(String)
-    }
-    
-    let infoLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title2)
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        return label
-    }()
-    
-    let viewData: ViewData
-    
-    init(_ viewData: ViewData) {
-        self.viewData = viewData
-        
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view |+| [ infoLabel ]
-        infoLabel |=| view.m_edges ~ (80, 80, 80, 80)
-        
-        switch viewData {
-        case .normal(let text):
-            infoLabel.text = text
-            infoLabel.textColor = UIColor.black
-        case .error(let text):
-            infoLabel.text = text
-            infoLabel.textColor = UIColor.red
-        }
-    }
-}
-
-struct VideoDescriptionViewData {
-    let title: String
-    let description: String
-}
-
-import Mortar
-
-final class VideoDescriptionViewController: UIViewController {
-    let video: LiveVideoInfo
-    
-    init(video: LiveVideoInfo) {
-        self.video = video
-        
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        
-        let viewData = VideoDescriptionViewData(title: video.title, description: video.description)
-        
-        let videoView = VideoDescriptionView()
-        videoView.viewData = viewData
-        
-        view |+| [
-            videoView
-        ]
-        
-        videoView |=| view
-    }
-}
-
-final class VideoDescriptionView: UIView {
-    
-    let titleLabel = UILabel()
-    let descriptionLabel = UILabel()
-    
-    var viewData: VideoDescriptionViewData? {
-        didSet {
-            titleLabel.text = viewData?.title
-            descriptionLabel.text = viewData?.description
-            self.setNeedsLayout()
-        }
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-                    
-        titleLabel.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1)
-        descriptionLabel.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title3)
-        
-        titleLabel.textAlignment = .center
-        descriptionLabel.textAlignment = .center
-        
-        titleLabel.numberOfLines = 0
-        descriptionLabel.numberOfLines = 0
-
-        titleLabel.textColor = UIColor.white
-        descriptionLabel.textColor = UIColor.white
-        
-        let view = self
-        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-        
-        view |+| [
-            blurView
-        ]
-        
-        blurView.contentView |+| [
-            titleLabel,
-            descriptionLabel
-        ]
-        
-        let vMargin = 60
-        let hMargin = 40
-        
-        blurView |=| view
-        titleLabel.m_top |=| view.m_top + vMargin
-        descriptionLabel.m_top |=| titleLabel.m_bottom + vMargin
-        descriptionLabel.m_bottom |=| view.m_bottom - vMargin ! .low
-        [titleLabel.m_leading, titleLabel.m_trailing] |=| [view.m_leading + hMargin, view.m_trailing - hMargin]
-        [descriptionLabel.m_leading, descriptionLabel.m_trailing] |=| [view.m_leading + hMargin, view.m_trailing - hMargin]
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-import AVFoundation
-
-final class PlayerView: UIView {
-    var player: AVPlayer? {
-        get {
-            return playerLayer.player
-        }
-        
-        set {
-            playerLayer.player = newValue
-        }
-    }
-    
-    var playerLayer: AVPlayerLayer {
-        return layer as! AVPlayerLayer
-    }
-    
-    override class var layerClass: AnyClass {
-        return AVPlayerLayer.self
-    }
-}

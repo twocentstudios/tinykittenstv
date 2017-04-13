@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let channelId = "UCeL2LSl91k2VccR7XEh5IKg"
         let sessionConfig = SessionConfig(configuration: URLSessionConfiguration.default, apiKey: "AIzaSyCc5OhZCaWp0L95UrbmwpB1DJ9F6anA_aE")
-        let pageViewController = PageViewController(channelId: channelId, sessionConfig: sessionConfig, client: XCDYouTubeClient.default())
+        let pageViewController = VideosViewController(channelId: channelId, sessionConfig: sessionConfig, client: XCDYouTubeClient.default())
         self.window?.rootViewController = pageViewController
         
         self.window?.makeKeyAndVisible()

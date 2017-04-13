@@ -4,9 +4,7 @@
 //
 
 import Foundation
-import Gloss
 import Marshal
-
 
 // GET https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCeL2LSl91k2VccR7XEh5IKg&eventType=live&type=video&key=YOUR_KEY&maxResults=50
 struct LiveVideosSearchResult: Unmarshaling {
