@@ -21,6 +21,7 @@
 		34B0AF9F1EA027AD0096CBAE /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B0AF9E1EA027AD0096CBAE /* InfoViewController.swift */; };
 		34B0AFA11EA027E90096CBAE /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B0AFA01EA027E90096CBAE /* VideoViewController.swift */; };
 		34B0AFA31EA0280D0096CBAE /* UserPlayState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B0AFA21EA0280D0096CBAE /* UserPlayState.swift */; };
+		34B0AFA51EA02E270096CBAE /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B0AFA41EA02E270096CBAE /* Secrets.swift */; };
 		7382C0E7FD2191161A66DBBE /* Pods_tinykittenstv.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8EBE7FFD0CE4BD405137CF0 /* Pods_tinykittenstv.framework */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +54,7 @@
 		34B0AF9E1EA027AD0096CBAE /* InfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		34B0AFA01EA027E90096CBAE /* VideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
 		34B0AFA21EA0280D0096CBAE /* UserPlayState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserPlayState.swift; sourceTree = "<group>"; };
+		34B0AFA41EA02E270096CBAE /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		A68D5BDAA613DA06922CF9F8 /* Pods-tinykittenstv.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tinykittenstv.release.xcconfig"; path = "Pods/Target Support Files/Pods-tinykittenstv/Pods-tinykittenstv.release.xcconfig"; sourceTree = "<group>"; };
 		C8EBE7FFD0CE4BD405137CF0 /* Pods_tinykittenstv.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tinykittenstv.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDA69BA1D3FCD737BD3A7775 /* Pods-tinykittenstv.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tinykittenstv.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tinykittenstv/Pods-tinykittenstv.debug.xcconfig"; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				34263D691BD9A3BD00F5063A /* Errors.swift */,
 				34263D651BD99B7C00F5063A /* Extensions.swift */,
 				348D22031E8FBB6800393990 /* YouTubeExtensions.swift */,
+				34B0AFA41EA02E270096CBAE /* Secrets.swift */,
 				3443D3381BC44344008AEA28 /* Assets.xcassets */,
 				3443D33A1BC44344008AEA28 /* Info.plist */,
 			);
@@ -307,6 +310,7 @@
 				348D22041E8FBB6800393990 /* YouTubeExtensions.swift in Sources */,
 				3445294D1BDACB76003066E9 /* AppDelegate.swift in Sources */,
 				34263D661BD99B7C00F5063A /* Extensions.swift in Sources */,
+				34B0AFA51EA02E270096CBAE /* Secrets.swift in Sources */,
 				3425318D1E94AD4400764177 /* VideosViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

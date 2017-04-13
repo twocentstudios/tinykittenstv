@@ -15,3 +15,5 @@ DerivedData
 *.ipa
 *.xcuserstate
 Pods/
+
+tinykittenstv/Secrets.swift
