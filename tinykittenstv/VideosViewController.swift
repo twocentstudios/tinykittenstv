@@ -83,10 +83,10 @@ final class VideosViewController: UIPageViewController {
                 case .unloaded:
                     break
                 case .empty:
-                    let vc = InfoViewController(.normal("No streams are currently active."))
+                    let vc = InfoViewController(.normal("No streams are currently active.".l10()))
                     self?.setViewControllers([vc], direction: .forward, animated: false, completion: nil)
                 case .loading:
-                    let vc = InfoViewController(.normal("Loading..."))
+                    let vc = InfoViewController(.normal("Loading...".l10()))
                     self?.setViewControllers([vc], direction: .forward, animated: false, completion: nil)
                 case .failed(let error):
                     let vc = InfoViewController(.error(error.localizedDescription))
