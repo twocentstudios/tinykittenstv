@@ -109,6 +109,7 @@ final class VideosViewController: UIPageViewController, UIPageViewControllerDele
                     let vc = VideoViewController(videoInfo: firstVideoInfo, client: this.client)
                     this.setViewControllers([vc], direction: .forward, animated: false, completion: nil)
                     vc.viewState.swap(.active)
+                    this.flashPageControl()
                 }
             }
         
@@ -128,13 +129,35 @@ final class VideosViewController: UIPageViewController, UIPageViewControllerDele
                     currentVideoViewController.userPlayState.swap(userPlayState)
                 }
             }
-
+        
+        if let pageControl = findPageControl() {
+            pageControl.hidesForSinglePage = true
+            pageControl.alpha = 0
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         fetchAction.apply(()).start()
+    }
+    
+    private func findPageControl() -> UIPageControl? {
+        return self.view.subviews.first(where: { (pageControl: UIView) -> Bool in
+            return pageControl is UIPageControl
+        }) as? UIPageControl
+    }
+    
+    private func flashPageControl() {
+        guard let pageControl = self.findPageControl() else { return }
+        pageControl.alpha = 0
+        UIView.animate(withDuration: 0.5, delay: 0, options: [], animations: {
+            pageControl.alpha = 1
+        }) { _ in
+            UIView.animate(withDuration: 0.5, delay: 4, options: [], animations: {
+                pageControl.alpha = 0
+            })
+        }
     }
     
     private func videoInfoAfter(_ videoInfo: LiveVideoInfo) -> LiveVideoInfo? {
