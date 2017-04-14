@@ -12,19 +12,7 @@ import ReactiveSwift
 import ReactiveCocoa
 import Result
 
-extension VideosViewController.ViewData: Equatable {}
-func ==(lhs: VideosViewController.ViewData, rhs: VideosViewController.ViewData) -> Bool {
-    switch (lhs, rhs) {
-    case (.loaded(let lhsVideos), .loaded(let rhsVideos)) where lhsVideos == rhsVideos: return true
-    case (.failed(let lhsError), .failed(let rhsError)) where lhsError == rhsError: return true
-    case (.unloaded, .unloaded): return true
-    case (.empty, .empty): return true
-    case (.loading, .loading): return true
-    default: return false
-    }
-}
-
-final class VideosViewController: UIPageViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
+final class VideosViewController: UIPageViewController {
     
     enum ViewData {
         case unloaded
@@ -159,8 +147,10 @@ final class VideosViewController: UIPageViewController, UIPageViewControllerDele
             })
         }
     }
-    
-    private func videoInfoAfter(_ videoInfo: LiveVideoInfo) -> LiveVideoInfo? {
+}
+
+extension VideosViewController {
+    fileprivate func videoInfoAfter(_ videoInfo: LiveVideoInfo) -> LiveVideoInfo? {
         switch viewData.value {
         case .loaded(let infos):
             guard let index = videoInfoIndex(videoInfo) else { return nil }
@@ -175,7 +165,7 @@ final class VideosViewController: UIPageViewController, UIPageViewControllerDele
         }
     }
     
-    private func videoInfoBefore(_ videoInfo: LiveVideoInfo) -> LiveVideoInfo? {
+    fileprivate func videoInfoBefore(_ videoInfo: LiveVideoInfo) -> LiveVideoInfo? {
         switch viewData.value {
         case .loaded(let infos):
             guard let index = videoInfoIndex(videoInfo) else { return nil }
@@ -190,7 +180,7 @@ final class VideosViewController: UIPageViewController, UIPageViewControllerDele
         }
     }
     
-    private func videoInfoIndex(_ videoInfo: LiveVideoInfo) -> Int? {
+    fileprivate func videoInfoIndex(_ videoInfo: LiveVideoInfo) -> Int? {
         switch viewData.value {
         case .loaded(let infos):
             guard let index = infos.index(where: { $0.id == videoInfo.id }) else { return nil }
@@ -200,12 +190,15 @@ final class VideosViewController: UIPageViewController, UIPageViewControllerDele
         }
     }
     
-    private func videoInfoCount() -> Int {
+    fileprivate func videoInfoCount() -> Int {
         switch viewData.value {
         case .loaded(let infos): return infos.count
         default: return 0
         }
     }
+}
+
+extension VideosViewController: UIPageViewControllerDelegate, UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         guard let videoViewController = viewController as? VideoViewController else { return nil }
@@ -253,6 +246,18 @@ final class VideosViewController: UIPageViewController, UIPageViewControllerDele
         guard let videoViewController = viewControllers?.first as? VideoViewController else { return 0 }
         guard let index = videoInfoIndex(videoViewController.videoInfo) else { return 0 }
         return index
+    }
+}
+
+extension VideosViewController.ViewData: Equatable {}
+func ==(lhs: VideosViewController.ViewData, rhs: VideosViewController.ViewData) -> Bool {
+    switch (lhs, rhs) {
+    case (.loaded(let lhsVideos), .loaded(let rhsVideos)) where lhsVideos == rhsVideos: return true
+    case (.failed(let lhsError), .failed(let rhsError)) where lhsError == rhsError: return true
+    case (.unloaded, .unloaded): return true
+    case (.empty, .empty): return true
+    case (.loading, .loading): return true
+    default: return false
     }
 }
 
