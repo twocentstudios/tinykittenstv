@@ -44,10 +44,10 @@ final class InfoViewController: UIViewController {
         switch viewData {
         case .normal(let text):
             infoLabel.text = text
-            infoLabel.textColor = UIColor.black
+            infoLabel.textColor = Color.gray85
         case .error(let text):
             infoLabel.text = text
-            infoLabel.textColor = UIColor.red
+            infoLabel.textColor = Color.danger
         }
     }
 }

@@ -30,7 +30,7 @@ final class VideoDescriptionView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        titleLabel.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1)
+        titleLabel.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title2)
         descriptionLabel.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title3)
         
         titleLabel.textAlignment = .center
@@ -39,8 +39,8 @@ final class VideoDescriptionView: UIView {
         titleLabel.numberOfLines = 0
         descriptionLabel.numberOfLines = 0
         
-        titleLabel.textColor = UIColor.white
-        descriptionLabel.textColor = UIColor.white
+        titleLabel.textColor = Color.white
+        descriptionLabel.textColor = Color.white
         
         let view = self
         let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
