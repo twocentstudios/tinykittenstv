@@ -426,11 +426,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Christopher Trott (P95XNCNZ7A)";
+				DEVELOPMENT_TEAM = YK25EF78NT;
 				INFOPLIST_FILE = "$(SRCROOT)/tinykittenstv/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocentstudios.tinykittens;
 				PRODUCT_NAME = TinyKittens;
+				PROVISIONING_PROFILE_SPECIFIER = "tvOS Development Profile";
 				SWIFT_VERSION = 3.0;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
@@ -442,12 +444,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Christopher Trott (YK25EF78NT)";
+				DEVELOPMENT_TEAM = YK25EF78NT;
 				INFOPLIST_FILE = "$(SRCROOT)/tinykittenstv/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocentstudios.tinykittens;
 				PRODUCT_NAME = TinyKittens;
-				PROVISIONING_PROFILE = "a524232e-d06b-40ca-ad2a-792a062e50dd";
+				PROVISIONING_PROFILE_SPECIFIER = "tinykittens Distribution Profile";
 				SWIFT_VERSION = 3.0;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
