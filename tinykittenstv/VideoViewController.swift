@@ -106,6 +106,8 @@ final class VideoViewController: UIViewController {
         
         descriptionView.viewData = VideoDescriptionViewData(title: videoInfo.title, description: videoInfo.description)
         
+        descriptionView.alpha = 0
+        
         userPlayState.producer
             .startWithValues { [unowned descriptionView] (playState: UserPlayState) in
                 let toAlpha: CGFloat = {
