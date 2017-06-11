@@ -8,6 +8,8 @@
 
 import UIKit
 import ReactiveSwift
+import ReactiveCocoa
+import Result
 import XCDYouTubeKit
 import AVFoundation
 import Mortar
@@ -25,9 +27,11 @@ final class VideoViewController: UIViewController {
     
     lazy var playerView: PlayerView = PlayerView()
     lazy var descriptionView: VideoDescriptionView = VideoDescriptionView()
+    lazy var loadingView: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     
     let userPlayState = MutableProperty(UserPlayState.play)
     let viewState = MutableProperty(ViewState.inactive)
+    private let loading: Property<Bool>
     private let player: Property<AVPlayer?>
     
     private let fetchAction: Action<(), XCDYouTubeVideo, NSError>
@@ -41,8 +45,7 @@ final class VideoViewController: UIViewController {
                 .start(on: QueueScheduler())
         }
         
-        // TODO: loading/error?
-        // let loadings = fetchAction.isExecuting.signal.filter({ $0 }).map({ _ in ??? })
+        // TODO: error?
         // let errors = fetchAction.errors.map { $0 }
         let values = fetchAction.values
             .map { (video: XCDYouTubeVideo) -> URL? in
@@ -56,6 +59,18 @@ final class VideoViewController: UIViewController {
             }
         
         self.player = ReactiveSwift.Property(initial: nil, then: values)
+        
+        let infoLoading = fetchAction.isExecuting.producer.prefix(value: false)
+        let playerUnavailable = player.producer.map({ $0 == nil }).prefix(value: false)
+        let playerLoading = player.producer
+            .map { $0?.currentItem }
+            .skipNil()
+            .flatMap(.latest) { (playerItem: AVPlayerItem) -> Signal<Bool, NoError> in
+                return playerItem.reactive.signal(forKeyPath: #keyPath(AVPlayerItem.isPlaybackBufferEmpty)).skipNil().map({ $0 as! Bool })
+            }
+            .prefix(value: false)
+        let combinedLoading = SignalProducer.combineLatest(infoLoading, playerUnavailable, playerLoading).map({ $0 || $1 || $2 })
+        self.loading = Property<Bool>(initial: false, then: combinedLoading)
         
         super.init(nibName: nil, bundle: nil)
         
@@ -97,12 +112,16 @@ final class VideoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        loadingView.color = Color.gray60
+        
         view |+| [
             playerView,
+            loadingView,
             descriptionView
         ]
         
         [playerView, descriptionView] |=| view
+        loadingView.m_center |=| view
         
         descriptionView.viewData = VideoDescriptionViewData(title: videoInfo.title, description: videoInfo.description)
         
@@ -119,6 +138,11 @@ final class VideoViewController: UIViewController {
                 UIView.animate(withDuration: 0.2, animations: { 
                     descriptionView.alpha = toAlpha
                 })
+            }
+        
+        loading.producer
+            .startWithValues { [weak loadingView] (isLoading: Bool) in
+                isLoading ? loadingView?.startAnimating() : loadingView?.stopAnimating()
             }
     }
 }
