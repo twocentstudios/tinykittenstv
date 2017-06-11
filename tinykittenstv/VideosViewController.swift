@@ -48,8 +48,7 @@ final class VideosViewController: UIPageViewController {
         self.viewData = ReactiveSwift.Property(initial: .unloaded, then: merged)
         
         // TODO: move signal outside this class
-        NotificationCenter.default.reactive.notifications(forName: NSNotification.Name.UIApplicationDidBecomeActive)
-            .skip(first: 1)
+        NotificationCenter.default.reactive.notifications(forName: .UIApplicationWillEnterForeground)
             .observeValues { [weak fetchAction] _ in
                 fetchAction?.apply(()).start()
             }
