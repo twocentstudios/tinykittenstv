@@ -7,20 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3425318D1E94AD4400764177 /* VideosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3425318C1E94AD4400764177 /* VideosViewController.swift */; };
 		34263D661BD99B7C00F5063A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34263D651BD99B7C00F5063A /* Extensions.swift */; };
-		34263D681BD9A39100F5063A /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34263D671BD9A39100F5063A /* Result.swift */; };
 		34263D6A1BD9A3BD00F5063A /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34263D691BD9A3BD00F5063A /* Errors.swift */; };
-		34263D6C1BD9A4A400F5063A /* EventViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34263D6B1BD9A4A400F5063A /* EventViewModel.swift */; };
 		3443D3391BC44344008AEA28 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3443D3381BC44344008AEA28 /* Assets.xcassets */; };
 		3443D3441BC44344008AEA28 /* livestreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3431BC44344008AEA28 /* livestreamTests.swift */; };
 		3443D3511BC48075008AEA28 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3501BC48075008AEA28 /* Models.swift */; };
-		3443D3551BC5EE41008AEA28 /* ViewModelProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3443D3541BC5EE41008AEA28 /* ViewModelProtocols.swift */; };
 		3445294D1BDACB76003066E9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3445294C1BDACB76003066E9 /* AppDelegate.swift */; };
 		348735281BD8147E00DCCE4B /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348735271BD8147E00DCCE4B /* Controller.swift */; };
-		34FA52DA1BE435EB003334B3 /* EventsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FA52D91BE435EB003334B3 /* EventsTableViewController.swift */; };
-		34FA52DC1BE737C9003334B3 /* EventPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FA52DB1BE737C9003334B3 /* EventPreviewView.swift */; };
-		34FA52DE1BE7FDFA003334B3 /* ImageTitleDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FA52DD1BE7FDFA003334B3 /* ImageTitleDescriptionCell.swift */; };
-		F8BB8FB345EA4DCF34626362 /* Pods_tinykittenstv.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19702404906B2100355A59F4 /* Pods_tinykittenstv.framework */; };
+		348D22041E8FBB6800393990 /* YouTubeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348D22031E8FBB6800393990 /* YouTubeExtensions.swift */; };
+		34B0AF9B1EA0245F0096CBAE /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B0AF9A1EA0245F0096CBAE /* PlayerView.swift */; };
+		34B0AF9D1EA025220096CBAE /* VideoDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B0AF9C1EA025220096CBAE /* VideoDescriptionView.swift */; };
+		34B0AF9F1EA027AD0096CBAE /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B0AF9E1EA027AD0096CBAE /* InfoViewController.swift */; };
+		34B0AFA11EA027E90096CBAE /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B0AFA01EA027E90096CBAE /* VideoViewController.swift */; };
+		34B0AFA31EA0280D0096CBAE /* UserPlayState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B0AFA21EA0280D0096CBAE /* UserPlayState.swift */; };
+		34B0AFA51EA02E270096CBAE /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B0AFA41EA02E270096CBAE /* Secrets.swift */; };
+		34BE166E1EA160C300DDB790 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BE166D1EA160C300DDB790 /* Styles.swift */; };
+		7382C0E7FD2191161A66DBBE /* Pods_tinykittenstv.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8EBE7FFD0CE4BD405137CF0 /* Pods_tinykittenstv.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,12 +37,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		083CFAE44BAE9CEEC116523A /* Pods-tinykittenstv.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tinykittenstv.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tinykittenstv/Pods-tinykittenstv.debug.xcconfig"; sourceTree = "<group>"; };
-		19702404906B2100355A59F4 /* Pods_tinykittenstv.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tinykittenstv.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3425318C1E94AD4400764177 /* VideosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideosViewController.swift; sourceTree = "<group>"; };
 		34263D651BD99B7C00F5063A /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		34263D671BD9A39100F5063A /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		34263D691BD9A3BD00F5063A /* Errors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
-		34263D6B1BD9A4A400F5063A /* EventViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventViewModel.swift; sourceTree = "<group>"; };
 		3443D32E1BC44344008AEA28 /* TinyKittens.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinyKittens.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3443D3381BC44344008AEA28 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3443D33A1BC44344008AEA28 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -47,13 +47,19 @@
 		3443D3431BC44344008AEA28 /* livestreamTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = livestreamTests.swift; sourceTree = "<group>"; };
 		3443D3451BC44344008AEA28 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3443D3501BC48075008AEA28 /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
-		3443D3541BC5EE41008AEA28 /* ViewModelProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelProtocols.swift; sourceTree = "<group>"; };
 		3445294C1BDACB76003066E9 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		348735271BD8147E00DCCE4B /* Controller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
-		34FA52D91BE435EB003334B3 /* EventsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsTableViewController.swift; sourceTree = "<group>"; };
-		34FA52DB1BE737C9003334B3 /* EventPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventPreviewView.swift; sourceTree = "<group>"; };
-		34FA52DD1BE7FDFA003334B3 /* ImageTitleDescriptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTitleDescriptionCell.swift; sourceTree = "<group>"; };
-		68D1EE7A89784F61C0D7D76A /* Pods-tinykittenstv.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tinykittenstv.release.xcconfig"; path = "Pods/Target Support Files/Pods-tinykittenstv/Pods-tinykittenstv.release.xcconfig"; sourceTree = "<group>"; };
+		348D22031E8FBB6800393990 /* YouTubeExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YouTubeExtensions.swift; sourceTree = "<group>"; };
+		34B0AF9A1EA0245F0096CBAE /* PlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		34B0AF9C1EA025220096CBAE /* VideoDescriptionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoDescriptionView.swift; sourceTree = "<group>"; };
+		34B0AF9E1EA027AD0096CBAE /* InfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		34B0AFA01EA027E90096CBAE /* VideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
+		34B0AFA21EA0280D0096CBAE /* UserPlayState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserPlayState.swift; sourceTree = "<group>"; };
+		34B0AFA41EA02E270096CBAE /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
+		34BE166D1EA160C300DDB790 /* Styles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
+		A68D5BDAA613DA06922CF9F8 /* Pods-tinykittenstv.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tinykittenstv.release.xcconfig"; path = "Pods/Target Support Files/Pods-tinykittenstv/Pods-tinykittenstv.release.xcconfig"; sourceTree = "<group>"; };
+		C8EBE7FFD0CE4BD405137CF0 /* Pods_tinykittenstv.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_tinykittenstv.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDA69BA1D3FCD737BD3A7775 /* Pods-tinykittenstv.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tinykittenstv.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tinykittenstv/Pods-tinykittenstv.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,7 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8BB8FB345EA4DCF34626362 /* Pods_tinykittenstv.framework in Frameworks */,
+				7382C0E7FD2191161A66DBBE /* Pods_tinykittenstv.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,8 +87,8 @@
 				3443D3301BC44344008AEA28 /* tinykittenstv */,
 				3443D3421BC44344008AEA28 /* tinykittenstvTests */,
 				3443D32F1BC44344008AEA28 /* Products */,
-				6356180BED6B5D39C28DC834 /* Pods */,
-				3C78CE984DD6DD25C6E4C395 /* Frameworks */,
+				827F13B082834ADBFE830656 /* Pods */,
+				DC50C1FFB064F6B1AC9A87C3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,16 +105,19 @@
 			isa = PBXGroup;
 			children = (
 				3445294C1BDACB76003066E9 /* AppDelegate.swift */,
-				34FA52D91BE435EB003334B3 /* EventsTableViewController.swift */,
-				34FA52DD1BE7FDFA003334B3 /* ImageTitleDescriptionCell.swift */,
-				34FA52DB1BE737C9003334B3 /* EventPreviewView.swift */,
-				34263D6B1BD9A4A400F5063A /* EventViewModel.swift */,
-				3443D3541BC5EE41008AEA28 /* ViewModelProtocols.swift */,
+				3425318C1E94AD4400764177 /* VideosViewController.swift */,
+				34B0AFA01EA027E90096CBAE /* VideoViewController.swift */,
+				34B0AF9E1EA027AD0096CBAE /* InfoViewController.swift */,
+				34B0AF9A1EA0245F0096CBAE /* PlayerView.swift */,
+				34B0AF9C1EA025220096CBAE /* VideoDescriptionView.swift */,
+				34B0AFA21EA0280D0096CBAE /* UserPlayState.swift */,
 				348735271BD8147E00DCCE4B /* Controller.swift */,
 				3443D3501BC48075008AEA28 /* Models.swift */,
 				34263D691BD9A3BD00F5063A /* Errors.swift */,
-				34263D671BD9A39100F5063A /* Result.swift */,
 				34263D651BD99B7C00F5063A /* Extensions.swift */,
+				34BE166D1EA160C300DDB790 /* Styles.swift */,
+				348D22031E8FBB6800393990 /* YouTubeExtensions.swift */,
+				34B0AFA41EA02E270096CBAE /* Secrets.swift */,
 				3443D3381BC44344008AEA28 /* Assets.xcassets */,
 				3443D33A1BC44344008AEA28 /* Info.plist */,
 			);
@@ -124,21 +133,21 @@
 			path = tinykittenstvTests;
 			sourceTree = "<group>";
 		};
-		3C78CE984DD6DD25C6E4C395 /* Frameworks */ = {
+		827F13B082834ADBFE830656 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				19702404906B2100355A59F4 /* Pods_tinykittenstv.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		6356180BED6B5D39C28DC834 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				083CFAE44BAE9CEEC116523A /* Pods-tinykittenstv.debug.xcconfig */,
-				68D1EE7A89784F61C0D7D76A /* Pods-tinykittenstv.release.xcconfig */,
+				DDA69BA1D3FCD737BD3A7775 /* Pods-tinykittenstv.debug.xcconfig */,
+				A68D5BDAA613DA06922CF9F8 /* Pods-tinykittenstv.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		DC50C1FFB064F6B1AC9A87C3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C8EBE7FFD0CE4BD405137CF0 /* Pods_tinykittenstv.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,12 +157,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3443D3481BC44344008AEA28 /* Build configuration list for PBXNativeTarget "tinykittenstv" */;
 			buildPhases = (
-				4E52AB0ED5F8EB7D0DBC2914 /* Check Pods Manifest.lock */,
+				1E9D057876B3410766E900F7 /* [CP] Check Pods Manifest.lock */,
 				3443D32A1BC44344008AEA28 /* Sources */,
 				3443D32B1BC44344008AEA28 /* Frameworks */,
 				3443D32C1BC44344008AEA28 /* Resources */,
-				4F461EB507F788C0A1DC585C /* Embed Pods Frameworks */,
-				C8A89800D5C5AB56D8BB7694 /* Copy Pods Resources */,
+				04156F7C3A908536AF2BEACE /* [CP] Embed Pods Frameworks */,
+				89B832533B3CA52251FB4F16 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -189,12 +198,13 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = twocentstudios;
 				TargetAttributes = {
 					3443D32D1BC44344008AEA28 = {
 						CreatedOnToolsVersion = 7.1;
 						DevelopmentTeam = YK25EF78NT;
+						LastSwiftMigration = 0820;
 					};
 					3443D33E1BC44344008AEA28 = {
 						CreatedOnToolsVersion = 7.1;
@@ -240,29 +250,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4E52AB0ED5F8EB7D0DBC2914 /* Check Pods Manifest.lock */ = {
+		04156F7C3A908536AF2BEACE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		4F461EB507F788C0A1DC585C /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -270,14 +265,29 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-tinykittenstv/Pods-tinykittenstv-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C8A89800D5C5AB56D8BB7694 /* Copy Pods Resources */ = {
+		1E9D057876B3410766E900F7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		89B832533B3CA52251FB4F16 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -292,17 +302,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				34263D6C1BD9A4A400F5063A /* EventViewModel.swift in Sources */,
+				34B0AFA31EA0280D0096CBAE /* UserPlayState.swift in Sources */,
+				34BE166E1EA160C300DDB790 /* Styles.swift in Sources */,
 				348735281BD8147E00DCCE4B /* Controller.swift in Sources */,
-				34FA52DC1BE737C9003334B3 /* EventPreviewView.swift in Sources */,
-				3443D3551BC5EE41008AEA28 /* ViewModelProtocols.swift in Sources */,
 				3443D3511BC48075008AEA28 /* Models.swift in Sources */,
-				34263D681BD9A39100F5063A /* Result.swift in Sources */,
-				34FA52DE1BE7FDFA003334B3 /* ImageTitleDescriptionCell.swift in Sources */,
 				34263D6A1BD9A3BD00F5063A /* Errors.swift in Sources */,
-				34FA52DA1BE435EB003334B3 /* EventsTableViewController.swift in Sources */,
+				34B0AF9D1EA025220096CBAE /* VideoDescriptionView.swift in Sources */,
+				34B0AF9F1EA027AD0096CBAE /* InfoViewController.swift in Sources */,
+				34B0AF9B1EA0245F0096CBAE /* PlayerView.swift in Sources */,
+				34B0AFA11EA027E90096CBAE /* VideoViewController.swift in Sources */,
+				348D22041E8FBB6800393990 /* YouTubeExtensions.swift in Sources */,
 				3445294D1BDACB76003066E9 /* AppDelegate.swift in Sources */,
 				34263D661BD99B7C00F5063A /* Extensions.swift in Sources */,
+				34B0AFA51EA02E270096CBAE /* Secrets.swift in Sources */,
+				3425318D1E94AD4400764177 /* VideosViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,8 +351,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -382,8 +397,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -400,6 +417,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = appletvos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
@@ -408,30 +426,37 @@
 		};
 		3443D3491BC44344008AEA28 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 083CFAE44BAE9CEEC116523A /* Pods-tinykittenstv.debug.xcconfig */;
+			baseConfigurationReference = DDA69BA1D3FCD737BD3A7775 /* Pods-tinykittenstv.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Christopher Trott (P95XNCNZ7A)";
+				DEVELOPMENT_TEAM = YK25EF78NT;
 				INFOPLIST_FILE = "$(SRCROOT)/tinykittenstv/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocentstudios.tinykittens;
 				PRODUCT_NAME = TinyKittens;
+				PROVISIONING_PROFILE_SPECIFIER = "tvOS Development Profile";
+				SWIFT_VERSION = 3.0;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
 		3443D34A1BC44344008AEA28 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 68D1EE7A89784F61C0D7D76A /* Pods-tinykittenstv.release.xcconfig */;
+			baseConfigurationReference = A68D5BDAA613DA06922CF9F8 /* Pods-tinykittenstv.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Christopher Trott (YK25EF78NT)";
+				DEVELOPMENT_TEAM = YK25EF78NT;
 				INFOPLIST_FILE = "$(SRCROOT)/tinykittenstv/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.twocentstudios.tinykittens;
 				PRODUCT_NAME = TinyKittens;
-				PROVISIONING_PROFILE = "a524232e-d06b-40ca-ad2a-792a062e50dd";
+				PROVISIONING_PROFILE_SPECIFIER = "tinykittens Distribution Profile";
+				SWIFT_VERSION = 3.0;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
@@ -443,7 +468,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = twocentstudios.livestreamTests;
 				PRODUCT_NAME = tinykittenstvTests;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/tinykittenstv.app/tinykittenstv";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TinyKittens.app/TinyKittens";
 			};
 			name = Debug;
 		};
@@ -455,7 +481,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = twocentstudios.livestreamTests;
 				PRODUCT_NAME = tinykittenstvTests;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/tinykittenstv.app/tinykittenstv";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TinyKittens.app/TinyKittens";
 			};
 			name = Release;
 		};

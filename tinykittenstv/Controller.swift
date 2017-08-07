@@ -4,149 +4,39 @@
 //
 
 import Foundation
-import Gloss
+import ReactiveSwift
+import Result
+import Marshal
 
-let BASE_URL = "https://api.new.livestream.com"
-let TIMEOUT_INTERVAL = 5.0
-
-// MARK: Public
-
-public func fetchTitleForAccount(accountId: Int, completeBlock: (result: Result<String, EventError>) -> Void) {
-    let url = NSURL(string: "\(BASE_URL)/accounts/\(accountId)")!
-    let request = NSURLRequest(URL: url, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: TIMEOUT_INTERVAL)
-    fetchDataForRequest(request) { (result) -> Void in
-        if let error = result.error {
-            completeBlock(result: Result<String, EventError>(error: error))
-            return
-        }
-        
-        let jsonResult : Result<JSON, EventError> = parseJSONFromData(result.value!)
-        if let error = jsonResult.error {
-            completeBlock(result: Result<String, EventError>(error: error))
-            return
-        }
-        
-        guard let fullName = jsonResult.value!["full_name"] as? String else {
-            completeBlock(result: Result<String, EventError>(error: EventError.InvalidResponse))
-            return
-        }
-        
-        completeBlock(result: Result<String, EventError>(value: fullName))
-    }
+struct SessionConfig {
+    let configuration: URLSessionConfiguration
+    let apiKey: String
 }
 
-public func fetchEventViewModelsForAccount(accountId: Int, completeBlock: (result: Result<[EventViewModel], EventError>) -> Void) {
-    let url = NSURL(string: "\(BASE_URL)/accounts/\(accountId)/events")!
-    let request = NSURLRequest(URL: url, cachePolicy: .ReloadIgnoringLocalCacheData, timeoutInterval: TIMEOUT_INTERVAL)
-    fetchDataForRequest(request) { (result) -> Void in
-        if let error = result.error {
-            completeBlock(result: Result<[EventViewModel], EventError>(error: error))
-            return
-        }
-        
-        let jsonResult : Result<JSON, EventError> = parseJSONFromData(result.value!)
-        if let error = jsonResult.error {
-            completeBlock(result: Result<[EventViewModel], EventError>(error: error))
-            return
-        }
-        
-        guard let eventsResponse = EventsResponse(json: jsonResult.value!) else {
-            completeBlock(result: Result<[EventViewModel], EventError>(error: EventError.InvalidResponse))
-            return
-        }
-        
-        let events : [Event] = eventsResponse.events
-        let eventViewModels =
-            events
-                .sort({ (e1: Event, e2: Event) -> Bool in e1.id > e2.id })
-                .map({ (e: Event) -> EventViewModel in return EventViewModel(model: e, imageData: nil) })
-        completeBlock(result: Result<[EventViewModel], EventError>(value: eventViewModels))
+struct Controller {
+    static func fetchLiveVideos(channelId: String, config: SessionConfig) -> SignalProducer<LiveVideosSearchResult, NSError> {
+        let urlSession = URLSession(configuration: config.configuration)
+        let queryItems = [
+            URLQueryItem(name: "part", value: "snippet"),
+            URLQueryItem(name: "channelId", value: channelId),
+            URLQueryItem(name: "eventType", value: "live"),
+            URLQueryItem(name: "type", value: "video"),
+            URLQueryItem(name: "maxResults", value: "50"),
+            URLQueryItem(name: "key", value: config.apiKey)
+        ]
+        let urlString = "https://www.googleapis.com/youtube/v3/search"
+        var url = URLComponents(string: urlString)!
+        url.queryItems = queryItems
+        let request = URLRequest(url: url.url!)
+        return urlSession.reactive.data(with: request).mapError(toNSError)
+            .attemptMap({ (t: (Data, URLResponse)) -> Result<LiveVideosSearchResult, NSError> in
+                do {
+                    let json: MarshaledObject = try JSONSerialization.jsonObject(with: t.0, options: []) as! MarshaledObject
+                    let searchResult = try LiveVideosSearchResult(object: json)
+                    return Result<LiveVideosSearchResult, NSError>(value: searchResult)
+                } catch let error {
+                    return Result<LiveVideosSearchResult, NSError>(error: error as NSError)
+                }
+            })
     }
-}
-
-public func fetchDetailForViewModel(viewModel: EventViewModel, completeBlock: (result : Result<EventViewModel, EventError>) -> Void ) {
-    let url = NSURL(string: "\(BASE_URL)/accounts/\(viewModel.model.accountId)/events/\(viewModel.model.id)")!
-    let request = NSURLRequest(URL: url, cachePolicy: .ReloadIgnoringLocalCacheData, timeoutInterval: TIMEOUT_INTERVAL)
-    fetchDataForRequest(request) { (result) -> Void in
-        if let error = result.error {
-            completeBlock(result: Result<EventViewModel, EventError>(error: error))
-            return
-        }
-        
-        let jsonResult : Result<JSON, EventError> = parseJSONFromData(result.value!)
-        if let error = jsonResult.error {
-            completeBlock(result: Result<EventViewModel, EventError>(error: error))
-            return
-        }
-        
-        guard let event = Event(json: jsonResult.value!) else {
-            completeBlock(result: Result<EventViewModel, EventError>(error: EventError.InvalidResponse))
-            return
-        }
-        
-        let newEventViewModel = EventViewModel(model: event, imageData: viewModel.imageData)
-        
-        completeBlock(result: Result<EventViewModel, EventError>(value: newEventViewModel))
-    }
-}
-
-
-public func fetchImageDataForViewModel(viewModel: EventViewModel, completeBlock: (result: Result<EventViewModel, EventError>) -> Void ) {
-    let imageable = viewModel as Imageable
-    if imageable.isLoaded() {
-        completeBlock(result: Result<EventViewModel, EventError>(value: viewModel))
-        return
-    }
-    
-    guard let imageUrl = viewModel.model.imageUrl else {
-        completeBlock(result: Result<EventViewModel, EventError>(error: EventError.ImageURLMissing))
-        return
-    }
-    
-    fetchImageAtURL(imageUrl) { (result) -> Void in
-        if let error = result.error {
-            completeBlock(result: Result<EventViewModel, EventError>(error: error))
-            return
-        }
-        
-        let newViewModel = EventViewModel(model: viewModel.model, imageData: result.value!)
-        completeBlock(result: Result<EventViewModel, EventError>(value: newViewModel))
-    }
-}
-
-public func fetchImageAtURL(url: NSURL, completeBlock: (result : Result<NSData, EventError>) -> Void ) {
-    let request = NSURLRequest(URL: url, cachePolicy: .ReturnCacheDataElseLoad, timeoutInterval: TIMEOUT_INTERVAL)
-    fetchDataForRequest(request) { (result) -> Void in
-        completeBlock(result: result)
-    }
-}
-
-// MARK: Helpers
-
-private func parseJSONFromData(data: NSData, opt: NSJSONReadingOptions = []) -> Result<JSON, EventError> {
-    do {
-        guard let json = try NSJSONSerialization.JSONObjectWithData(data, options: opt) as? JSON else {
-            return Result<JSON, EventError>(error: EventError.InvalidResponse)
-        }
-        return Result<JSON, EventError>(value: json)
-    } catch let e as NSError {
-        return Result<JSON, EventError>(error: EventError.UnderlyingError(error: e))
-    }
-}
-
-private func fetchDataForRequest(request: NSURLRequest, completeBlock: (result: Result<NSData, EventError>) -> Void) {
-    let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data : NSData?, response : NSURLResponse?, error : NSError?) -> Void in
-        if let error = error {
-            completeBlock(result: Result<NSData, EventError>(error: EventError.UnderlyingError(error: error)))
-            return
-        }
-        
-        if let data = data {
-            completeBlock(result: Result<NSData, EventError>(value: data))
-            return
-        }
-            
-        completeBlock(result: Result<NSData, EventError>(error: EventError.UnknownError))
-    }
-    task.resume()
 }
