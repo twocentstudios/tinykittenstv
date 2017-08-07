@@ -18,6 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         
+        let audioSession = AVAudioSession.sharedInstance()
+        try? audioSession.setCategory(AVAudioSessionCategoryPlayback, with: [.mixWithOthers])
+        
         let channelId = "UCeL2LSl91k2VccR7XEh5IKg"
         let sessionConfig = SessionConfig(configuration: URLSessionConfiguration.default, apiKey: YouTubeAPIKey)
         let pageViewController = VideosViewController(channelId: channelId, sessionConfig: sessionConfig, client: XCDYouTubeClient.default())

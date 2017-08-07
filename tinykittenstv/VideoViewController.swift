@@ -24,6 +24,7 @@ final class VideoViewController: UIViewController {
     
     let client: XCDYouTubeClient
     let videoInfo: LiveVideoInfo
+    let avAudioSession: AVAudioSession
     
     lazy var playerView: PlayerView = PlayerView()
     lazy var descriptionView: VideoDescriptionView = VideoDescriptionView()
@@ -36,9 +37,10 @@ final class VideoViewController: UIViewController {
     
     private let fetchAction: Action<(), XCDYouTubeVideo, NSError>
     
-    init(videoInfo: LiveVideoInfo, client: XCDYouTubeClient) {
+    init(videoInfo: LiveVideoInfo, client: XCDYouTubeClient, avAudioSession: AVAudioSession = .sharedInstance()) {
         self.videoInfo = videoInfo
         self.client = client
+        self.avAudioSession = avAudioSession
         
         fetchAction = Action { _ -> SignalProducer<XCDYouTubeVideo, NSError> in
             return client.rac_getVideoWithIdentifier(videoInfo.id)
@@ -94,6 +96,10 @@ final class VideoViewController: UIViewController {
                     case (.pause, .active):
                         player.pause()
                     }
+                    
+                    // Mute the video player if Airplay is active.
+                    let isMuted = self?.avAudioSession.secondaryAudioShouldBeSilencedHint ?? false
+                    player.isMuted = isMuted
                 } else {
                     switch viewState {
                     case .mayBecomeActive, .active:
@@ -102,7 +108,7 @@ final class VideoViewController: UIViewController {
                         break
                     }
                 }
-        }
+            }
     }
     
     required init?(coder aDecoder: NSCoder) {

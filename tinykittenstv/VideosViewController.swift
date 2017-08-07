@@ -8,6 +8,7 @@
 
 import UIKit
 import XCDYouTubeKit
+import AVFoundation
 import ReactiveSwift
 import ReactiveCocoa
 import Result
@@ -54,6 +55,25 @@ final class VideosViewController: UIPageViewController {
             }
         
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        
+        // Handle Airplay
+        // TODO: investigate why this notification is never received.
+        NotificationCenter.default.reactive.notifications(forName: .AVAudioSessionSilenceSecondaryAudioHint)
+            .observeValues { [weak self] notification in
+                guard let userInfo = notification.userInfo,
+                    let typeValue = userInfo[AVAudioSessionSilenceSecondaryAudioHintTypeKey] as? UInt,
+                    let type = AVAudioSessionSilenceSecondaryAudioHintType(rawValue: typeValue) else {
+                        return
+                }
+                
+                let isMuted: Bool
+                switch type {
+                case .begin: isMuted = true
+                case .end: isMuted = false
+                }
+                
+                self?.currentVideoViewController()?.playerView.player?.isMuted = isMuted
+            }
         
         self.delegate = self
         self.dataSource = self
@@ -112,7 +132,7 @@ final class VideosViewController: UIPageViewController {
         userPlayState.producer
             .observe(on: UIScheduler())
             .startWithValues { [weak self] (userPlayState: UserPlayState) in
-                if let currentVideoViewController = self?.viewControllers?.first as? VideoViewController  {
+                if let currentVideoViewController = self?.currentVideoViewController()  {
                     currentVideoViewController.userPlayState.swap(userPlayState)
                 }
             }
@@ -145,6 +165,10 @@ final class VideosViewController: UIPageViewController {
                 pageControl.alpha = 0
             })
         }
+    }
+    
+    private func currentVideoViewController() -> VideoViewController? {
+        return viewControllers?.first as? VideoViewController
     }
 }
 
